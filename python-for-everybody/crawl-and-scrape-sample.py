@@ -9,7 +9,7 @@ name = None
 #   print 'Contents:',tag.contents[0]
 #   print 'Attrs:',tag.attrs
 
-for step in list(range(7)):
+for step in range(7):
     if url is not None:
         print("Open up new link: " + url)
         htmlStr = urllib.request.urlopen(url).read()
