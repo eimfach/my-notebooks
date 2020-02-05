@@ -1,4 +1,6 @@
-import urllib.request, urllib.parse, urllib.request
+import urllib.request
+import urllib.parse
+import urllib.request
 import ssl
 import json
 
