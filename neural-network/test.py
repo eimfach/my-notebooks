@@ -35,8 +35,9 @@ print("testing epochs: ", epochs)
 gpu_api = gpu.GPU()
 
 gpu_records = []
-
-# go through all records in the training data set and place them into gpu memory
+allocation_start_time = time.time()
+print("Start preparing training data and allocating GPU memory for it ...")
+# go through all records in the training data set and place them into GPU memory
 for record in training_data_list:
 
     # split the record by the ',' commas
@@ -62,7 +63,8 @@ for record in training_data_list:
 
     gpu_records.append((inputs, targets))
 
-
+print("Preparing done. Time (in seconds): ", time.time() - allocation_start_time)
+print("Starting Training ...")
 def trainAndTest(n):
     startTime = time.time()
     # train the neural network
@@ -74,8 +76,8 @@ def trainAndTest(n):
 
     endTime = time.time()
     print("-------------------------------------------------------------------")
-    print("Time elapsed for last training session (in seconds):", endTime - startTime)
-    print("Testing network performance ....")
+    print("Time elapsed for last Training Session (in seconds):", endTime - startTime)
+    print("Start Testing Network Performance ....")
     # test the neural network
 
     # scorecard for how well the network performs, initially empty

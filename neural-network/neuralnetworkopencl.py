@@ -6,7 +6,7 @@ class NeuralNetwork:
 
     # initialise the neural network
     def __init__(self, gpuApi, learningRate, iNodes, hNodes, oNodes):
-        self.self.gpu_api = gpuApi
+        self.gpu_api = gpuApi
 
         # set number of nodes in each input, hidden, output layer
         self.inodes = iNodes
