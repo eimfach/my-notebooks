@@ -2,6 +2,7 @@ import neuralnetworkopencl
 import time
 import zipfile
 import numpy
+import gpu
 
 # number of input, hidden and output nodes
 input_nodes = 784
@@ -14,9 +15,9 @@ learning_rate = float(input("Learning Rate: "))
 epochs = int(input("Epochs: "))
 
 # load the mnist training data CSV file into a list
-zipHandle = zipfile.ZipFile("mnist_datasets/mnist_train.csv.zip")
-training_data_list = [b.decode() for b in zipHandle.open("mnist_train.csv").readlines()]
-zipHandle.close()
+zip_handle = zipfile.ZipFile("mnist_datasets/mnist_train.csv.zip")
+training_data_list = [b.decode() for b in zip_handle.open("mnist_train.csv").readlines()]
+zip_handle.close()
 
 # load the mnist test data CSV file into a list
 test_data_file = open("mnist_datasets/mnist_test.csv", 'r')
@@ -31,6 +32,36 @@ print("output nodes: ", output_nodes)
 print("learning rate: ", learning_rate)
 print("testing epochs: ", epochs)
 
+gpu_api = gpu.GPU()
+
+gpu_records = []
+
+# go through all records in the training data set and place them into gpu memory
+for record in training_data_list:
+
+    # split the record by the ',' commas
+    one_letter = record.split(',')
+
+    imageData = one_letter[1:]
+    mark = int(one_letter[0])
+
+    # scale and shift the network training inputs
+    inputs = (numpy.asfarray(imageData) / 255.0 * 0.99) + 0.01
+
+    # create the network target output values (all 0.01, except the desired label which is 0.99)
+    targets = numpy.zeros(output_nodes) + 0.01
+
+    # all_values[0] is the target label for this record
+    targets[mark] = 0.99
+
+    # inputs = [0.01, 0.01, 0.01, 0.02164706, 0.01 ...] -> [[0.01], [0.01], [0.01], [0.02164706], [0.01] ...]
+    inputs = gpu_api.arr(numpy.array(inputs, ndmin=2, dtype=numpy.float32).T)
+
+    # targets_list = [0.01, 0.01, 0.01, 0.01, 0.01, 0.99, 0.01, 0.01, 0.01, 0.01] -> [[0.01], [0.01], [0.01] ...]
+    targets = gpu_api.arr(numpy.array(targets, ndmin=2, dtype=numpy.float32).T)
+
+    gpu_records.append((inputs, targets))
+
 
 def trainAndTest(n):
     startTime = time.time()
@@ -38,23 +69,7 @@ def trainAndTest(n):
 
     for e in range(epochs):
         # go through all records in the training data set
-        for record in training_data_list:
-
-            # split the record by the ',' commas
-            one_letter = record.split(',')
-
-            imageData = one_letter[1:]
-            mark = int(one_letter[0])
-
-            # scale and shift the network training inputs
-            inputs = (numpy.asfarray(imageData) / 255.0 * 0.99) + 0.01
-
-            # create the network target output values (all 0.01, except the desired label which is 0.99)
-            targets = numpy.zeros(output_nodes) + 0.01
-
-            # all_values[0] is the target label for this record
-            targets[mark] = 0.99
-
+        for inputs,targets in gpu_records:
             n.train(inputs, targets)
 
     endTime = time.time()
@@ -98,5 +113,5 @@ def trainAndTest(n):
 
 for i in range(5):
     n = neuralnetworkopencl.NeuralNetwork(
-        learningRate=learning_rate, iNodes=input_nodes, hNodes=hidden_nodes, oNodes=output_nodes)
+        gpuApi=gpu_api, learningRate=learning_rate, iNodes=input_nodes, hNodes=hidden_nodes, oNodes=output_nodes)
     trainAndTest(n)

@@ -176,3 +176,6 @@ entry sigmoid (x: [][]f32) =
 -- output { [[1f32,45f32],[2f32,67f32]] }
 entry transp (x: [][]f32) =
   transpose x
+
+entry arr (x: [][]f32) =
+  x

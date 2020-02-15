@@ -1,18 +1,13 @@
-import gpu
 import numpy
-
-a = 1.75
-b = numpy.array([[1,2,3], [4,5,6]])
-print(a+b)
-
-gpu_api = gpu.GPU()
 
 # GPU based calculations
 
 class NeuralNetwork:
 
     # initialise the neural network
-    def __init__(self, learningRate, iNodes, hNodes, oNodes):
+    def __init__(self, gpuApi, learningRate, iNodes, hNodes, oNodes):
+        self.self.gpu_api = gpuApi
+
         # set number of nodes in each input, hidden, output layer
         self.inodes = iNodes
         self.hnodes = hNodes
@@ -24,55 +19,48 @@ class NeuralNetwork:
         # w12 w22 etc
         # cpu based
         # matrix: [[0.014, 0.056, -0.032 ... ] ... [0.045, 0.032, -0.067 ... ] ... ]
-        self.wih = numpy.array(numpy.random.normal(
-            0.0, pow(self.inodes, -0.5), (self.hnodes, self.inodes)), dtype=numpy.float32)
+        self.wih = self.gpu_api.arr(numpy.array(numpy.random.normal(
+            0.0, pow(self.inodes, -0.5), (self.hnodes, self.inodes)), dtype=numpy.float32))
         # matrix: [[0.014, 0.056, -0.032 ... ] ... [0.045, 0.032, -0.067 ... ] ... ]
-        self.who = numpy.array(numpy.random.normal(
-            0.0, pow(self.hnodes, -0.5), (self.onodes, self.hnodes)), dtype=numpy.float32)
+        self.who = self.gpu_api.arr(numpy.array(numpy.random.normal(
+            0.0, pow(self.hnodes, -0.5), (self.onodes, self.hnodes)), dtype=numpy.float32))
 
         # learning rate
         self.lr = learningRate
 
         # activation function is the sigmoid function
-        self.activation_function = lambda x: gpu_api.sigmoid(x)
+        self.activation_function = lambda x: self.gpu_api.sigmoid(x)
 
         pass
 
     # train the neural network
 
-    def train(self, inputs_list, targets_list):
-        # convert inputs list and targets list to 2d array
-        # cpu based
-        # inputs_list = [0.01, 0.01, 0.01, 0.02164706, 0.01 ...] -> [[0.01], [0.01], [0.01], [0.02164706], [0.01] ...]
-        inputs = numpy.array(inputs_list, ndmin=2, dtype=numpy.float32).T
-
-        # targets_list = [0.01, 0.01, 0.01, 0.01, 0.01, 0.99, 0.01, 0.01, 0.01, 0.01] -> [[0.01], [0.01], [0.01] ...]
-        targets = numpy.array(targets_list, ndmin=2, dtype=numpy.float32).T
+    def train(self, inputs, targets):
 
         # calculate signals into hidden layer
         # hidden_inputs = [[0.00038f32], [0.0002f32] ...]
-        hidden_inputs = gpu_api.dot(self.wih, inputs)
+        hidden_inputs = self.gpu_api.dot(self.wih, inputs)
         
         # calculate the signals emerging from hidden layer
         hidden_outputs = self.activation_function(hidden_inputs)
 
         # calculate signals into final output layer
-        final_inputs = gpu_api.dot(self.who, hidden_outputs)
+        final_inputs = self.gpu_api.dot(self.who, hidden_outputs)
         # calculate the signals emerging from final output layer
         final_outputs = self.activation_function(final_inputs)
 
         # output layer error is the (target - actual)
-        output_errors = gpu_api.matsubstract(targets, final_outputs)
+        output_errors = self.gpu_api.matsubstract(targets, final_outputs)
         # hidden layer error is the output_errors, split by weights, recombined at hidden nodes
-        hidden_errors = gpu_api.dot(self.who.T, output_errors)
+        hidden_errors = self.gpu_api.dot(self.who.T, output_errors)
 
-        prod1 = gpu_api.matmultiply(gpu_api.matmultiply(output_errors, final_outputs), gpu_api.lmatsubstract(1.0, final_outputs))
+        prod1 = self.gpu_api.matmultiply(self.gpu_api.matmultiply(output_errors, final_outputs), self.gpu_api.lmatsubstract(1.0, final_outputs))
         # update the weights for the links between the hidden and output layers
-        self.who = gpu_api.matadd(self.who, gpu_api.lmatmultiply(self.lr, gpu_api.dot(prod1, gpu_api.transp(hidden_outputs))))
+        self.who = self.gpu_api.matadd(self.who, self.gpu_api.lmatmultiply(self.lr, self.gpu_api.dot(prod1, self.gpu_api.transp(hidden_outputs))))
 
-        prod2 = gpu_api.matmultiply(gpu_api.matmultiply(hidden_errors, hidden_outputs), gpu_api.lmatsubstract(1.0, hidden_outputs))
+        prod2 = self.gpu_api.matmultiply(self.gpu_api.matmultiply(hidden_errors, hidden_outputs), self.gpu_api.lmatsubstract(1.0, hidden_outputs))
         # update the weights for the links between the input and hidden layers
-        self.wih = gpu_api.matadd(self.wih, gpu_api.lmatmultiply(self.lr, gpu_api.dot(prod2, gpu_api.transp(inputs)))) 
+        self.wih = self.gpu_api.matadd(self.wih, self.gpu_api.lmatmultiply(self.lr, self.gpu_api.dot(prod2, self.gpu_api.transp(inputs)))) 
 
         pass
 
@@ -83,12 +71,12 @@ class NeuralNetwork:
         inputs = numpy.array(inputs_list, ndmin=2, dtype=numpy.float32).T
 
         # calculate signals into hidden layer
-        hidden_inputs = gpu_api.dot(self.wih, inputs)
+        hidden_inputs = self.gpu_api.dot(self.wih, inputs)
         # calculate the signals emerging from hidden layer
         hidden_outputs = self.activation_function(hidden_inputs)
 
         # calculate signals into final output layer
-        final_inputs = gpu_api.dot(self.who, hidden_outputs)
+        final_inputs = self.gpu_api.dot(self.who, hidden_outputs)
         # calculate the signals emerging from final output layer
         final_outputs = self.activation_function(final_inputs)
 
