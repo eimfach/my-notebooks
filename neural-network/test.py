@@ -1,7 +1,7 @@
-import numpy
-import neuralnetwork
+import neuralnetworkopencl
 import time
 import zipfile
+import numpy
 
 # number of input, hidden and output nodes
 input_nodes = 784
@@ -58,7 +58,9 @@ def trainAndTest(n):
             n.train(inputs, targets)
 
     endTime = time.time()
-
+    print("-------------------------------------------------------------------")
+    print("Time elapsed for last training session (in seconds):", endTime - startTime)
+    print("Testing network performance ....")
     # test the neural network
 
     # scorecard for how well the network performs, initially empty
@@ -91,12 +93,10 @@ def trainAndTest(n):
 
     # calculate the performance score, the fraction of correct answers
     scorecard_array = numpy.asarray(scorecard)
-    print("-------------------------------------------------------------------")
-    print("Time elapsed for last training session (in seconds):", endTime - startTime)
     print("performance = ", scorecard_array.sum() / scorecard_array.size)
 
 
 for i in range(5):
-    n = neuralnetwork.NeuralNetwork(
+    n = neuralnetworkopencl.NeuralNetwork(
         learningRate=learning_rate, iNodes=input_nodes, hNodes=hidden_nodes, oNodes=output_nodes)
     trainAndTest(n)

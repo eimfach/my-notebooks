@@ -3,6 +3,7 @@ import neuralnetwork
 import matplotlib.pyplot
 # This module provides convenience methods for the jupyter notebook for creating, training and testing the performance of a network
 
+
 def createNetwork(learningRate):
     input_nodes = 784
     hidden_nodes = 200
@@ -10,9 +11,11 @@ def createNetwork(learningRate):
     return neuralnetwork.NeuralNetwork(learningRate=learningRate, iNodes=input_nodes, hNodes=hidden_nodes, oNodes=output_nodes)
 
 # train the neural network
+
+
 def training(network, trainingData, epochs):
-# epochs is the number of times the training data set is used for training
-    
+    # epochs is the number of times the training data set is used for training
+
     for e in range(epochs):
         # go through all records in the training data set
         for record in trainingData:
@@ -70,10 +73,11 @@ def performance(network, testData):
             pass
 
         pass
-    
+
     # calculate the performance score, the fraction of correct answers
     scorecard_array = numpy.asarray(scorecard)
-    print ("performance = ", scorecard_array.sum() / scorecard_array.size)
+    print("performance = ", scorecard_array.sum() / scorecard_array.size)
+
 
 def singleLetterTest(testData, network, index):
     one_letter = testData[index].split(",")
@@ -85,11 +89,11 @@ def singleLetterTest(testData, network, index):
     result = network.query(encodedData)
     guess = translateQueryResult(result=result)
     print("Network says :", guess, "| Expected:")
-    normalizedForView = numpy.asfarray(one_letter[1:]).reshape((28,28))
-    matplotlib.pyplot.imshow(normalizedForView, cmap="Greys", interpolation="None")
+    normalizedForView = numpy.asfarray(one_letter[1:]).reshape((28, 28))
+    matplotlib.pyplot.imshow(
+        normalizedForView, cmap="Greys", interpolation="None")
 
 
 def translateQueryResult(result):
     result = result.flatten().tolist()
     return result.index(max(result))
-    
