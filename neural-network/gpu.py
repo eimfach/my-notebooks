@@ -1420,776 +1420,963 @@ __kernel void map_transpose_f32_small(__local volatile
             ((__global float *) srcmem_2)[idata_offset_34 + index_in_35];
     }
 }
-__kernel void segmap_7697(int32_t sizze_7521, __global
-                          unsigned char *x_mem_8284, __global
-                          unsigned char *mem_8287)
+__kernel void segmap_10010(int32_t sizze_9732, float m_9733, __global
+                           unsigned char *x_mem_10627, __global
+                           unsigned char *mem_10630)
 {
-    const int32_t segmap_group_sizze_7701 = expzisegmap_group_sizze_7700;
+    const int32_t segmap_group_sizze_10014 = multiplyzisegmap_group_sizze_10013;
     const int block_dim0 = 0;
     const int block_dim1 = 1;
     const int block_dim2 = 2;
-    int32_t global_tid_8372;
-    int32_t local_tid_8373;
-    int32_t group_sizze_8376;
-    int32_t wave_sizze_8375;
-    int32_t group_tid_8374;
+    int32_t global_tid_10744;
+    int32_t local_tid_10745;
+    int32_t group_sizze_10748;
+    int32_t wave_sizze_10747;
+    int32_t group_tid_10746;
     
-    global_tid_8372 = get_global_id(0);
-    local_tid_8373 = get_local_id(0);
-    group_sizze_8376 = get_local_size(0);
-    wave_sizze_8375 = LOCKSTEP_WIDTH;
-    group_tid_8374 = get_group_id(0);
+    global_tid_10744 = get_global_id(0);
+    local_tid_10745 = get_local_id(0);
+    group_sizze_10748 = get_local_size(0);
+    wave_sizze_10747 = LOCKSTEP_WIDTH;
+    group_tid_10746 = get_group_id(0);
     
-    int32_t phys_tid_7697 = global_tid_8372;
-    int32_t gtid_7696 = group_tid_8374 * segmap_group_sizze_7701 +
-            local_tid_8373;
+    int32_t phys_tid_10010 = global_tid_10744;
+    int32_t gtid_10009 = group_tid_10746 * segmap_group_sizze_10014 +
+            local_tid_10745;
     
-    if (slt32(gtid_7696, sizze_7521)) {
-        float x_7708 = ((__global float *) x_mem_8284)[gtid_7696];
-        float res_7709 = fpow32(2.7182817F, x_7708);
+    if (slt32(gtid_10009, sizze_9732)) {
+        float x_10021 = ((__global float *) x_mem_10627)[gtid_10009];
+        float res_10022 = m_9733 * x_10021;
         
-        ((__global float *) mem_8287)[gtid_7696] = res_7709;
+        ((__global float *) mem_10630)[gtid_10009] = res_10022;
     }
 }
-__kernel void segmap_7711(int32_t sizze_7526, __global
-                          unsigned char *x_mem_8284, __global
-                          unsigned char *mem_8287)
+__kernel void segmap_10024(int32_t sizze_9738, float s_9739, __global
+                           unsigned char *x_mem_10627, __global
+                           unsigned char *mem_10630)
 {
-    const int32_t segmap_group_sizze_7715 = negationzisegmap_group_sizze_7714;
+    const int32_t segmap_group_sizze_10028 = addzisegmap_group_sizze_10027;
     const int block_dim0 = 0;
     const int block_dim1 = 1;
     const int block_dim2 = 2;
-    int32_t global_tid_8379;
-    int32_t local_tid_8380;
-    int32_t group_sizze_8383;
-    int32_t wave_sizze_8382;
-    int32_t group_tid_8381;
+    int32_t global_tid_10751;
+    int32_t local_tid_10752;
+    int32_t group_sizze_10755;
+    int32_t wave_sizze_10754;
+    int32_t group_tid_10753;
     
-    global_tid_8379 = get_global_id(0);
-    local_tid_8380 = get_local_id(0);
-    group_sizze_8383 = get_local_size(0);
-    wave_sizze_8382 = LOCKSTEP_WIDTH;
-    group_tid_8381 = get_group_id(0);
+    global_tid_10751 = get_global_id(0);
+    local_tid_10752 = get_local_id(0);
+    group_sizze_10755 = get_local_size(0);
+    wave_sizze_10754 = LOCKSTEP_WIDTH;
+    group_tid_10753 = get_group_id(0);
     
-    int32_t phys_tid_7711 = global_tid_8379;
-    int32_t gtid_7710 = group_tid_8381 * segmap_group_sizze_7715 +
-            local_tid_8380;
+    int32_t phys_tid_10024 = global_tid_10751;
+    int32_t gtid_10023 = group_tid_10753 * segmap_group_sizze_10028 +
+            local_tid_10752;
     
-    if (slt32(gtid_7710, sizze_7526)) {
-        float x_7722 = ((__global float *) x_mem_8284)[gtid_7710];
-        float res_7723 = 0.0F - x_7722;
+    if (slt32(gtid_10023, sizze_9738)) {
+        float x_10035 = ((__global float *) x_mem_10627)[gtid_10023];
+        float res_10036 = s_9739 + x_10035;
         
-        ((__global float *) mem_8287)[gtid_7710] = res_7723;
+        ((__global float *) mem_10630)[gtid_10023] = res_10036;
     }
 }
-__kernel void segmap_7725(int32_t sizze_7531, float div_7532, __global
-                          unsigned char *x_mem_8284, __global
-                          unsigned char *mem_8287)
+__kernel void segmap_10038(int32_t sizze_9744, float d_9745, __global
+                           unsigned char *x_mem_10627, __global
+                           unsigned char *mem_10630)
 {
-    const int32_t segmap_group_sizze_7729 = dividezisegmap_group_sizze_7728;
+    const int32_t segmap_group_sizze_10042 =
+                  substractzisegmap_group_sizze_10041;
     const int block_dim0 = 0;
     const int block_dim1 = 1;
     const int block_dim2 = 2;
-    int32_t global_tid_8386;
-    int32_t local_tid_8387;
-    int32_t group_sizze_8390;
-    int32_t wave_sizze_8389;
-    int32_t group_tid_8388;
+    int32_t global_tid_10758;
+    int32_t local_tid_10759;
+    int32_t group_sizze_10762;
+    int32_t wave_sizze_10761;
+    int32_t group_tid_10760;
     
-    global_tid_8386 = get_global_id(0);
-    local_tid_8387 = get_local_id(0);
-    group_sizze_8390 = get_local_size(0);
-    wave_sizze_8389 = LOCKSTEP_WIDTH;
-    group_tid_8388 = get_group_id(0);
+    global_tid_10758 = get_global_id(0);
+    local_tid_10759 = get_local_id(0);
+    group_sizze_10762 = get_local_size(0);
+    wave_sizze_10761 = LOCKSTEP_WIDTH;
+    group_tid_10760 = get_group_id(0);
     
-    int32_t phys_tid_7725 = global_tid_8386;
-    int32_t gtid_7724 = group_tid_8388 * segmap_group_sizze_7729 +
-            local_tid_8387;
+    int32_t phys_tid_10038 = global_tid_10758;
+    int32_t gtid_10037 = group_tid_10760 * segmap_group_sizze_10042 +
+            local_tid_10759;
     
-    if (slt32(gtid_7724, sizze_7531)) {
-        float x_7736 = ((__global float *) x_mem_8284)[gtid_7724];
-        float res_7737 = div_7532 / x_7736;
+    if (slt32(gtid_10037, sizze_9744)) {
+        float x_10049 = ((__global float *) x_mem_10627)[gtid_10037];
+        float res_10050 = d_9745 - x_10049;
         
-        ((__global float *) mem_8287)[gtid_7724] = res_7737;
+        ((__global float *) mem_10630)[gtid_10037] = res_10050;
     }
 }
-__kernel void segmap_7739(int32_t sizze_7537, float m_7539, __global
-                          unsigned char *x_mem_8284, __global
-                          unsigned char *mem_8287)
+__kernel void segmap_10052(int32_t sizze_9750, __global
+                           unsigned char *x_mem_10627, __global
+                           unsigned char *y_mem_10628, __global
+                           unsigned char *mem_10631)
 {
-    const int32_t segmap_group_sizze_7743 = multiplyzisegmap_group_sizze_7742;
+    const int32_t segmap_group_sizze_10056 =
+                  multiply2zisegmap_group_sizze_10055;
     const int block_dim0 = 0;
     const int block_dim1 = 1;
     const int block_dim2 = 2;
-    int32_t global_tid_8393;
-    int32_t local_tid_8394;
-    int32_t group_sizze_8397;
-    int32_t wave_sizze_8396;
-    int32_t group_tid_8395;
+    int32_t global_tid_10765;
+    int32_t local_tid_10766;
+    int32_t group_sizze_10769;
+    int32_t wave_sizze_10768;
+    int32_t group_tid_10767;
     
-    global_tid_8393 = get_global_id(0);
-    local_tid_8394 = get_local_id(0);
-    group_sizze_8397 = get_local_size(0);
-    wave_sizze_8396 = LOCKSTEP_WIDTH;
-    group_tid_8395 = get_group_id(0);
+    global_tid_10765 = get_global_id(0);
+    local_tid_10766 = get_local_id(0);
+    group_sizze_10769 = get_local_size(0);
+    wave_sizze_10768 = LOCKSTEP_WIDTH;
+    group_tid_10767 = get_group_id(0);
     
-    int32_t phys_tid_7739 = global_tid_8393;
-    int32_t gtid_7738 = group_tid_8395 * segmap_group_sizze_7743 +
-            local_tid_8394;
+    int32_t phys_tid_10052 = global_tid_10765;
+    int32_t gtid_10051 = group_tid_10767 * segmap_group_sizze_10056 +
+            local_tid_10766;
     
-    if (slt32(gtid_7738, sizze_7537)) {
-        float x_7750 = ((__global float *) x_mem_8284)[gtid_7738];
-        float res_7751 = m_7539 * x_7750;
+    if (slt32(gtid_10051, sizze_9750)) {
+        float x_10063 = ((__global float *) x_mem_10627)[gtid_10051];
+        float x_10064 = ((__global float *) y_mem_10628)[gtid_10051];
+        float res_10065 = x_10063 * x_10064;
         
-        ((__global float *) mem_8287)[gtid_7738] = res_7751;
+        ((__global float *) mem_10631)[gtid_10051] = res_10065;
     }
 }
-__kernel void segmap_7753(int32_t sizze_7543, float s_7545, __global
-                          unsigned char *x_mem_8284, __global
-                          unsigned char *mem_8287)
+__kernel void segmap_10068(int32_t sizze_9765, int32_t sizze_9766, float p_9767,
+                           __global unsigned char *x_mem_10627, __global
+                           unsigned char *mem_10632)
 {
-    const int32_t segmap_group_sizze_7757 = addzisegmap_group_sizze_7756;
+    const int32_t segmap_group_sizze_10074 =
+                  lmatmultiplyzisegmap_group_sizze_10073;
     const int block_dim0 = 0;
     const int block_dim1 = 1;
     const int block_dim2 = 2;
-    int32_t global_tid_8400;
-    int32_t local_tid_8401;
-    int32_t group_sizze_8404;
-    int32_t wave_sizze_8403;
-    int32_t group_tid_8402;
+    int32_t global_tid_10773;
+    int32_t local_tid_10774;
+    int32_t group_sizze_10777;
+    int32_t wave_sizze_10776;
+    int32_t group_tid_10775;
     
-    global_tid_8400 = get_global_id(0);
-    local_tid_8401 = get_local_id(0);
-    group_sizze_8404 = get_local_size(0);
-    wave_sizze_8403 = LOCKSTEP_WIDTH;
-    group_tid_8402 = get_group_id(0);
+    global_tid_10773 = get_global_id(0);
+    local_tid_10774 = get_local_id(0);
+    group_sizze_10777 = get_local_size(0);
+    wave_sizze_10776 = LOCKSTEP_WIDTH;
+    group_tid_10775 = get_group_id(0);
     
-    int32_t phys_tid_7753 = global_tid_8400;
-    int32_t gtid_7752 = group_tid_8402 * segmap_group_sizze_7757 +
-            local_tid_8401;
+    int32_t phys_tid_10068 = global_tid_10773;
+    int32_t gtid_10066 = squot32(group_tid_10775 * segmap_group_sizze_10074 +
+                                 local_tid_10774, sizze_9766);
+    int32_t gtid_10067;
     
-    if (slt32(gtid_7752, sizze_7543)) {
-        float x_7764 = ((__global float *) x_mem_8284)[gtid_7752];
-        float res_7765 = s_7545 + x_7764;
+    gtid_10067 = group_tid_10775 * segmap_group_sizze_10074 + local_tid_10774 -
+        squot32(group_tid_10775 * segmap_group_sizze_10074 + local_tid_10774,
+                sizze_9766) * sizze_9766;
+    if (slt32(gtid_10066, sizze_9765) && slt32(gtid_10067, sizze_9766)) {
+        float x_10081 = ((__global float *) x_mem_10627)[gtid_10066 *
+                                                         sizze_9766 +
+                                                         gtid_10067];
+        float res_10082 = p_9767 * x_10081;
         
-        ((__global float *) mem_8287)[gtid_7752] = res_7765;
+        ((__global float *) mem_10632)[gtid_10066 * sizze_9766 + gtid_10067] =
+            res_10082;
     }
 }
-__kernel void segmap_7767(int32_t sizze_7549, float d_7550, __global
-                          unsigned char *x_mem_8284, __global
-                          unsigned char *mem_8287)
+__kernel void segmap_10084(int32_t sizze_9774, __global
+                           unsigned char *x_mem_10627, __global
+                           unsigned char *y_mem_10628, __global
+                           unsigned char *mem_10631)
 {
-    const int32_t segmap_group_sizze_7771 = substractzisegmap_group_sizze_7770;
+    const int32_t segmap_group_sizze_10088 = add2zisegmap_group_sizze_10087;
     const int block_dim0 = 0;
     const int block_dim1 = 1;
     const int block_dim2 = 2;
-    int32_t global_tid_8407;
-    int32_t local_tid_8408;
-    int32_t group_sizze_8411;
-    int32_t wave_sizze_8410;
-    int32_t group_tid_8409;
+    int32_t global_tid_10780;
+    int32_t local_tid_10781;
+    int32_t group_sizze_10784;
+    int32_t wave_sizze_10783;
+    int32_t group_tid_10782;
     
-    global_tid_8407 = get_global_id(0);
-    local_tid_8408 = get_local_id(0);
-    group_sizze_8411 = get_local_size(0);
-    wave_sizze_8410 = LOCKSTEP_WIDTH;
-    group_tid_8409 = get_group_id(0);
+    global_tid_10780 = get_global_id(0);
+    local_tid_10781 = get_local_id(0);
+    group_sizze_10784 = get_local_size(0);
+    wave_sizze_10783 = LOCKSTEP_WIDTH;
+    group_tid_10782 = get_group_id(0);
     
-    int32_t phys_tid_7767 = global_tid_8407;
-    int32_t gtid_7766 = group_tid_8409 * segmap_group_sizze_7771 +
-            local_tid_8408;
+    int32_t phys_tid_10084 = global_tid_10780;
+    int32_t gtid_10083 = group_tid_10782 * segmap_group_sizze_10088 +
+            local_tid_10781;
     
-    if (slt32(gtid_7766, sizze_7549)) {
-        float x_7778 = ((__global float *) x_mem_8284)[gtid_7766];
-        float res_7779 = d_7550 - x_7778;
+    if (slt32(gtid_10083, sizze_9774)) {
+        float x_10095 = ((__global float *) x_mem_10627)[gtid_10083];
+        float x_10096 = ((__global float *) y_mem_10628)[gtid_10083];
+        float res_10097 = x_10095 + x_10096;
         
-        ((__global float *) mem_8287)[gtid_7766] = res_7779;
+        ((__global float *) mem_10631)[gtid_10083] = res_10097;
     }
 }
-__kernel void segmap_7781(int32_t sizze_7555, __global
-                          unsigned char *x_mem_8284, __global
-                          unsigned char *y_mem_8285, __global
-                          unsigned char *mem_8288)
+__kernel void segmap_10099(int32_t sizze_9789, __global
+                           unsigned char *x_mem_10627, __global
+                           unsigned char *y_mem_10628, __global
+                           unsigned char *mem_10631)
 {
-    const int32_t segmap_group_sizze_7785 = multiply2zisegmap_group_sizze_7784;
+    const int32_t segmap_group_sizze_10103 =
+                  substract2zisegmap_group_sizze_10102;
     const int block_dim0 = 0;
     const int block_dim1 = 1;
     const int block_dim2 = 2;
-    int32_t global_tid_8414;
-    int32_t local_tid_8415;
-    int32_t group_sizze_8418;
-    int32_t wave_sizze_8417;
-    int32_t group_tid_8416;
+    int32_t global_tid_10787;
+    int32_t local_tid_10788;
+    int32_t group_sizze_10791;
+    int32_t wave_sizze_10790;
+    int32_t group_tid_10789;
     
-    global_tid_8414 = get_global_id(0);
-    local_tid_8415 = get_local_id(0);
-    group_sizze_8418 = get_local_size(0);
-    wave_sizze_8417 = LOCKSTEP_WIDTH;
-    group_tid_8416 = get_group_id(0);
+    global_tid_10787 = get_global_id(0);
+    local_tid_10788 = get_local_id(0);
+    group_sizze_10791 = get_local_size(0);
+    wave_sizze_10790 = LOCKSTEP_WIDTH;
+    group_tid_10789 = get_group_id(0);
     
-    int32_t phys_tid_7781 = global_tid_8414;
-    int32_t gtid_7780 = group_tid_8416 * segmap_group_sizze_7785 +
-            local_tid_8415;
+    int32_t phys_tid_10099 = global_tid_10787;
+    int32_t gtid_10098 = group_tid_10789 * segmap_group_sizze_10103 +
+            local_tid_10788;
     
-    if (slt32(gtid_7780, sizze_7555)) {
-        float x_7792 = ((__global float *) x_mem_8284)[gtid_7780];
-        float x_7793 = ((__global float *) y_mem_8285)[gtid_7780];
-        float res_7794 = x_7792 * x_7793;
+    if (slt32(gtid_10098, sizze_9789)) {
+        float x_10110 = ((__global float *) x_mem_10627)[gtid_10098];
+        float x_10111 = ((__global float *) y_mem_10628)[gtid_10098];
+        float res_10112 = x_10110 - x_10111;
         
-        ((__global float *) mem_8288)[gtid_7780] = res_7794;
+        ((__global float *) mem_10631)[gtid_10098] = res_10112;
     }
 }
-__kernel void segmap_7796(int32_t sizze_7570, __global
-                          unsigned char *x_mem_8284, __global
-                          unsigned char *y_mem_8285, __global
-                          unsigned char *mem_8288)
+__kernel void segmap_10115(int32_t sizze_9804, int32_t sizze_9805, float s_9806,
+                           __global unsigned char *x_mem_10627, __global
+                           unsigned char *mem_10632)
 {
-    const int32_t segmap_group_sizze_7800 = add2zisegmap_group_sizze_7799;
+    const int32_t segmap_group_sizze_10121 = lmataddzisegmap_group_sizze_10120;
     const int block_dim0 = 0;
     const int block_dim1 = 1;
     const int block_dim2 = 2;
-    int32_t global_tid_8421;
-    int32_t local_tid_8422;
-    int32_t group_sizze_8425;
-    int32_t wave_sizze_8424;
-    int32_t group_tid_8423;
+    int32_t global_tid_10795;
+    int32_t local_tid_10796;
+    int32_t group_sizze_10799;
+    int32_t wave_sizze_10798;
+    int32_t group_tid_10797;
     
-    global_tid_8421 = get_global_id(0);
-    local_tid_8422 = get_local_id(0);
-    group_sizze_8425 = get_local_size(0);
-    wave_sizze_8424 = LOCKSTEP_WIDTH;
-    group_tid_8423 = get_group_id(0);
+    global_tid_10795 = get_global_id(0);
+    local_tid_10796 = get_local_id(0);
+    group_sizze_10799 = get_local_size(0);
+    wave_sizze_10798 = LOCKSTEP_WIDTH;
+    group_tid_10797 = get_group_id(0);
     
-    int32_t phys_tid_7796 = global_tid_8421;
-    int32_t gtid_7795 = group_tid_8423 * segmap_group_sizze_7800 +
-            local_tid_8422;
+    int32_t phys_tid_10115 = global_tid_10795;
+    int32_t gtid_10113 = squot32(group_tid_10797 * segmap_group_sizze_10121 +
+                                 local_tid_10796, sizze_9805);
+    int32_t gtid_10114;
     
-    if (slt32(gtid_7795, sizze_7570)) {
-        float x_7807 = ((__global float *) x_mem_8284)[gtid_7795];
-        float x_7808 = ((__global float *) y_mem_8285)[gtid_7795];
-        float res_7809 = x_7807 + x_7808;
+    gtid_10114 = group_tid_10797 * segmap_group_sizze_10121 + local_tid_10796 -
+        squot32(group_tid_10797 * segmap_group_sizze_10121 + local_tid_10796,
+                sizze_9805) * sizze_9805;
+    if (slt32(gtid_10113, sizze_9804) && slt32(gtid_10114, sizze_9805)) {
+        float x_10128 = ((__global float *) x_mem_10627)[gtid_10113 *
+                                                         sizze_9805 +
+                                                         gtid_10114];
+        float res_10129 = s_9806 + x_10128;
         
-        ((__global float *) mem_8288)[gtid_7795] = res_7809;
+        ((__global float *) mem_10632)[gtid_10113 * sizze_9805 + gtid_10114] =
+            res_10129;
     }
 }
-__kernel void segmap_7811(int32_t sizze_7585, __global
-                          unsigned char *x_mem_8284, __global
-                          unsigned char *y_mem_8285, __global
-                          unsigned char *mem_8288)
+__kernel void segmap_10132(int32_t sizze_9813, int32_t sizze_9814, float d_9815,
+                           __global unsigned char *x_mem_10627, __global
+                           unsigned char *mem_10632)
 {
-    const int32_t segmap_group_sizze_7815 = substract2zisegmap_group_sizze_7814;
+    const int32_t segmap_group_sizze_10138 =
+                  lmatsubstractzisegmap_group_sizze_10137;
     const int block_dim0 = 0;
     const int block_dim1 = 1;
     const int block_dim2 = 2;
-    int32_t global_tid_8428;
-    int32_t local_tid_8429;
-    int32_t group_sizze_8432;
-    int32_t wave_sizze_8431;
-    int32_t group_tid_8430;
+    int32_t global_tid_10803;
+    int32_t local_tid_10804;
+    int32_t group_sizze_10807;
+    int32_t wave_sizze_10806;
+    int32_t group_tid_10805;
     
-    global_tid_8428 = get_global_id(0);
-    local_tid_8429 = get_local_id(0);
-    group_sizze_8432 = get_local_size(0);
-    wave_sizze_8431 = LOCKSTEP_WIDTH;
-    group_tid_8430 = get_group_id(0);
+    global_tid_10803 = get_global_id(0);
+    local_tid_10804 = get_local_id(0);
+    group_sizze_10807 = get_local_size(0);
+    wave_sizze_10806 = LOCKSTEP_WIDTH;
+    group_tid_10805 = get_group_id(0);
     
-    int32_t phys_tid_7811 = global_tid_8428;
-    int32_t gtid_7810 = group_tid_8430 * segmap_group_sizze_7815 +
-            local_tid_8429;
+    int32_t phys_tid_10132 = global_tid_10803;
+    int32_t gtid_10130 = squot32(group_tid_10805 * segmap_group_sizze_10138 +
+                                 local_tid_10804, sizze_9814);
+    int32_t gtid_10131;
     
-    if (slt32(gtid_7810, sizze_7585)) {
-        float x_7822 = ((__global float *) x_mem_8284)[gtid_7810];
-        float x_7823 = ((__global float *) y_mem_8285)[gtid_7810];
-        float res_7824 = x_7822 - x_7823;
+    gtid_10131 = group_tid_10805 * segmap_group_sizze_10138 + local_tid_10804 -
+        squot32(group_tid_10805 * segmap_group_sizze_10138 + local_tid_10804,
+                sizze_9814) * sizze_9814;
+    if (slt32(gtid_10130, sizze_9813) && slt32(gtid_10131, sizze_9814)) {
+        float x_10145 = ((__global float *) x_mem_10627)[gtid_10130 *
+                                                         sizze_9814 +
+                                                         gtid_10131];
+        float res_10146 = d_9815 - x_10145;
         
-        ((__global float *) mem_8288)[gtid_7810] = res_7824;
+        ((__global float *) mem_10632)[gtid_10130 * sizze_9814 + gtid_10131] =
+            res_10146;
     }
 }
-__kernel void segmap_7827(int32_t sizze_7600, int32_t sizze_7601, float d_7602,
-                          __global unsigned char *x_mem_8284, __global
-                          unsigned char *mem_8289)
+__kernel void segmap_10149(int32_t sizze_9822, int32_t sizze_9823, __global
+                           unsigned char *x_mem_10627, __global
+                           unsigned char *mem_10632)
 {
-    const int32_t segmap_group_sizze_7833 =
-                  lmatsubstractzisegmap_group_sizze_7832;
+    const int32_t segmap_group_sizze_10155 = sigmoidzisegmap_group_sizze_10154;
     const int block_dim0 = 0;
     const int block_dim1 = 1;
     const int block_dim2 = 2;
-    int32_t global_tid_8436;
-    int32_t local_tid_8437;
-    int32_t group_sizze_8440;
-    int32_t wave_sizze_8439;
-    int32_t group_tid_8438;
+    int32_t global_tid_10811;
+    int32_t local_tid_10812;
+    int32_t group_sizze_10815;
+    int32_t wave_sizze_10814;
+    int32_t group_tid_10813;
     
-    global_tid_8436 = get_global_id(0);
-    local_tid_8437 = get_local_id(0);
-    group_sizze_8440 = get_local_size(0);
-    wave_sizze_8439 = LOCKSTEP_WIDTH;
-    group_tid_8438 = get_group_id(0);
+    global_tid_10811 = get_global_id(0);
+    local_tid_10812 = get_local_id(0);
+    group_sizze_10815 = get_local_size(0);
+    wave_sizze_10814 = LOCKSTEP_WIDTH;
+    group_tid_10813 = get_group_id(0);
     
-    int32_t phys_tid_7827 = global_tid_8436;
-    int32_t gtid_7825 = squot32(group_tid_8438 * segmap_group_sizze_7833 +
-                                local_tid_8437, sizze_7601);
-    int32_t gtid_7826;
+    int32_t phys_tid_10149 = global_tid_10811;
+    int32_t gtid_10147 = squot32(group_tid_10813 * segmap_group_sizze_10155 +
+                                 local_tid_10812, sizze_9823);
+    int32_t gtid_10148;
     
-    gtid_7826 = group_tid_8438 * segmap_group_sizze_7833 + local_tid_8437 -
-        squot32(group_tid_8438 * segmap_group_sizze_7833 + local_tid_8437,
-                sizze_7601) * sizze_7601;
-    if (slt32(gtid_7825, sizze_7600) && slt32(gtid_7826, sizze_7601)) {
-        float x_7840 = ((__global float *) x_mem_8284)[gtid_7825 * sizze_7601 +
-                                                       gtid_7826];
-        float res_7841 = d_7602 - x_7840;
+    gtid_10148 = group_tid_10813 * segmap_group_sizze_10155 + local_tid_10812 -
+        squot32(group_tid_10813 * segmap_group_sizze_10155 + local_tid_10812,
+                sizze_9823) * sizze_9823;
+    if (slt32(gtid_10147, sizze_9822) && slt32(gtid_10148, sizze_9823)) {
+        float x_10162 = ((__global float *) x_mem_10627)[gtid_10147 *
+                                                         sizze_9823 +
+                                                         gtid_10148];
+        float res_10163 = 0.0F - x_10162;
+        float res_10164 = fpow32(2.7182817F, res_10163);
+        float res_10165 = 1.0F + res_10164;
+        float res_10166 = 1.0F / res_10165;
         
-        ((__global float *) mem_8289)[gtid_7825 * sizze_7601 + gtid_7826] =
-            res_7841;
+        ((__global float *) mem_10632)[gtid_10147 * sizze_9823 + gtid_10148] =
+            res_10166;
     }
 }
-__kernel void segmap_7844(int32_t sizze_7609, int32_t sizze_7610, __global
-                          unsigned char *x_mem_8284, __global
-                          unsigned char *mem_8289)
+__kernel void segmap_10169(int32_t sizze_9833, int32_t sizze_9834,
+                           int32_t sizze_9835, __global
+                           unsigned char *u_mem_10627, __global
+                           unsigned char *b_mem_10628, __global
+                           unsigned char *mem_10631)
 {
-    const int32_t segmap_group_sizze_7850 = sigmoidzisegmap_group_sizze_7849;
+    const int32_t segmap_group_sizze_10173 = lvecmulzisegmap_group_sizze_10172;
     const int block_dim0 = 0;
     const int block_dim1 = 1;
     const int block_dim2 = 2;
-    int32_t global_tid_8444;
-    int32_t local_tid_8445;
-    int32_t group_sizze_8448;
-    int32_t wave_sizze_8447;
-    int32_t group_tid_8446;
+    int32_t global_tid_10818;
+    int32_t local_tid_10819;
+    int32_t group_sizze_10822;
+    int32_t wave_sizze_10821;
+    int32_t group_tid_10820;
     
-    global_tid_8444 = get_global_id(0);
-    local_tid_8445 = get_local_id(0);
-    group_sizze_8448 = get_local_size(0);
-    wave_sizze_8447 = LOCKSTEP_WIDTH;
-    group_tid_8446 = get_group_id(0);
+    global_tid_10818 = get_global_id(0);
+    local_tid_10819 = get_local_id(0);
+    group_sizze_10822 = get_local_size(0);
+    wave_sizze_10821 = LOCKSTEP_WIDTH;
+    group_tid_10820 = get_group_id(0);
     
-    int32_t phys_tid_7844 = global_tid_8444;
-    int32_t gtid_7842 = squot32(group_tid_8446 * segmap_group_sizze_7850 +
-                                local_tid_8445, sizze_7610);
-    int32_t gtid_7843;
+    int32_t phys_tid_10169 = global_tid_10818;
+    int32_t gtid_10168 = group_tid_10820 * segmap_group_sizze_10173 +
+            local_tid_10819;
     
-    gtid_7843 = group_tid_8446 * segmap_group_sizze_7850 + local_tid_8445 -
-        squot32(group_tid_8446 * segmap_group_sizze_7850 + local_tid_8445,
-                sizze_7610) * sizze_7610;
-    if (slt32(gtid_7842, sizze_7609) && slt32(gtid_7843, sizze_7610)) {
-        float x_7857 = ((__global float *) x_mem_8284)[gtid_7842 * sizze_7610 +
-                                                       gtid_7843];
-        float res_7858 = 0.0F - x_7857;
-        float res_7859 = fpow32(2.7182817F, res_7858);
-        float res_7860 = 1.0F + res_7859;
-        float res_7861 = 1.0F / res_7860;
+    if (slt32(gtid_10168, sizze_9835)) {
+        int32_t binop_x_10605 = sizze_9833 * gtid_10168;
+        float res_10181;
+        float redout_10599 = 0.0F;
         
-        ((__global float *) mem_8289)[gtid_7842 * sizze_7610 + gtid_7843] =
-            res_7861;
-    }
-}
-__kernel void segmap_7864(int32_t sizze_7620, int32_t sizze_7621,
-                          int32_t sizze_7622, __global
-                          unsigned char *u_mem_8284, __global
-                          unsigned char *b_mem_8285, __global
-                          unsigned char *mem_8288)
-{
-    const int32_t segmap_group_sizze_7868 = lvecmulzisegmap_group_sizze_7867;
-    const int block_dim0 = 0;
-    const int block_dim1 = 1;
-    const int block_dim2 = 2;
-    int32_t global_tid_8451;
-    int32_t local_tid_8452;
-    int32_t group_sizze_8455;
-    int32_t wave_sizze_8454;
-    int32_t group_tid_8453;
-    
-    global_tid_8451 = get_global_id(0);
-    local_tid_8452 = get_local_id(0);
-    group_sizze_8455 = get_local_size(0);
-    wave_sizze_8454 = LOCKSTEP_WIDTH;
-    group_tid_8453 = get_group_id(0);
-    
-    int32_t phys_tid_7864 = global_tid_8451;
-    int32_t gtid_7863 = group_tid_8453 * segmap_group_sizze_7868 +
-            local_tid_8452;
-    
-    if (slt32(gtid_7863, sizze_7622)) {
-        int32_t binop_x_8262 = sizze_7620 * gtid_7863;
-        float res_7876;
-        float redout_8256 = 0.0F;
-        
-        for (int32_t i_8257 = 0; i_8257 < sizze_7620; i_8257++) {
-            float x_7880 = ((__global float *) u_mem_8284)[i_8257];
-            int32_t binop_x_8263 = i_8257 + binop_x_8262;
-            int32_t new_index_8264 = squot32(binop_x_8263, sizze_7621);
-            int32_t binop_y_8270 = sizze_7621 * new_index_8264;
-            int32_t new_index_8271 = binop_x_8263 - binop_y_8270;
-            float x_7881 = ((__global float *) b_mem_8285)[new_index_8271 *
-                                                           sizze_7622 +
-                                                           new_index_8264];
-            float res_7882 = x_7880 * x_7881;
-            float res_7879 = res_7882 + redout_8256;
-            float redout_tmp_8456 = res_7879;
+        for (int32_t i_10600 = 0; i_10600 < sizze_9833; i_10600++) {
+            float x_10185 = ((__global float *) u_mem_10627)[i_10600];
+            int32_t binop_x_10606 = i_10600 + binop_x_10605;
+            int32_t new_index_10607 = squot32(binop_x_10606, sizze_9834);
+            int32_t binop_y_10613 = sizze_9834 * new_index_10607;
+            int32_t new_index_10614 = binop_x_10606 - binop_y_10613;
+            float x_10186 = ((__global float *) b_mem_10628)[new_index_10614 *
+                                                             sizze_9835 +
+                                                             new_index_10607];
+            float res_10187 = x_10185 * x_10186;
+            float res_10184 = res_10187 + redout_10599;
+            float redout_tmp_10823 = res_10184;
             
-            redout_8256 = redout_tmp_8456;
+            redout_10599 = redout_tmp_10823;
         }
-        res_7876 = redout_8256;
-        ((__global float *) mem_8288)[gtid_7863] = res_7876;
+        res_10181 = redout_10599;
+        ((__global float *) mem_10631)[gtid_10168] = res_10181;
     }
 }
-__kernel void segmap_7886(int32_t sizze_7642, int32_t sizze_7643,
-                          int32_t sizze_7645, __global
-                          unsigned char *x_mem_8284, __global
-                          unsigned char *y_mem_8285, __global
-                          unsigned char *mem_8290)
+__kernel void segmap_10191(int32_t sizze_9855, int32_t sizze_9856,
+                           int32_t sizze_9858, __global
+                           unsigned char *x_mem_10627, __global
+                           unsigned char *y_mem_10628, __global
+                           unsigned char *mem_10633)
 {
-    const int32_t segmap_group_sizze_7892 =
-                  matsubstractzisegmap_group_sizze_7891;
+    const int32_t segmap_group_sizze_10197 =
+                  matmultiplyzisegmap_group_sizze_10196;
     const int block_dim0 = 0;
     const int block_dim1 = 1;
     const int block_dim2 = 2;
-    int32_t global_tid_8460;
-    int32_t local_tid_8461;
-    int32_t group_sizze_8464;
-    int32_t wave_sizze_8463;
-    int32_t group_tid_8462;
+    int32_t global_tid_10827;
+    int32_t local_tid_10828;
+    int32_t group_sizze_10831;
+    int32_t wave_sizze_10830;
+    int32_t group_tid_10829;
     
-    global_tid_8460 = get_global_id(0);
-    local_tid_8461 = get_local_id(0);
-    group_sizze_8464 = get_local_size(0);
-    wave_sizze_8463 = LOCKSTEP_WIDTH;
-    group_tid_8462 = get_group_id(0);
+    global_tid_10827 = get_global_id(0);
+    local_tid_10828 = get_local_id(0);
+    group_sizze_10831 = get_local_size(0);
+    wave_sizze_10830 = LOCKSTEP_WIDTH;
+    group_tid_10829 = get_group_id(0);
     
-    int32_t phys_tid_7886 = global_tid_8460;
-    int32_t gtid_7884 = squot32(group_tid_8462 * segmap_group_sizze_7892 +
-                                local_tid_8461, sizze_7643);
-    int32_t gtid_7885;
+    int32_t phys_tid_10191 = global_tid_10827;
+    int32_t gtid_10189 = squot32(group_tid_10829 * segmap_group_sizze_10197 +
+                                 local_tid_10828, sizze_9856);
+    int32_t gtid_10190;
     
-    gtid_7885 = group_tid_8462 * segmap_group_sizze_7892 + local_tid_8461 -
-        squot32(group_tid_8462 * segmap_group_sizze_7892 + local_tid_8461,
-                sizze_7643) * sizze_7643;
-    if (slt32(gtid_7884, sizze_7642) && slt32(gtid_7885, sizze_7643)) {
-        float x_7899 = ((__global float *) x_mem_8284)[gtid_7884 * sizze_7643 +
-                                                       gtid_7885];
-        int32_t binop_x_7953 = sizze_7643 * gtid_7884;
-        int32_t binop_x_7954 = gtid_7885 + binop_x_7953;
-        int32_t new_index_7955 = squot32(binop_x_7954, sizze_7645);
-        int32_t binop_y_7961 = sizze_7645 * new_index_7955;
-        int32_t new_index_7962 = binop_x_7954 - binop_y_7961;
-        float x_7900 = ((__global float *) y_mem_8285)[new_index_7955 *
-                                                       sizze_7645 +
-                                                       new_index_7962];
-        float res_7901 = x_7899 - x_7900;
+    gtid_10190 = group_tid_10829 * segmap_group_sizze_10197 + local_tid_10828 -
+        squot32(group_tid_10829 * segmap_group_sizze_10197 + local_tid_10828,
+                sizze_9856) * sizze_9856;
+    if (slt32(gtid_10189, sizze_9855) && slt32(gtid_10190, sizze_9856)) {
+        float x_10204 = ((__global float *) x_mem_10627)[gtid_10189 *
+                                                         sizze_9856 +
+                                                         gtid_10190];
+        int32_t binop_x_10296 = sizze_9856 * gtid_10189;
+        int32_t binop_x_10297 = gtid_10190 + binop_x_10296;
+        int32_t new_index_10298 = squot32(binop_x_10297, sizze_9858);
+        int32_t binop_y_10304 = sizze_9858 * new_index_10298;
+        int32_t new_index_10305 = binop_x_10297 - binop_y_10304;
+        float x_10205 = ((__global float *) y_mem_10628)[new_index_10298 *
+                                                         sizze_9858 +
+                                                         new_index_10305];
+        float res_10206 = x_10204 * x_10205;
         
-        ((__global float *) mem_8290)[gtid_7884 * sizze_7643 + gtid_7885] =
-            res_7901;
+        ((__global float *) mem_10633)[gtid_10189 * sizze_9856 + gtid_10190] =
+            res_10206;
     }
 }
-__kernel void segmap_intragroup_7976(__local volatile
-                                     int64_t *mem_8294_backing_aligned_0,
-                                     __local volatile
-                                     int64_t *mem_8299_backing_aligned_1,
-                                     __local volatile
-                                     int64_t *mem_8309_backing_aligned_2,
-                                     __local volatile
-                                     int64_t *mem_8314_backing_aligned_3,
-                                     int32_t sizze_7671, int32_t sizze_7672,
-                                     int32_t sizze_7674,
-                                     int32_t num_groups_y_7974,
-                                     int32_t num_whole_tiles_7977,
-                                     int32_t residual_input_8110,
-                                     unsigned char cond_8111, __global
-                                     unsigned char *a_mem_8284, __global
-                                     unsigned char *b_mem_8285, __global
-                                     unsigned char *mem_8324)
+__kernel void segmap_10210(int32_t sizze_9884, int32_t sizze_9885,
+                           int32_t sizze_9887, __global
+                           unsigned char *x_mem_10627, __global
+                           unsigned char *y_mem_10628, __global
+                           unsigned char *mem_10633)
 {
-    const int32_t tile_sizze_7967 = matmulzitile_sizze_7966;
-    const int32_t group_sizze_7968 = matmulzitile_sizze_7966 *
-                  matmulzitile_sizze_7966;
+    const int32_t segmap_group_sizze_10216 = mataddzisegmap_group_sizze_10215;
     const int block_dim0 = 0;
     const int block_dim1 = 1;
     const int block_dim2 = 2;
-    __local volatile char *restrict mem_8294_backing_0 = (__local volatile
-                                                          char *) mem_8294_backing_aligned_0;
-    __local volatile char *restrict mem_8299_backing_1 = (__local volatile
-                                                          char *) mem_8299_backing_aligned_1;
-    __local volatile char *restrict mem_8309_backing_2 = (__local volatile
-                                                          char *) mem_8309_backing_aligned_2;
-    __local volatile char *restrict mem_8314_backing_3 = (__local volatile
-                                                          char *) mem_8314_backing_aligned_3;
-    int32_t global_tid_8468;
-    int32_t local_tid_8469;
-    int32_t group_sizze_8472;
-    int32_t wave_sizze_8471;
-    int32_t group_tid_8470;
+    int32_t global_tid_10835;
+    int32_t local_tid_10836;
+    int32_t group_sizze_10839;
+    int32_t wave_sizze_10838;
+    int32_t group_tid_10837;
     
-    global_tid_8468 = get_global_id(0);
-    local_tid_8469 = get_local_id(0);
-    group_sizze_8472 = get_local_size(0);
-    wave_sizze_8471 = LOCKSTEP_WIDTH;
-    group_tid_8470 = get_group_id(0);
+    global_tid_10835 = get_global_id(0);
+    local_tid_10836 = get_local_id(0);
+    group_sizze_10839 = get_local_size(0);
+    wave_sizze_10838 = LOCKSTEP_WIDTH;
+    group_tid_10837 = get_group_id(0);
     
-    int32_t gid_flat_7976 = group_tid_8470;
-    int32_t gid_x_7964 = squot32(group_tid_8470, num_groups_y_7974);
-    int32_t gid_y_7965;
+    int32_t phys_tid_10210 = global_tid_10835;
+    int32_t gtid_10208 = squot32(group_tid_10837 * segmap_group_sizze_10216 +
+                                 local_tid_10836, sizze_9885);
+    int32_t gtid_10209;
     
-    gid_y_7965 = group_tid_8470 - squot32(group_tid_8470, num_groups_y_7974) *
-        num_groups_y_7974;
+    gtid_10209 = group_tid_10837 * segmap_group_sizze_10216 + local_tid_10836 -
+        squot32(group_tid_10837 * segmap_group_sizze_10216 + local_tid_10836,
+                sizze_9885) * sizze_9885;
+    if (slt32(gtid_10208, sizze_9884) && slt32(gtid_10209, sizze_9885)) {
+        float x_10223 = ((__global float *) x_mem_10627)[gtid_10208 *
+                                                         sizze_9885 +
+                                                         gtid_10209];
+        int32_t binop_x_10296 = sizze_9885 * gtid_10208;
+        int32_t binop_x_10297 = gtid_10209 + binop_x_10296;
+        int32_t new_index_10298 = squot32(binop_x_10297, sizze_9887);
+        int32_t binop_y_10304 = sizze_9887 * new_index_10298;
+        int32_t new_index_10305 = binop_x_10297 - binop_y_10304;
+        float x_10224 = ((__global float *) y_mem_10628)[new_index_10298 *
+                                                         sizze_9887 +
+                                                         new_index_10305];
+        float res_10225 = x_10223 + x_10224;
+        
+        ((__global float *) mem_10633)[gtid_10208 * sizze_9885 + gtid_10209] =
+            res_10225;
+    }
+}
+__kernel void segmap_10229(int32_t sizze_9913, int32_t sizze_9914,
+                           int32_t sizze_9916, __global
+                           unsigned char *x_mem_10627, __global
+                           unsigned char *y_mem_10628, __global
+                           unsigned char *mem_10633)
+{
+    const int32_t segmap_group_sizze_10235 =
+                  matsubstractzisegmap_group_sizze_10234;
+    const int block_dim0 = 0;
+    const int block_dim1 = 1;
+    const int block_dim2 = 2;
+    int32_t global_tid_10843;
+    int32_t local_tid_10844;
+    int32_t group_sizze_10847;
+    int32_t wave_sizze_10846;
+    int32_t group_tid_10845;
     
-    float mem_8289;
-    int32_t ltid_x_7993 = squot32(local_tid_8469, tile_sizze_7967);
-    int32_t ltid_y_7994;
+    global_tid_10843 = get_global_id(0);
+    local_tid_10844 = get_local_id(0);
+    group_sizze_10847 = get_local_size(0);
+    wave_sizze_10846 = LOCKSTEP_WIDTH;
+    group_tid_10845 = get_group_id(0);
     
-    ltid_y_7994 = local_tid_8469 - squot32(local_tid_8469, tile_sizze_7967) *
-        tile_sizze_7967;
+    int32_t phys_tid_10229 = global_tid_10843;
+    int32_t gtid_10227 = squot32(group_tid_10845 * segmap_group_sizze_10235 +
+                                 local_tid_10844, sizze_9914);
+    int32_t gtid_10228;
     
-    int32_t ltid_flat_7995;
+    gtid_10228 = group_tid_10845 * segmap_group_sizze_10235 + local_tid_10844 -
+        squot32(group_tid_10845 * segmap_group_sizze_10235 + local_tid_10844,
+                sizze_9914) * sizze_9914;
+    if (slt32(gtid_10227, sizze_9913) && slt32(gtid_10228, sizze_9914)) {
+        float x_10242 = ((__global float *) x_mem_10627)[gtid_10227 *
+                                                         sizze_9914 +
+                                                         gtid_10228];
+        int32_t binop_x_10296 = sizze_9914 * gtid_10227;
+        int32_t binop_x_10297 = gtid_10228 + binop_x_10296;
+        int32_t new_index_10298 = squot32(binop_x_10297, sizze_9916);
+        int32_t binop_y_10304 = sizze_9916 * new_index_10298;
+        int32_t new_index_10305 = binop_x_10297 - binop_y_10304;
+        float x_10243 = ((__global float *) y_mem_10628)[new_index_10298 *
+                                                         sizze_9916 +
+                                                         new_index_10305];
+        float res_10244 = x_10242 - x_10243;
+        
+        ((__global float *) mem_10633)[gtid_10227 * sizze_9914 + gtid_10228] =
+            res_10244;
+    }
+}
+__kernel void segmap_9968(int32_t sizze_9716, __global
+                          unsigned char *x_mem_10627, __global
+                          unsigned char *mem_10630)
+{
+    const int32_t segmap_group_sizze_9972 = expzisegmap_group_sizze_9971;
+    const int block_dim0 = 0;
+    const int block_dim1 = 1;
+    const int block_dim2 = 2;
+    int32_t global_tid_10723;
+    int32_t local_tid_10724;
+    int32_t group_sizze_10727;
+    int32_t wave_sizze_10726;
+    int32_t group_tid_10725;
     
-    ltid_flat_7995 = local_tid_8469;
-    if (slt32(ltid_x_7993, tile_sizze_7967) && slt32(ltid_y_7994,
-                                                     tile_sizze_7967)) {
-        mem_8289 = 0.0F;
+    global_tid_10723 = get_global_id(0);
+    local_tid_10724 = get_local_id(0);
+    group_sizze_10727 = get_local_size(0);
+    wave_sizze_10726 = LOCKSTEP_WIDTH;
+    group_tid_10725 = get_group_id(0);
+    
+    int32_t phys_tid_9968 = global_tid_10723;
+    int32_t gtid_9967 = group_tid_10725 * segmap_group_sizze_9972 +
+            local_tid_10724;
+    
+    if (slt32(gtid_9967, sizze_9716)) {
+        float x_9979 = ((__global float *) x_mem_10627)[gtid_9967];
+        float res_9980 = fpow32(2.7182817F, x_9979);
+        
+        ((__global float *) mem_10630)[gtid_9967] = res_9980;
+    }
+}
+__kernel void segmap_9982(int32_t sizze_9721, __global
+                          unsigned char *x_mem_10627, __global
+                          unsigned char *mem_10630)
+{
+    const int32_t segmap_group_sizze_9986 = negationzisegmap_group_sizze_9985;
+    const int block_dim0 = 0;
+    const int block_dim1 = 1;
+    const int block_dim2 = 2;
+    int32_t global_tid_10730;
+    int32_t local_tid_10731;
+    int32_t group_sizze_10734;
+    int32_t wave_sizze_10733;
+    int32_t group_tid_10732;
+    
+    global_tid_10730 = get_global_id(0);
+    local_tid_10731 = get_local_id(0);
+    group_sizze_10734 = get_local_size(0);
+    wave_sizze_10733 = LOCKSTEP_WIDTH;
+    group_tid_10732 = get_group_id(0);
+    
+    int32_t phys_tid_9982 = global_tid_10730;
+    int32_t gtid_9981 = group_tid_10732 * segmap_group_sizze_9986 +
+            local_tid_10731;
+    
+    if (slt32(gtid_9981, sizze_9721)) {
+        float x_9993 = ((__global float *) x_mem_10627)[gtid_9981];
+        float res_9994 = 0.0F - x_9993;
+        
+        ((__global float *) mem_10630)[gtid_9981] = res_9994;
+    }
+}
+__kernel void segmap_9996(int32_t sizze_9726, float d_9727, __global
+                          unsigned char *x_mem_10627, __global
+                          unsigned char *mem_10630)
+{
+    const int32_t segmap_group_sizze_10000 = dividezisegmap_group_sizze_9999;
+    const int block_dim0 = 0;
+    const int block_dim1 = 1;
+    const int block_dim2 = 2;
+    int32_t global_tid_10737;
+    int32_t local_tid_10738;
+    int32_t group_sizze_10741;
+    int32_t wave_sizze_10740;
+    int32_t group_tid_10739;
+    
+    global_tid_10737 = get_global_id(0);
+    local_tid_10738 = get_local_id(0);
+    group_sizze_10741 = get_local_size(0);
+    wave_sizze_10740 = LOCKSTEP_WIDTH;
+    group_tid_10739 = get_group_id(0);
+    
+    int32_t phys_tid_9996 = global_tid_10737;
+    int32_t gtid_9995 = group_tid_10739 * segmap_group_sizze_10000 +
+            local_tid_10738;
+    
+    if (slt32(gtid_9995, sizze_9726)) {
+        float x_10007 = ((__global float *) x_mem_10627)[gtid_9995];
+        float res_10008 = d_9727 / x_10007;
+        
+        ((__global float *) mem_10630)[gtid_9995] = res_10008;
+    }
+}
+__kernel void segmap_intragroup_10319(__local volatile
+                                      int64_t *mem_10637_backing_aligned_0,
+                                      __local volatile
+                                      int64_t *mem_10642_backing_aligned_1,
+                                      __local volatile
+                                      int64_t *mem_10652_backing_aligned_2,
+                                      __local volatile
+                                      int64_t *mem_10657_backing_aligned_3,
+                                      int32_t sizze_9942, int32_t sizze_9943,
+                                      int32_t sizze_9945,
+                                      int32_t num_groups_y_10317,
+                                      int32_t num_whole_tiles_10320,
+                                      int32_t residual_input_10453,
+                                      unsigned char cond_10454, __global
+                                      unsigned char *a_mem_10627, __global
+                                      unsigned char *b_mem_10628, __global
+                                      unsigned char *mem_10667)
+{
+    const int32_t tile_sizze_10310 = dotzitile_sizze_10309;
+    const int32_t group_sizze_10311 = dotzitile_sizze_10309 *
+                  dotzitile_sizze_10309;
+    const int block_dim0 = 0;
+    const int block_dim1 = 1;
+    const int block_dim2 = 2;
+    __local volatile char *restrict mem_10637_backing_0 = (__local volatile
+                                                           char *) mem_10637_backing_aligned_0;
+    __local volatile char *restrict mem_10642_backing_1 = (__local volatile
+                                                           char *) mem_10642_backing_aligned_1;
+    __local volatile char *restrict mem_10652_backing_2 = (__local volatile
+                                                           char *) mem_10652_backing_aligned_2;
+    __local volatile char *restrict mem_10657_backing_3 = (__local volatile
+                                                           char *) mem_10657_backing_aligned_3;
+    int32_t global_tid_10851;
+    int32_t local_tid_10852;
+    int32_t group_sizze_10855;
+    int32_t wave_sizze_10854;
+    int32_t group_tid_10853;
+    
+    global_tid_10851 = get_global_id(0);
+    local_tid_10852 = get_local_id(0);
+    group_sizze_10855 = get_local_size(0);
+    wave_sizze_10854 = LOCKSTEP_WIDTH;
+    group_tid_10853 = get_group_id(0);
+    
+    int32_t gid_flat_10319 = group_tid_10853;
+    int32_t gid_x_10307 = squot32(group_tid_10853, num_groups_y_10317);
+    int32_t gid_y_10308;
+    
+    gid_y_10308 = group_tid_10853 - squot32(group_tid_10853,
+                                            num_groups_y_10317) *
+        num_groups_y_10317;
+    
+    float mem_10632;
+    int32_t ltid_x_10336 = squot32(local_tid_10852, tile_sizze_10310);
+    int32_t ltid_y_10337;
+    
+    ltid_y_10337 = local_tid_10852 - squot32(local_tid_10852,
+                                             tile_sizze_10310) *
+        tile_sizze_10310;
+    
+    int32_t ltid_flat_10338;
+    
+    ltid_flat_10338 = local_tid_10852;
+    if (slt32(ltid_x_10336, tile_sizze_10310) && slt32(ltid_y_10337,
+                                                       tile_sizze_10310)) {
+        mem_10632 = 0.0F;
     }
     barrier(CLK_LOCAL_MEM_FENCE);
     
-    int32_t binop_x_8072 = gid_x_7964 * tile_sizze_7967;
-    int32_t binop_x_8074 = gid_y_7965 * tile_sizze_7967;
-    __local char *mem_8294;
+    int32_t binop_x_10415 = gid_x_10307 * tile_sizze_10310;
+    int32_t binop_x_10417 = gid_y_10308 * tile_sizze_10310;
+    __local char *mem_10637;
     
-    mem_8294 = (__local char *) mem_8294_backing_0;
+    mem_10637 = (__local char *) mem_10637_backing_0;
     
-    __local char *mem_8299;
+    __local char *mem_10642;
     
-    mem_8299 = (__local char *) mem_8299_backing_1;
+    mem_10642 = (__local char *) mem_10642_backing_1;
     
-    float mem_8303;
+    float mem_10646;
     
-    for (int32_t tile_id_8004 = 0; tile_id_8004 < num_whole_tiles_7977;
-         tile_id_8004++) {
-        int32_t binop_x_8068 = tile_sizze_7967 * tile_id_8004;
-        int32_t ltid_x_8005 = squot32(local_tid_8469, tile_sizze_7967);
-        int32_t ltid_y_8006;
+    for (int32_t tile_id_10347 = 0; tile_id_10347 < num_whole_tiles_10320;
+         tile_id_10347++) {
+        int32_t binop_x_10411 = tile_sizze_10310 * tile_id_10347;
+        int32_t ltid_x_10348 = squot32(local_tid_10852, tile_sizze_10310);
+        int32_t ltid_y_10349;
         
-        ltid_y_8006 = local_tid_8469 - squot32(local_tid_8469,
-                                               tile_sizze_7967) *
-            tile_sizze_7967;
+        ltid_y_10349 = local_tid_10852 - squot32(local_tid_10852,
+                                                 tile_sizze_10310) *
+            tile_sizze_10310;
         
-        int32_t ltid_flat_8007;
+        int32_t ltid_flat_10350;
         
-        ltid_flat_8007 = local_tid_8469;
-        if (slt32(ltid_x_8005, tile_sizze_7967) && slt32(ltid_y_8006,
-                                                         tile_sizze_7967)) {
-            int32_t i_8069 = ltid_x_8005 + binop_x_8068;
-            int32_t j_8071 = ltid_y_8006 + binop_x_8068;
-            int32_t gtid_8073 = ltid_x_8005 + binop_x_8072;
-            int32_t gtid_8075 = ltid_y_8006 + binop_x_8074;
-            float tile_elem_8079 = ((__global float *) a_mem_8284)[gtid_8073 *
-                                                                   sizze_7672 +
-                                                                   j_8071];
-            float tile_elem_8080 = ((__global float *) b_mem_8285)[i_8069 *
-                                                                   sizze_7674 +
-                                                                   gtid_8075];
+        ltid_flat_10350 = local_tid_10852;
+        if (slt32(ltid_x_10348, tile_sizze_10310) && slt32(ltid_y_10349,
+                                                           tile_sizze_10310)) {
+            int32_t i_10412 = ltid_x_10348 + binop_x_10411;
+            int32_t j_10414 = ltid_y_10349 + binop_x_10411;
+            int32_t gtid_10416 = ltid_x_10348 + binop_x_10415;
+            int32_t gtid_10418 = ltid_y_10349 + binop_x_10417;
+            float tile_elem_10422 = ((__global
+                                      float *) a_mem_10627)[gtid_10416 *
+                                                            sizze_9943 +
+                                                            j_10414];
+            float tile_elem_10423 = ((__global float *) b_mem_10628)[i_10412 *
+                                                                     sizze_9945 +
+                                                                     gtid_10418];
             
-            ((__local float *) mem_8294)[ltid_x_8005 * tile_sizze_7967 +
-                                         ltid_y_8006] = tile_elem_8079;
-            ((__local float *) mem_8299)[ltid_x_8005 * tile_sizze_7967 +
-                                         ltid_y_8006] = tile_elem_8080;
+            ((__local float *) mem_10637)[ltid_x_10348 * tile_sizze_10310 +
+                                          ltid_y_10349] = tile_elem_10422;
+            ((__local float *) mem_10642)[ltid_x_10348 * tile_sizze_10310 +
+                                          ltid_y_10349] = tile_elem_10423;
         }
         barrier(CLK_LOCAL_MEM_FENCE);
         
-        int32_t ltid_x_8031 = squot32(local_tid_8469, tile_sizze_7967);
-        int32_t ltid_y_8032;
+        int32_t ltid_x_10374 = squot32(local_tid_10852, tile_sizze_10310);
+        int32_t ltid_y_10375;
         
-        ltid_y_8032 = local_tid_8469 - squot32(local_tid_8469,
-                                               tile_sizze_7967) *
-            tile_sizze_7967;
+        ltid_y_10375 = local_tid_10852 - squot32(local_tid_10852,
+                                                 tile_sizze_10310) *
+            tile_sizze_10310;
         
-        int32_t ltid_flat_8033;
+        int32_t ltid_flat_10376;
         
-        ltid_flat_8033 = local_tid_8469;
-        if (slt32(ltid_x_8031, tile_sizze_7967) && slt32(ltid_y_8032,
-                                                         tile_sizze_7967)) {
-            int32_t gtid_8083 = ltid_x_8031 + binop_x_8072;
-            int32_t gtid_8085 = ltid_y_8032 + binop_x_8074;
-            float acc_8089 = mem_8289;
-            bool binop_x_8092 = slt32(gtid_8083, sizze_7671);
-            bool binop_y_8093 = slt32(gtid_8085, sizze_7674);
-            bool cond_8094 = binop_x_8092 && binop_y_8093;
-            float acc_8095;
+        ltid_flat_10376 = local_tid_10852;
+        if (slt32(ltid_x_10374, tile_sizze_10310) && slt32(ltid_y_10375,
+                                                           tile_sizze_10310)) {
+            int32_t gtid_10426 = ltid_x_10374 + binop_x_10415;
+            int32_t gtid_10428 = ltid_y_10375 + binop_x_10417;
+            float acc_10432 = mem_10632;
+            bool binop_x_10435 = slt32(gtid_10426, sizze_9942);
+            bool binop_y_10436 = slt32(gtid_10428, sizze_9945);
+            bool cond_10437 = binop_x_10435 && binop_y_10436;
+            float acc_10438;
             
-            if (cond_8094) {
-                float x_8096;
-                float redout_8256 = acc_8089;
+            if (cond_10437) {
+                float x_10439;
+                float redout_10599 = acc_10432;
                 
-                for (int32_t i_8257 = 0; i_8257 < tile_sizze_7967; i_8257++) {
-                    float x_8100 = ((__local float *) mem_8294)[ltid_x_8031 *
-                                                                tile_sizze_7967 +
-                                                                i_8257];
-                    float x_8101 = ((__local float *) mem_8299)[i_8257 *
-                                                                tile_sizze_7967 +
-                                                                ltid_y_8032];
-                    float res_8102 = x_8100 * x_8101;
-                    float res_8099 = res_8102 + redout_8256;
-                    float redout_tmp_8474 = res_8099;
+                for (int32_t i_10600 = 0; i_10600 < tile_sizze_10310;
+                     i_10600++) {
+                    float x_10443 = ((__local float *) mem_10637)[ltid_x_10374 *
+                                                                  tile_sizze_10310 +
+                                                                  i_10600];
+                    float x_10444 = ((__local float *) mem_10642)[i_10600 *
+                                                                  tile_sizze_10310 +
+                                                                  ltid_y_10375];
+                    float res_10445 = x_10443 * x_10444;
+                    float res_10442 = res_10445 + redout_10599;
+                    float redout_tmp_10857 = res_10442;
                     
-                    redout_8256 = redout_tmp_8474;
+                    redout_10599 = redout_tmp_10857;
                 }
-                x_8096 = redout_8256;
-                acc_8095 = x_8096;
+                x_10439 = redout_10599;
+                acc_10438 = x_10439;
             } else {
-                acc_8095 = acc_8089;
+                acc_10438 = acc_10432;
             }
-            mem_8303 = acc_8095;
+            mem_10646 = acc_10438;
         }
         barrier(CLK_LOCAL_MEM_FENCE);
-        for (int32_t i_8475 = 0; i_8475 < squot32(tile_sizze_7967 *
-                                                  tile_sizze_7967 -
-                                                  local_tid_8469 +
-                                                  group_sizze_7968 - 1,
-                                                  group_sizze_7968); i_8475++) {
-            mem_8289 = mem_8303;
+        for (int32_t i_10858 = 0; i_10858 < squot32(tile_sizze_10310 *
+                                                    tile_sizze_10310 -
+                                                    local_tid_10852 +
+                                                    group_sizze_10311 - 1,
+                                                    group_sizze_10311);
+             i_10858++) {
+            mem_10632 = mem_10646;
         }
         barrier(CLK_LOCAL_MEM_FENCE);
     }
     
-    __local char *mem_8309;
+    __local char *mem_10652;
     
-    mem_8309 = (__local char *) mem_8309_backing_2;
+    mem_10652 = (__local char *) mem_10652_backing_2;
     
-    __local char *mem_8314;
+    __local char *mem_10657;
     
-    mem_8314 = (__local char *) mem_8314_backing_3;
+    mem_10657 = (__local char *) mem_10657_backing_3;
     
-    float mem_8318;
-    float mem_8336;
+    float mem_10661;
+    float mem_10679;
     
-    if (cond_8111) {
-        for (int32_t i_8476 = 0; i_8476 < squot32(tile_sizze_7967 *
-                                                  tile_sizze_7967 -
-                                                  local_tid_8469 +
-                                                  group_sizze_7968 - 1,
-                                                  group_sizze_7968); i_8476++) {
-            mem_8336 = mem_8289;
+    if (cond_10454) {
+        for (int32_t i_10859 = 0; i_10859 < squot32(tile_sizze_10310 *
+                                                    tile_sizze_10310 -
+                                                    local_tid_10852 +
+                                                    group_sizze_10311 - 1,
+                                                    group_sizze_10311);
+             i_10859++) {
+            mem_10679 = mem_10632;
         }
         barrier(CLK_LOCAL_MEM_FENCE);
     } else {
-        int32_t binop_x_8197 = tile_sizze_7967 * num_whole_tiles_7977;
-        int32_t ltid_x_8112 = squot32(local_tid_8469, tile_sizze_7967);
-        int32_t ltid_y_8113;
+        int32_t binop_x_10540 = tile_sizze_10310 * num_whole_tiles_10320;
+        int32_t ltid_x_10455 = squot32(local_tid_10852, tile_sizze_10310);
+        int32_t ltid_y_10456;
         
-        ltid_y_8113 = local_tid_8469 - squot32(local_tid_8469,
-                                               tile_sizze_7967) *
-            tile_sizze_7967;
+        ltid_y_10456 = local_tid_10852 - squot32(local_tid_10852,
+                                                 tile_sizze_10310) *
+            tile_sizze_10310;
         
-        int32_t ltid_flat_8114;
+        int32_t ltid_flat_10457;
         
-        ltid_flat_8114 = local_tid_8469;
-        if (slt32(ltid_x_8112, tile_sizze_7967) && slt32(ltid_y_8113,
-                                                         tile_sizze_7967)) {
-            int32_t i_8198 = ltid_x_8112 + binop_x_8197;
-            int32_t j_8200 = ltid_y_8113 + binop_x_8197;
-            int32_t gtid_8202 = binop_x_8072 + ltid_x_8112;
-            int32_t gtid_8204 = binop_x_8074 + ltid_y_8113;
-            bool binop_x_8208 = slt32(j_8200, sizze_7672);
-            bool binop_y_8209 = slt32(gtid_8202, sizze_7671);
-            bool cond_8210 = binop_x_8208 && binop_y_8209;
-            float pre_8211;
+        ltid_flat_10457 = local_tid_10852;
+        if (slt32(ltid_x_10455, tile_sizze_10310) && slt32(ltid_y_10456,
+                                                           tile_sizze_10310)) {
+            int32_t i_10541 = ltid_x_10455 + binop_x_10540;
+            int32_t j_10543 = ltid_y_10456 + binop_x_10540;
+            int32_t gtid_10545 = binop_x_10415 + ltid_x_10455;
+            int32_t gtid_10547 = binop_x_10417 + ltid_y_10456;
+            bool binop_x_10551 = slt32(j_10543, sizze_9943);
+            bool binop_y_10552 = slt32(gtid_10545, sizze_9942);
+            bool cond_10553 = binop_x_10551 && binop_y_10552;
+            float pre_10554;
             
-            if (cond_8210) {
-                float x_8212 = ((__global float *) a_mem_8284)[gtid_8202 *
-                                                               sizze_7672 +
-                                                               j_8200];
+            if (cond_10553) {
+                float x_10555 = ((__global float *) a_mem_10627)[gtid_10545 *
+                                                                 sizze_9943 +
+                                                                 j_10543];
                 
-                pre_8211 = x_8212;
+                pre_10554 = x_10555;
             } else {
-                pre_8211 = 0.0F;
+                pre_10554 = 0.0F;
             }
             
-            bool binop_x_8214 = slt32(i_8198, sizze_7672);
-            bool binop_y_8215 = slt32(gtid_8204, sizze_7674);
-            bool cond_8216 = binop_x_8214 && binop_y_8215;
-            float pre_8217;
+            bool binop_x_10557 = slt32(i_10541, sizze_9943);
+            bool binop_y_10558 = slt32(gtid_10547, sizze_9945);
+            bool cond_10559 = binop_x_10557 && binop_y_10558;
+            float pre_10560;
             
-            if (cond_8216) {
-                float x_8218 = ((__global float *) b_mem_8285)[i_8198 *
-                                                               sizze_7674 +
-                                                               gtid_8204];
+            if (cond_10559) {
+                float x_10561 = ((__global float *) b_mem_10628)[i_10541 *
+                                                                 sizze_9945 +
+                                                                 gtid_10547];
                 
-                pre_8217 = x_8218;
+                pre_10560 = x_10561;
             } else {
-                pre_8217 = 0.0F;
+                pre_10560 = 0.0F;
             }
-            ((__local float *) mem_8309)[ltid_x_8112 * tile_sizze_7967 +
-                                         ltid_y_8113] = pre_8211;
-            ((__local float *) mem_8314)[ltid_x_8112 * tile_sizze_7967 +
-                                         ltid_y_8113] = pre_8217;
+            ((__local float *) mem_10652)[ltid_x_10455 * tile_sizze_10310 +
+                                          ltid_y_10456] = pre_10554;
+            ((__local float *) mem_10657)[ltid_x_10455 * tile_sizze_10310 +
+                                          ltid_y_10456] = pre_10560;
         }
         barrier(CLK_LOCAL_MEM_FENCE);
         
-        int32_t ltid_x_8160 = squot32(local_tid_8469, tile_sizze_7967);
-        int32_t ltid_y_8161;
+        int32_t ltid_x_10503 = squot32(local_tid_10852, tile_sizze_10310);
+        int32_t ltid_y_10504;
         
-        ltid_y_8161 = local_tid_8469 - squot32(local_tid_8469,
-                                               tile_sizze_7967) *
-            tile_sizze_7967;
+        ltid_y_10504 = local_tid_10852 - squot32(local_tid_10852,
+                                                 tile_sizze_10310) *
+            tile_sizze_10310;
         
-        int32_t ltid_flat_8162;
+        int32_t ltid_flat_10505;
         
-        ltid_flat_8162 = local_tid_8469;
-        if (slt32(ltid_x_8160, tile_sizze_7967) && slt32(ltid_y_8161,
-                                                         tile_sizze_7967)) {
-            int32_t gtid_8224 = binop_x_8072 + ltid_x_8160;
-            int32_t gtid_8226 = binop_x_8074 + ltid_y_8161;
-            float acc_8230 = mem_8289;
-            bool binop_x_8233 = slt32(gtid_8224, sizze_7671);
-            bool binop_y_8234 = slt32(gtid_8226, sizze_7674);
-            bool cond_8235 = binop_x_8233 && binop_y_8234;
-            float acc_8236;
+        ltid_flat_10505 = local_tid_10852;
+        if (slt32(ltid_x_10503, tile_sizze_10310) && slt32(ltid_y_10504,
+                                                           tile_sizze_10310)) {
+            int32_t gtid_10567 = binop_x_10415 + ltid_x_10503;
+            int32_t gtid_10569 = binop_x_10417 + ltid_y_10504;
+            float acc_10573 = mem_10632;
+            bool binop_x_10576 = slt32(gtid_10567, sizze_9942);
+            bool binop_y_10577 = slt32(gtid_10569, sizze_9945);
+            bool cond_10578 = binop_x_10576 && binop_y_10577;
+            float acc_10579;
             
-            if (cond_8235) {
-                float x_8237;
-                float redout_8258 = acc_8230;
+            if (cond_10578) {
+                float x_10580;
+                float redout_10601 = acc_10573;
                 
-                for (int32_t i_8259 = 0; i_8259 < residual_input_8110;
-                     i_8259++) {
-                    float x_8241 = ((__local float *) mem_8309)[ltid_x_8160 *
-                                                                tile_sizze_7967 +
-                                                                i_8259];
-                    float x_8242 = ((__local float *) mem_8314)[i_8259 *
-                                                                tile_sizze_7967 +
-                                                                ltid_y_8161];
-                    float res_8243 = x_8241 * x_8242;
-                    float res_8240 = res_8243 + redout_8258;
-                    float redout_tmp_8477 = res_8240;
+                for (int32_t i_10602 = 0; i_10602 < residual_input_10453;
+                     i_10602++) {
+                    float x_10584 = ((__local float *) mem_10652)[ltid_x_10503 *
+                                                                  tile_sizze_10310 +
+                                                                  i_10602];
+                    float x_10585 = ((__local float *) mem_10657)[i_10602 *
+                                                                  tile_sizze_10310 +
+                                                                  ltid_y_10504];
+                    float res_10586 = x_10584 * x_10585;
+                    float res_10583 = res_10586 + redout_10601;
+                    float redout_tmp_10860 = res_10583;
                     
-                    redout_8258 = redout_tmp_8477;
+                    redout_10601 = redout_tmp_10860;
                 }
-                x_8237 = redout_8258;
-                acc_8236 = x_8237;
+                x_10580 = redout_10601;
+                acc_10579 = x_10580;
             } else {
-                acc_8236 = acc_8230;
+                acc_10579 = acc_10573;
             }
-            mem_8318 = acc_8236;
+            mem_10661 = acc_10579;
         }
         barrier(CLK_LOCAL_MEM_FENCE);
-        for (int32_t i_8478 = 0; i_8478 < squot32(tile_sizze_7967 *
-                                                  tile_sizze_7967 -
-                                                  local_tid_8469 +
-                                                  group_sizze_7968 - 1,
-                                                  group_sizze_7968); i_8478++) {
-            mem_8336 = mem_8318;
+        for (int32_t i_10861 = 0; i_10861 < squot32(tile_sizze_10310 *
+                                                    tile_sizze_10310 -
+                                                    local_tid_10852 +
+                                                    group_sizze_10311 - 1,
+                                                    group_sizze_10311);
+             i_10861++) {
+            mem_10679 = mem_10661;
         }
         barrier(CLK_LOCAL_MEM_FENCE);
     }
     
-    int32_t thread_out_index_8479 = gid_x_7964 * tile_sizze_7967 +
-            squot32(local_tid_8469, tile_sizze_7967);
-    int32_t thread_out_index_8480;
+    int32_t thread_out_index_10862 = gid_x_10307 * tile_sizze_10310 +
+            squot32(local_tid_10852, tile_sizze_10310);
+    int32_t thread_out_index_10863;
     
-    thread_out_index_8480 = gid_y_7965 * tile_sizze_7967 + (local_tid_8469 -
-                                                            squot32(local_tid_8469,
-                                                                    tile_sizze_7967) *
-                                                            tile_sizze_7967);
-    if (slt32(thread_out_index_8479, sizze_7671) && slt32(thread_out_index_8480,
-                                                          sizze_7674)) {
-        ((__global float *) mem_8324)[thread_out_index_8479 * sizze_7674 +
-                                      thread_out_index_8480] = mem_8336;
+    thread_out_index_10863 = gid_y_10308 * tile_sizze_10310 + (local_tid_10852 -
+                                                               squot32(local_tid_10852,
+                                                                       tile_sizze_10310) *
+                                                               tile_sizze_10310);
+    if (slt32(thread_out_index_10862, sizze_9942) &&
+        slt32(thread_out_index_10863, sizze_9945)) {
+        ((__global float *) mem_10667)[thread_out_index_10862 * sizze_9945 +
+                                       thread_out_index_10863] = mem_10679;
     }
 }
 """
@@ -3354,18 +3541,22 @@ def futhark_lerp64(v0, v1, t):
 
 # End of scalar.py.
 class GPU:
-  entry_points = {"matmul": (["[][]f32", "[][]f32"], ["[][]f32"]),
+  entry_points = {"dot": (["[][]f32", "[][]f32"], ["[][]f32"]),
                   "matsubstract": (["[][]f32", "[][]f32"], ["[][]f32"]),
+                  "matadd": (["[][]f32", "[][]f32"], ["[][]f32"]),
+                  "matmultiply": (["[][]f32", "[][]f32"], ["[][]f32"]),
                   "lvecmul": (["[]f32", "[][]f32"], ["[]f32"]),
                   "sigmoid": (["[][]f32"], ["[][]f32"]),
                   "lmatsubstract": (["f32", "[][]f32"], ["[][]f32"]),
+                  "lmatadd": (["f32", "[][]f32"], ["[][]f32"]),
                   "substract2": (["[]f32", "[]f32"], ["[]f32"]),
                   "add2": (["[]f32", "[]f32"], ["[]f32"]),
+                  "lmatmultiply": (["f32", "[][]f32"], ["[][]f32"]),
                   "multiply2": (["[]f32", "[]f32"], ["[]f32"]),
-                  "substract": (["f32", "[]f32"], ["[]f32"]), "add": (["[]f32",
-                                                                       "f32"],
+                  "substract": (["f32", "[]f32"], ["[]f32"]), "add": (["f32",
+                                                                       "[]f32"],
                                                                       ["[]f32"]),
-                  "multiply": (["[]f32", "f32"], ["[]f32"]), "divide": (["f32",
+                  "multiply": (["f32", "[]f32"], ["[]f32"]), "divide": (["f32",
                                                                          "[]f32"],
                                                                         ["[]f32"]),
                   "negation": (["[]f32"], ["[]f32"]), "exp": (["[]f32"],
@@ -3410,432 +3601,577 @@ class GPU:
                                        size_heuristics=size_heuristics,
                                        required_types=["i32", "f32", "bool"],
                                        user_sizes=sizes,
-                                       all_sizes={"add.segmap_group_size_7756": {"class": "group_size", "value": None},
-                                        "add2.segmap_group_size_7799": {"class": "group_size", "value": None},
-                                        "divide.segmap_group_size_7728": {"class": "group_size", "value": None},
-                                        "exp.segmap_group_size_7700": {"class": "group_size", "value": None},
-                                        "lmatsubstract.segmap_group_size_7832": {"class": "group_size", "value": None},
-                                        "lvecmul.segmap_group_size_7867": {"class": "group_size", "value": None},
-                                        "matmul.tile_size_7966": {"class": "tile_size", "value": None},
-                                        "matsubstract.segmap_group_size_7891": {"class": "group_size", "value": None},
-                                        "multiply.segmap_group_size_7742": {"class": "group_size", "value": None},
-                                        "multiply2.segmap_group_size_7784": {"class": "group_size", "value": None},
-                                        "negation.segmap_group_size_7714": {"class": "group_size", "value": None},
-                                        "sigmoid.segmap_group_size_7849": {"class": "group_size", "value": None},
-                                        "substract.segmap_group_size_7770": {"class": "group_size", "value": None},
-                                        "substract2.segmap_group_size_7814": {"class": "group_size", "value": None}})
+                                       all_sizes={"add.segmap_group_size_10027": {"class": "group_size", "value": None},
+                                        "add2.segmap_group_size_10087": {"class": "group_size", "value": None},
+                                        "divide.segmap_group_size_9999": {"class": "group_size", "value": None},
+                                        "dot.tile_size_10309": {"class": "tile_size", "value": None},
+                                        "exp.segmap_group_size_9971": {"class": "group_size", "value": None},
+                                        "lmatadd.segmap_group_size_10120": {"class": "group_size", "value": None},
+                                        "lmatmultiply.segmap_group_size_10073": {"class": "group_size", "value": None},
+                                        "lmatsubstract.segmap_group_size_10137": {"class": "group_size",
+                                                                                  "value": None},
+                                        "lvecmul.segmap_group_size_10172": {"class": "group_size", "value": None},
+                                        "matadd.segmap_group_size_10215": {"class": "group_size", "value": None},
+                                        "matmultiply.segmap_group_size_10196": {"class": "group_size", "value": None},
+                                        "matsubstract.segmap_group_size_10234": {"class": "group_size", "value": None},
+                                        "multiply.segmap_group_size_10013": {"class": "group_size", "value": None},
+                                        "multiply2.segmap_group_size_10055": {"class": "group_size", "value": None},
+                                        "negation.segmap_group_size_9985": {"class": "group_size", "value": None},
+                                        "sigmoid.segmap_group_size_10154": {"class": "group_size", "value": None},
+                                        "substract.segmap_group_size_10041": {"class": "group_size", "value": None},
+                                        "substract2.segmap_group_size_10102": {"class": "group_size", "value": None}})
     self.map_transpose_f32_var = program.map_transpose_f32
     self.map_transpose_f32_low_height_var = program.map_transpose_f32_low_height
     self.map_transpose_f32_low_width_var = program.map_transpose_f32_low_width
     self.map_transpose_f32_small_var = program.map_transpose_f32_small
-    self.segmap_7697_var = program.segmap_7697
-    self.segmap_7711_var = program.segmap_7711
-    self.segmap_7725_var = program.segmap_7725
-    self.segmap_7739_var = program.segmap_7739
-    self.segmap_7753_var = program.segmap_7753
-    self.segmap_7767_var = program.segmap_7767
-    self.segmap_7781_var = program.segmap_7781
-    self.segmap_7796_var = program.segmap_7796
-    self.segmap_7811_var = program.segmap_7811
-    self.segmap_7827_var = program.segmap_7827
-    self.segmap_7844_var = program.segmap_7844
-    self.segmap_7864_var = program.segmap_7864
-    self.segmap_7886_var = program.segmap_7886
-    self.segmap_intragroup_7976_var = program.segmap_intragroup_7976
-  def futhark_matmul(self, a_mem_8284, b_mem_8285, sizze_7671, sizze_7672,
-                     sizze_7673, sizze_7674):
-    dim_zzero_7678 = (np.int32(0) == sizze_7673)
-    dim_zzero_7679 = (np.int32(0) == sizze_7672)
-    both_empty_7680 = (dim_zzero_7678 and dim_zzero_7679)
-    dim_match_7681 = (sizze_7672 == sizze_7673)
-    empty_or_match_7682 = (both_empty_7680 or dim_match_7681)
-    empty_or_match_cert_7683 = True
-    assert empty_or_match_7682, ("Error: %s\n\nBacktrace:\n-> #0  GPU.fut:10:19-30\n   #1  GPU.fut:14:21-38\n   #2  GPU.fut:14:3-15:17\n   #3  GPU.fut:23:18-33\n   #4  GPU.fut:23:3-36\n   #5  GPU.fut:22:1-23:36\n" % ("function arguments of wrong shape",))
-    tile_sizze_7967 = self.sizes["matmul.tile_size_7966"]
-    group_sizze_7968 = (tile_sizze_7967 * tile_sizze_7967)
-    y_7969 = (tile_sizze_7967 - np.int32(1))
-    x_7970 = (sizze_7671 + y_7969)
-    num_groups_x_7971 = squot32(x_7970, tile_sizze_7967)
-    x_7973 = (sizze_7674 + y_7969)
-    num_groups_y_7974 = squot32(x_7973, tile_sizze_7967)
-    num_groups_top_7975 = (num_groups_x_7971 * num_groups_y_7974)
-    num_whole_tiles_7977 = squot32(sizze_7672, tile_sizze_7967)
-    residual_input_8110 = srem32(sizze_7672, tile_sizze_7967)
-    cond_8111 = (residual_input_8110 == np.int32(0))
-    binop_x_8321 = sext_i32_i64(sizze_7671)
-    binop_y_8322 = sext_i32_i64(sizze_7674)
-    binop_x_8323 = (binop_x_8321 * binop_y_8322)
-    bytes_8320 = (np.int64(4) * binop_x_8323)
-    mem_8324 = opencl_alloc(self, bytes_8320, "mem_8324")
-    binop_x_8288 = sext_i32_i64(group_sizze_7968)
-    bytes_8286 = (np.int64(4) * binop_x_8288)
-    binop_x_8291 = sext_i32_i64(tile_sizze_7967)
-    binop_x_8293 = (binop_x_8291 * binop_x_8291)
-    bytes_8290 = (np.int64(4) * binop_x_8293)
-    if ((1 * (np.long(num_groups_top_7975) * np.long(group_sizze_7968))) != 0):
-      self.segmap_intragroup_7976_var.set_args(cl.LocalMemory(np.long(bytes_8290)),
-                                               cl.LocalMemory(np.long(bytes_8290)),
-                                               cl.LocalMemory(np.long(bytes_8290)),
-                                               cl.LocalMemory(np.long(bytes_8290)),
-                                               np.int32(sizze_7671),
-                                               np.int32(sizze_7672),
-                                               np.int32(sizze_7674),
-                                               np.int32(num_groups_y_7974),
-                                               np.int32(num_whole_tiles_7977),
-                                               np.int32(residual_input_8110),
-                                               np.byte(cond_8111), a_mem_8284,
-                                               b_mem_8285, mem_8324)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_intragroup_7976_var,
-                                 ((np.long(num_groups_top_7975) * np.long(group_sizze_7968)),),
-                                 (np.long(group_sizze_7968),))
+    self.segmap_10010_var = program.segmap_10010
+    self.segmap_10024_var = program.segmap_10024
+    self.segmap_10038_var = program.segmap_10038
+    self.segmap_10052_var = program.segmap_10052
+    self.segmap_10068_var = program.segmap_10068
+    self.segmap_10084_var = program.segmap_10084
+    self.segmap_10099_var = program.segmap_10099
+    self.segmap_10115_var = program.segmap_10115
+    self.segmap_10132_var = program.segmap_10132
+    self.segmap_10149_var = program.segmap_10149
+    self.segmap_10169_var = program.segmap_10169
+    self.segmap_10191_var = program.segmap_10191
+    self.segmap_10210_var = program.segmap_10210
+    self.segmap_10229_var = program.segmap_10229
+    self.segmap_9968_var = program.segmap_9968
+    self.segmap_9982_var = program.segmap_9982
+    self.segmap_9996_var = program.segmap_9996
+    self.segmap_intragroup_10319_var = program.segmap_intragroup_10319
+  def futhark_dot(self, a_mem_10627, b_mem_10628, sizze_9942, sizze_9943,
+                  sizze_9944, sizze_9945):
+    dim_zzero_9949 = (np.int32(0) == sizze_9944)
+    dim_zzero_9950 = (np.int32(0) == sizze_9943)
+    both_empty_9951 = (dim_zzero_9949 and dim_zzero_9950)
+    dim_match_9952 = (sizze_9943 == sizze_9944)
+    empty_or_match_9953 = (both_empty_9951 or dim_match_9952)
+    empty_or_match_cert_9954 = True
+    assert empty_or_match_9953, ("Error: %s\n\nBacktrace:\n-> #0  GPU.fut:10:19-30\n   #1  GPU.fut:15:21-38\n   #2  GPU.fut:15:3-16:17\n   #3  GPU.fut:25:18-33\n   #4  GPU.fut:25:3-36\n   #5  GPU.fut:24:1-25:36\n" % ("function arguments of wrong shape",))
+    tile_sizze_10310 = self.sizes["dot.tile_size_10309"]
+    group_sizze_10311 = (tile_sizze_10310 * tile_sizze_10310)
+    y_10312 = (tile_sizze_10310 - np.int32(1))
+    x_10313 = (sizze_9942 + y_10312)
+    num_groups_x_10314 = squot32(x_10313, tile_sizze_10310)
+    x_10316 = (sizze_9945 + y_10312)
+    num_groups_y_10317 = squot32(x_10316, tile_sizze_10310)
+    num_groups_top_10318 = (num_groups_x_10314 * num_groups_y_10317)
+    num_whole_tiles_10320 = squot32(sizze_9943, tile_sizze_10310)
+    residual_input_10453 = srem32(sizze_9943, tile_sizze_10310)
+    cond_10454 = (residual_input_10453 == np.int32(0))
+    binop_x_10664 = sext_i32_i64(sizze_9942)
+    binop_y_10665 = sext_i32_i64(sizze_9945)
+    binop_x_10666 = (binop_x_10664 * binop_y_10665)
+    bytes_10663 = (np.int64(4) * binop_x_10666)
+    mem_10667 = opencl_alloc(self, bytes_10663, "mem_10667")
+    binop_x_10631 = sext_i32_i64(group_sizze_10311)
+    bytes_10629 = (np.int64(4) * binop_x_10631)
+    binop_x_10634 = sext_i32_i64(tile_sizze_10310)
+    binop_x_10636 = (binop_x_10634 * binop_x_10634)
+    bytes_10633 = (np.int64(4) * binop_x_10636)
+    if ((1 * (np.long(num_groups_top_10318) * np.long(group_sizze_10311))) != 0):
+      self.segmap_intragroup_10319_var.set_args(cl.LocalMemory(np.long(bytes_10633)),
+                                                cl.LocalMemory(np.long(bytes_10633)),
+                                                cl.LocalMemory(np.long(bytes_10633)),
+                                                cl.LocalMemory(np.long(bytes_10633)),
+                                                np.int32(sizze_9942),
+                                                np.int32(sizze_9943),
+                                                np.int32(sizze_9945),
+                                                np.int32(num_groups_y_10317),
+                                                np.int32(num_whole_tiles_10320),
+                                                np.int32(residual_input_10453),
+                                                np.byte(cond_10454),
+                                                a_mem_10627, b_mem_10628,
+                                                mem_10667)
+      cl.enqueue_nd_range_kernel(self.queue, self.segmap_intragroup_10319_var,
+                                 ((np.long(num_groups_top_10318) * np.long(group_sizze_10311)),),
+                                 (np.long(group_sizze_10311),))
       if synchronous:
         self.queue.finish()
-    out_arrsizze_8466 = sizze_7671
-    out_arrsizze_8467 = sizze_7674
-    out_mem_8465 = mem_8324
-    return (out_mem_8465, out_arrsizze_8466, out_arrsizze_8467)
-  def futhark_matsubstract(self, x_mem_8284, y_mem_8285, sizze_7642, sizze_7643,
-                           sizze_7644, sizze_7645):
-    dim_zzero_7648 = (np.int32(0) == sizze_7644)
-    dim_zzero_7649 = (np.int32(0) == sizze_7645)
-    old_empty_7650 = (dim_zzero_7648 or dim_zzero_7649)
-    dim_zzero_7651 = (np.int32(0) == sizze_7642)
-    new_empty_7652 = (dim_zzero_7649 or dim_zzero_7651)
-    both_empty_7653 = (old_empty_7650 and new_empty_7652)
-    dim_match_7654 = (sizze_7642 == sizze_7644)
-    empty_or_match_7655 = (both_empty_7653 or dim_match_7654)
-    empty_or_match_cert_7656 = True
-    assert empty_or_match_7655, ("Error: %s\n\nBacktrace:\n-> #0  GPU.fut:104:3-21\n   #1  GPU.fut:103:1-104:21\n" % ("function arguments of wrong shape",))
-    dim_zzero_7658 = (np.int32(0) == sizze_7643)
-    both_empty_7659 = (dim_zzero_7649 and dim_zzero_7658)
-    dim_match_7660 = (sizze_7643 == sizze_7645)
-    empty_or_match_7661 = (both_empty_7659 or dim_match_7660)
-    empty_or_match_cert_7662 = True
-    assert empty_or_match_7661, ("Error: %s\n\nBacktrace:\n-> #0  GPU.fut:96:3-14\n   #1  /futlib/soacs.fut:51:19-23\n   #2  /futlib/soacs.fut:51:3-37\n   #3  GPU.fut:104:3-21\n   #4  GPU.fut:103:1-104:21\n" % ("function arguments of wrong shape",))
-    sizze_7887 = sext_i32_i64(sizze_7642)
-    sizze_7888 = sext_i32_i64(sizze_7643)
-    nest_sizze_7890 = (sizze_7887 * sizze_7888)
-    segmap_group_sizze_7892 = self.sizes["matsubstract.segmap_group_size_7891"]
-    segmap_group_sizze_7893 = sext_i32_i64(segmap_group_sizze_7892)
-    y_7894 = (segmap_group_sizze_7893 - np.int64(1))
-    x_7895 = (nest_sizze_7890 + y_7894)
-    segmap_usable_groups_64_7897 = squot64(x_7895, segmap_group_sizze_7893)
-    segmap_usable_groups_7898 = sext_i64_i32(segmap_usable_groups_64_7897)
-    bytes_8286 = (np.int64(4) * nest_sizze_7890)
-    mem_8290 = opencl_alloc(self, bytes_8286, "mem_8290")
-    if ((1 * (np.long(segmap_usable_groups_7898) * np.long(segmap_group_sizze_7892))) != 0):
-      self.segmap_7886_var.set_args(np.int32(sizze_7642), np.int32(sizze_7643),
-                                    np.int32(sizze_7645), x_mem_8284,
-                                    y_mem_8285, mem_8290)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_7886_var,
-                                 ((np.long(segmap_usable_groups_7898) * np.long(segmap_group_sizze_7892)),),
-                                 (np.long(segmap_group_sizze_7892),))
+    out_arrsizze_10849 = sizze_9942
+    out_arrsizze_10850 = sizze_9945
+    out_mem_10848 = mem_10667
+    return (out_mem_10848, out_arrsizze_10849, out_arrsizze_10850)
+  def futhark_matsubstract(self, x_mem_10627, y_mem_10628, sizze_9913,
+                           sizze_9914, sizze_9915, sizze_9916):
+    dim_zzero_9919 = (np.int32(0) == sizze_9915)
+    dim_zzero_9920 = (np.int32(0) == sizze_9916)
+    old_empty_9921 = (dim_zzero_9919 or dim_zzero_9920)
+    dim_zzero_9922 = (np.int32(0) == sizze_9913)
+    new_empty_9923 = (dim_zzero_9920 or dim_zzero_9922)
+    both_empty_9924 = (old_empty_9921 and new_empty_9923)
+    dim_match_9925 = (sizze_9913 == sizze_9915)
+    empty_or_match_9926 = (both_empty_9924 or dim_match_9925)
+    empty_or_match_cert_9927 = True
+    assert empty_or_match_9926, ("Error: %s\n\nBacktrace:\n-> #0  GPU.fut:150:3-21\n   #1  GPU.fut:149:1-150:21\n" % ("function arguments of wrong shape",))
+    dim_zzero_9929 = (np.int32(0) == sizze_9914)
+    both_empty_9930 = (dim_zzero_9920 and dim_zzero_9929)
+    dim_match_9931 = (sizze_9914 == sizze_9916)
+    empty_or_match_9932 = (both_empty_9930 or dim_match_9931)
+    empty_or_match_cert_9933 = True
+    assert empty_or_match_9932, ("Error: %s\n\nBacktrace:\n-> #0  GPU.fut:141:3-14\n   #1  /futlib/soacs.fut:51:19-23\n   #2  /futlib/soacs.fut:51:3-37\n   #3  GPU.fut:150:3-21\n   #4  GPU.fut:149:1-150:21\n" % ("function arguments of wrong shape",))
+    sizze_10230 = sext_i32_i64(sizze_9913)
+    sizze_10231 = sext_i32_i64(sizze_9914)
+    nest_sizze_10233 = (sizze_10230 * sizze_10231)
+    segmap_group_sizze_10235 = self.sizes["matsubstract.segmap_group_size_10234"]
+    segmap_group_sizze_10236 = sext_i32_i64(segmap_group_sizze_10235)
+    y_10237 = (segmap_group_sizze_10236 - np.int64(1))
+    x_10238 = (nest_sizze_10233 + y_10237)
+    segmap_usable_groups_64_10240 = squot64(x_10238, segmap_group_sizze_10236)
+    segmap_usable_groups_10241 = sext_i64_i32(segmap_usable_groups_64_10240)
+    bytes_10629 = (np.int64(4) * nest_sizze_10233)
+    mem_10633 = opencl_alloc(self, bytes_10629, "mem_10633")
+    if ((1 * (np.long(segmap_usable_groups_10241) * np.long(segmap_group_sizze_10235))) != 0):
+      self.segmap_10229_var.set_args(np.int32(sizze_9913), np.int32(sizze_9914),
+                                     np.int32(sizze_9916), x_mem_10627,
+                                     y_mem_10628, mem_10633)
+      cl.enqueue_nd_range_kernel(self.queue, self.segmap_10229_var,
+                                 ((np.long(segmap_usable_groups_10241) * np.long(segmap_group_sizze_10235)),),
+                                 (np.long(segmap_group_sizze_10235),))
       if synchronous:
         self.queue.finish()
-    out_arrsizze_8458 = sizze_7642
-    out_arrsizze_8459 = sizze_7643
-    out_mem_8457 = mem_8290
-    return (out_mem_8457, out_arrsizze_8458, out_arrsizze_8459)
-  def futhark_lvecmul(self, u_mem_8284, b_mem_8285, sizze_7620, sizze_7621,
-                      sizze_7622):
-    dim_zzero_7626 = (np.int32(0) == sizze_7621)
-    dim_zzero_7627 = (np.int32(0) == sizze_7620)
-    both_empty_7628 = (dim_zzero_7626 and dim_zzero_7627)
-    dim_match_7629 = (sizze_7620 == sizze_7621)
-    empty_or_match_7630 = (both_empty_7628 or dim_match_7629)
-    empty_or_match_cert_7631 = True
-    assert empty_or_match_7630, ("Error: %s\n\nBacktrace:\n-> #0  GPU.fut:10:19-30\n   #1  GPU.fut:14:21-38\n   #2  GPU.fut:14:3-15:17\n   #3  GPU.fut:13:1-15:17\n" % ("function arguments of wrong shape",))
-    sizze_7865 = sext_i32_i64(sizze_7622)
-    segmap_group_sizze_7868 = self.sizes["lvecmul.segmap_group_size_7867"]
-    segmap_group_sizze_7869 = sext_i32_i64(segmap_group_sizze_7868)
-    y_7870 = (segmap_group_sizze_7869 - np.int64(1))
-    x_7871 = (sizze_7865 + y_7870)
-    segmap_usable_groups_64_7873 = squot64(x_7871, segmap_group_sizze_7869)
-    segmap_usable_groups_7874 = sext_i64_i32(segmap_usable_groups_64_7873)
-    bytes_8286 = (np.int64(4) * sizze_7865)
-    mem_8288 = opencl_alloc(self, bytes_8286, "mem_8288")
-    if ((1 * (np.long(segmap_usable_groups_7874) * np.long(segmap_group_sizze_7868))) != 0):
-      self.segmap_7864_var.set_args(np.int32(sizze_7620), np.int32(sizze_7621),
-                                    np.int32(sizze_7622), u_mem_8284,
-                                    b_mem_8285, mem_8288)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_7864_var,
-                                 ((np.long(segmap_usable_groups_7874) * np.long(segmap_group_sizze_7868)),),
-                                 (np.long(segmap_group_sizze_7868),))
+    out_arrsizze_10841 = sizze_9913
+    out_arrsizze_10842 = sizze_9914
+    out_mem_10840 = mem_10633
+    return (out_mem_10840, out_arrsizze_10841, out_arrsizze_10842)
+  def futhark_matadd(self, x_mem_10627, y_mem_10628, sizze_9884, sizze_9885,
+                     sizze_9886, sizze_9887):
+    dim_zzero_9890 = (np.int32(0) == sizze_9886)
+    dim_zzero_9891 = (np.int32(0) == sizze_9887)
+    old_empty_9892 = (dim_zzero_9890 or dim_zzero_9891)
+    dim_zzero_9893 = (np.int32(0) == sizze_9884)
+    new_empty_9894 = (dim_zzero_9891 or dim_zzero_9893)
+    both_empty_9895 = (old_empty_9892 and new_empty_9894)
+    dim_match_9896 = (sizze_9884 == sizze_9886)
+    empty_or_match_9897 = (both_empty_9895 or dim_match_9896)
+    empty_or_match_cert_9898 = True
+    assert empty_or_match_9897, ("Error: %s\n\nBacktrace:\n-> #0  GPU.fut:114:3-15\n   #1  GPU.fut:113:1-114:15\n" % ("function arguments of wrong shape",))
+    dim_zzero_9900 = (np.int32(0) == sizze_9885)
+    both_empty_9901 = (dim_zzero_9891 and dim_zzero_9900)
+    dim_match_9902 = (sizze_9885 == sizze_9887)
+    empty_or_match_9903 = (both_empty_9901 or dim_match_9902)
+    empty_or_match_cert_9904 = True
+    assert empty_or_match_9903, ("Error: %s\n\nBacktrace:\n-> #0  GPU.fut:105:3-14\n   #1  /futlib/soacs.fut:51:19-23\n   #2  /futlib/soacs.fut:51:3-37\n   #3  GPU.fut:114:3-15\n   #4  GPU.fut:113:1-114:15\n" % ("function arguments of wrong shape",))
+    sizze_10211 = sext_i32_i64(sizze_9884)
+    sizze_10212 = sext_i32_i64(sizze_9885)
+    nest_sizze_10214 = (sizze_10211 * sizze_10212)
+    segmap_group_sizze_10216 = self.sizes["matadd.segmap_group_size_10215"]
+    segmap_group_sizze_10217 = sext_i32_i64(segmap_group_sizze_10216)
+    y_10218 = (segmap_group_sizze_10217 - np.int64(1))
+    x_10219 = (nest_sizze_10214 + y_10218)
+    segmap_usable_groups_64_10221 = squot64(x_10219, segmap_group_sizze_10217)
+    segmap_usable_groups_10222 = sext_i64_i32(segmap_usable_groups_64_10221)
+    bytes_10629 = (np.int64(4) * nest_sizze_10214)
+    mem_10633 = opencl_alloc(self, bytes_10629, "mem_10633")
+    if ((1 * (np.long(segmap_usable_groups_10222) * np.long(segmap_group_sizze_10216))) != 0):
+      self.segmap_10210_var.set_args(np.int32(sizze_9884), np.int32(sizze_9885),
+                                     np.int32(sizze_9887), x_mem_10627,
+                                     y_mem_10628, mem_10633)
+      cl.enqueue_nd_range_kernel(self.queue, self.segmap_10210_var,
+                                 ((np.long(segmap_usable_groups_10222) * np.long(segmap_group_sizze_10216)),),
+                                 (np.long(segmap_group_sizze_10216),))
       if synchronous:
         self.queue.finish()
-    out_arrsizze_8450 = sizze_7622
-    out_mem_8449 = mem_8288
-    return (out_mem_8449, out_arrsizze_8450)
-  def futhark_sigmoid(self, x_mem_8284, sizze_7609, sizze_7610):
-    sizze_7845 = sext_i32_i64(sizze_7609)
-    sizze_7846 = sext_i32_i64(sizze_7610)
-    nest_sizze_7848 = (sizze_7845 * sizze_7846)
-    segmap_group_sizze_7850 = self.sizes["sigmoid.segmap_group_size_7849"]
-    segmap_group_sizze_7851 = sext_i32_i64(segmap_group_sizze_7850)
-    y_7852 = (segmap_group_sizze_7851 - np.int64(1))
-    x_7853 = (nest_sizze_7848 + y_7852)
-    segmap_usable_groups_64_7855 = squot64(x_7853, segmap_group_sizze_7851)
-    segmap_usable_groups_7856 = sext_i64_i32(segmap_usable_groups_64_7855)
-    bytes_8285 = (np.int64(4) * nest_sizze_7848)
-    mem_8289 = opencl_alloc(self, bytes_8285, "mem_8289")
-    if ((1 * (np.long(segmap_usable_groups_7856) * np.long(segmap_group_sizze_7850))) != 0):
-      self.segmap_7844_var.set_args(np.int32(sizze_7609), np.int32(sizze_7610),
-                                    x_mem_8284, mem_8289)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_7844_var,
-                                 ((np.long(segmap_usable_groups_7856) * np.long(segmap_group_sizze_7850)),),
-                                 (np.long(segmap_group_sizze_7850),))
+    out_arrsizze_10833 = sizze_9884
+    out_arrsizze_10834 = sizze_9885
+    out_mem_10832 = mem_10633
+    return (out_mem_10832, out_arrsizze_10833, out_arrsizze_10834)
+  def futhark_matmultiply(self, x_mem_10627, y_mem_10628, sizze_9855,
+                          sizze_9856, sizze_9857, sizze_9858):
+    dim_zzero_9861 = (np.int32(0) == sizze_9857)
+    dim_zzero_9862 = (np.int32(0) == sizze_9858)
+    old_empty_9863 = (dim_zzero_9861 or dim_zzero_9862)
+    dim_zzero_9864 = (np.int32(0) == sizze_9855)
+    new_empty_9865 = (dim_zzero_9862 or dim_zzero_9864)
+    both_empty_9866 = (old_empty_9863 and new_empty_9865)
+    dim_match_9867 = (sizze_9855 == sizze_9857)
+    empty_or_match_9868 = (both_empty_9866 or dim_match_9867)
+    empty_or_match_cert_9869 = True
+    assert empty_or_match_9868, ("Error: %s\n\nBacktrace:\n-> #0  GPU.fut:80:3-20\n   #1  GPU.fut:79:1-80:20\n" % ("function arguments of wrong shape",))
+    dim_zzero_9871 = (np.int32(0) == sizze_9856)
+    both_empty_9872 = (dim_zzero_9862 and dim_zzero_9871)
+    dim_match_9873 = (sizze_9856 == sizze_9858)
+    empty_or_match_9874 = (both_empty_9872 or dim_match_9873)
+    empty_or_match_cert_9875 = True
+    assert empty_or_match_9874, ("Error: %s\n\nBacktrace:\n-> #0  GPU.fut:71:3-14\n   #1  /futlib/soacs.fut:51:19-23\n   #2  /futlib/soacs.fut:51:3-37\n   #3  GPU.fut:80:3-20\n   #4  GPU.fut:79:1-80:20\n" % ("function arguments of wrong shape",))
+    sizze_10192 = sext_i32_i64(sizze_9855)
+    sizze_10193 = sext_i32_i64(sizze_9856)
+    nest_sizze_10195 = (sizze_10192 * sizze_10193)
+    segmap_group_sizze_10197 = self.sizes["matmultiply.segmap_group_size_10196"]
+    segmap_group_sizze_10198 = sext_i32_i64(segmap_group_sizze_10197)
+    y_10199 = (segmap_group_sizze_10198 - np.int64(1))
+    x_10200 = (nest_sizze_10195 + y_10199)
+    segmap_usable_groups_64_10202 = squot64(x_10200, segmap_group_sizze_10198)
+    segmap_usable_groups_10203 = sext_i64_i32(segmap_usable_groups_64_10202)
+    bytes_10629 = (np.int64(4) * nest_sizze_10195)
+    mem_10633 = opencl_alloc(self, bytes_10629, "mem_10633")
+    if ((1 * (np.long(segmap_usable_groups_10203) * np.long(segmap_group_sizze_10197))) != 0):
+      self.segmap_10191_var.set_args(np.int32(sizze_9855), np.int32(sizze_9856),
+                                     np.int32(sizze_9858), x_mem_10627,
+                                     y_mem_10628, mem_10633)
+      cl.enqueue_nd_range_kernel(self.queue, self.segmap_10191_var,
+                                 ((np.long(segmap_usable_groups_10203) * np.long(segmap_group_sizze_10197)),),
+                                 (np.long(segmap_group_sizze_10197),))
       if synchronous:
         self.queue.finish()
-    out_arrsizze_8442 = sizze_7609
-    out_arrsizze_8443 = sizze_7610
-    out_mem_8441 = mem_8289
-    return (out_mem_8441, out_arrsizze_8442, out_arrsizze_8443)
-  def futhark_lmatsubstract(self, x_mem_8284, sizze_7600, sizze_7601, d_7602):
-    sizze_7828 = sext_i32_i64(sizze_7600)
-    sizze_7829 = sext_i32_i64(sizze_7601)
-    nest_sizze_7831 = (sizze_7828 * sizze_7829)
-    segmap_group_sizze_7833 = self.sizes["lmatsubstract.segmap_group_size_7832"]
-    segmap_group_sizze_7834 = sext_i32_i64(segmap_group_sizze_7833)
-    y_7835 = (segmap_group_sizze_7834 - np.int64(1))
-    x_7836 = (nest_sizze_7831 + y_7835)
-    segmap_usable_groups_64_7838 = squot64(x_7836, segmap_group_sizze_7834)
-    segmap_usable_groups_7839 = sext_i64_i32(segmap_usable_groups_64_7838)
-    bytes_8285 = (np.int64(4) * nest_sizze_7831)
-    mem_8289 = opencl_alloc(self, bytes_8285, "mem_8289")
-    if ((1 * (np.long(segmap_usable_groups_7839) * np.long(segmap_group_sizze_7833))) != 0):
-      self.segmap_7827_var.set_args(np.int32(sizze_7600), np.int32(sizze_7601),
-                                    np.float32(d_7602), x_mem_8284, mem_8289)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_7827_var,
-                                 ((np.long(segmap_usable_groups_7839) * np.long(segmap_group_sizze_7833)),),
-                                 (np.long(segmap_group_sizze_7833),))
+    out_arrsizze_10825 = sizze_9855
+    out_arrsizze_10826 = sizze_9856
+    out_mem_10824 = mem_10633
+    return (out_mem_10824, out_arrsizze_10825, out_arrsizze_10826)
+  def futhark_lvecmul(self, u_mem_10627, b_mem_10628, sizze_9833, sizze_9834,
+                      sizze_9835):
+    dim_zzero_9839 = (np.int32(0) == sizze_9834)
+    dim_zzero_9840 = (np.int32(0) == sizze_9833)
+    both_empty_9841 = (dim_zzero_9839 and dim_zzero_9840)
+    dim_match_9842 = (sizze_9833 == sizze_9834)
+    empty_or_match_9843 = (both_empty_9841 or dim_match_9842)
+    empty_or_match_cert_9844 = True
+    assert empty_or_match_9843, ("Error: %s\n\nBacktrace:\n-> #0  GPU.fut:10:19-30\n   #1  GPU.fut:15:21-38\n   #2  GPU.fut:15:3-16:17\n   #3  GPU.fut:14:1-16:17\n" % ("function arguments of wrong shape",))
+    sizze_10170 = sext_i32_i64(sizze_9835)
+    segmap_group_sizze_10173 = self.sizes["lvecmul.segmap_group_size_10172"]
+    segmap_group_sizze_10174 = sext_i32_i64(segmap_group_sizze_10173)
+    y_10175 = (segmap_group_sizze_10174 - np.int64(1))
+    x_10176 = (sizze_10170 + y_10175)
+    segmap_usable_groups_64_10178 = squot64(x_10176, segmap_group_sizze_10174)
+    segmap_usable_groups_10179 = sext_i64_i32(segmap_usable_groups_64_10178)
+    bytes_10629 = (np.int64(4) * sizze_10170)
+    mem_10631 = opencl_alloc(self, bytes_10629, "mem_10631")
+    if ((1 * (np.long(segmap_usable_groups_10179) * np.long(segmap_group_sizze_10173))) != 0):
+      self.segmap_10169_var.set_args(np.int32(sizze_9833), np.int32(sizze_9834),
+                                     np.int32(sizze_9835), u_mem_10627,
+                                     b_mem_10628, mem_10631)
+      cl.enqueue_nd_range_kernel(self.queue, self.segmap_10169_var,
+                                 ((np.long(segmap_usable_groups_10179) * np.long(segmap_group_sizze_10173)),),
+                                 (np.long(segmap_group_sizze_10173),))
       if synchronous:
         self.queue.finish()
-    out_arrsizze_8434 = sizze_7600
-    out_arrsizze_8435 = sizze_7601
-    out_mem_8433 = mem_8289
-    return (out_mem_8433, out_arrsizze_8434, out_arrsizze_8435)
-  def futhark_substract2(self, x_mem_8284, y_mem_8285, sizze_7585, sizze_7586):
-    dim_zzero_7589 = (np.int32(0) == sizze_7586)
-    dim_zzero_7590 = (np.int32(0) == sizze_7585)
-    both_empty_7591 = (dim_zzero_7589 and dim_zzero_7590)
-    dim_match_7592 = (sizze_7585 == sizze_7586)
-    empty_or_match_7593 = (both_empty_7591 or dim_match_7592)
-    empty_or_match_cert_7594 = True
-    assert empty_or_match_7593, ("Error: %s\n\nBacktrace:\n-> #0  GPU.fut:96:3-14\n   #1  GPU.fut:95:1-96:14\n" % ("function arguments of wrong shape",))
-    sizze_7812 = sext_i32_i64(sizze_7585)
-    segmap_group_sizze_7815 = self.sizes["substract2.segmap_group_size_7814"]
-    segmap_group_sizze_7816 = sext_i32_i64(segmap_group_sizze_7815)
-    y_7817 = (segmap_group_sizze_7816 - np.int64(1))
-    x_7818 = (sizze_7812 + y_7817)
-    segmap_usable_groups_64_7820 = squot64(x_7818, segmap_group_sizze_7816)
-    segmap_usable_groups_7821 = sext_i64_i32(segmap_usable_groups_64_7820)
-    bytes_8286 = (np.int64(4) * sizze_7812)
-    mem_8288 = opencl_alloc(self, bytes_8286, "mem_8288")
-    if ((1 * (np.long(segmap_usable_groups_7821) * np.long(segmap_group_sizze_7815))) != 0):
-      self.segmap_7811_var.set_args(np.int32(sizze_7585), x_mem_8284,
-                                    y_mem_8285, mem_8288)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_7811_var,
-                                 ((np.long(segmap_usable_groups_7821) * np.long(segmap_group_sizze_7815)),),
-                                 (np.long(segmap_group_sizze_7815),))
+    out_arrsizze_10817 = sizze_9835
+    out_mem_10816 = mem_10631
+    return (out_mem_10816, out_arrsizze_10817)
+  def futhark_sigmoid(self, x_mem_10627, sizze_9822, sizze_9823):
+    sizze_10150 = sext_i32_i64(sizze_9822)
+    sizze_10151 = sext_i32_i64(sizze_9823)
+    nest_sizze_10153 = (sizze_10150 * sizze_10151)
+    segmap_group_sizze_10155 = self.sizes["sigmoid.segmap_group_size_10154"]
+    segmap_group_sizze_10156 = sext_i32_i64(segmap_group_sizze_10155)
+    y_10157 = (segmap_group_sizze_10156 - np.int64(1))
+    x_10158 = (nest_sizze_10153 + y_10157)
+    segmap_usable_groups_64_10160 = squot64(x_10158, segmap_group_sizze_10156)
+    segmap_usable_groups_10161 = sext_i64_i32(segmap_usable_groups_64_10160)
+    bytes_10628 = (np.int64(4) * nest_sizze_10153)
+    mem_10632 = opencl_alloc(self, bytes_10628, "mem_10632")
+    if ((1 * (np.long(segmap_usable_groups_10161) * np.long(segmap_group_sizze_10155))) != 0):
+      self.segmap_10149_var.set_args(np.int32(sizze_9822), np.int32(sizze_9823),
+                                     x_mem_10627, mem_10632)
+      cl.enqueue_nd_range_kernel(self.queue, self.segmap_10149_var,
+                                 ((np.long(segmap_usable_groups_10161) * np.long(segmap_group_sizze_10155)),),
+                                 (np.long(segmap_group_sizze_10155),))
       if synchronous:
         self.queue.finish()
-    out_arrsizze_8427 = sizze_7585
-    out_mem_8426 = mem_8288
-    return (out_mem_8426, out_arrsizze_8427)
-  def futhark_add2(self, x_mem_8284, y_mem_8285, sizze_7570, sizze_7571):
-    dim_zzero_7574 = (np.int32(0) == sizze_7571)
-    dim_zzero_7575 = (np.int32(0) == sizze_7570)
-    both_empty_7576 = (dim_zzero_7574 and dim_zzero_7575)
-    dim_match_7577 = (sizze_7570 == sizze_7571)
-    empty_or_match_7578 = (both_empty_7576 or dim_match_7577)
-    empty_or_match_cert_7579 = True
-    assert empty_or_match_7578, ("Error: %s\n\nBacktrace:\n-> #0  GPU.fut:80:3-14\n   #1  GPU.fut:79:1-80:14\n" % ("function arguments of wrong shape",))
-    sizze_7797 = sext_i32_i64(sizze_7570)
-    segmap_group_sizze_7800 = self.sizes["add2.segmap_group_size_7799"]
-    segmap_group_sizze_7801 = sext_i32_i64(segmap_group_sizze_7800)
-    y_7802 = (segmap_group_sizze_7801 - np.int64(1))
-    x_7803 = (sizze_7797 + y_7802)
-    segmap_usable_groups_64_7805 = squot64(x_7803, segmap_group_sizze_7801)
-    segmap_usable_groups_7806 = sext_i64_i32(segmap_usable_groups_64_7805)
-    bytes_8286 = (np.int64(4) * sizze_7797)
-    mem_8288 = opencl_alloc(self, bytes_8286, "mem_8288")
-    if ((1 * (np.long(segmap_usable_groups_7806) * np.long(segmap_group_sizze_7800))) != 0):
-      self.segmap_7796_var.set_args(np.int32(sizze_7570), x_mem_8284,
-                                    y_mem_8285, mem_8288)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_7796_var,
-                                 ((np.long(segmap_usable_groups_7806) * np.long(segmap_group_sizze_7800)),),
-                                 (np.long(segmap_group_sizze_7800),))
+    out_arrsizze_10809 = sizze_9822
+    out_arrsizze_10810 = sizze_9823
+    out_mem_10808 = mem_10632
+    return (out_mem_10808, out_arrsizze_10809, out_arrsizze_10810)
+  def futhark_lmatsubstract(self, x_mem_10627, sizze_9813, sizze_9814, d_9815):
+    sizze_10133 = sext_i32_i64(sizze_9813)
+    sizze_10134 = sext_i32_i64(sizze_9814)
+    nest_sizze_10136 = (sizze_10133 * sizze_10134)
+    segmap_group_sizze_10138 = self.sizes["lmatsubstract.segmap_group_size_10137"]
+    segmap_group_sizze_10139 = sext_i32_i64(segmap_group_sizze_10138)
+    y_10140 = (segmap_group_sizze_10139 - np.int64(1))
+    x_10141 = (nest_sizze_10136 + y_10140)
+    segmap_usable_groups_64_10143 = squot64(x_10141, segmap_group_sizze_10139)
+    segmap_usable_groups_10144 = sext_i64_i32(segmap_usable_groups_64_10143)
+    bytes_10628 = (np.int64(4) * nest_sizze_10136)
+    mem_10632 = opencl_alloc(self, bytes_10628, "mem_10632")
+    if ((1 * (np.long(segmap_usable_groups_10144) * np.long(segmap_group_sizze_10138))) != 0):
+      self.segmap_10132_var.set_args(np.int32(sizze_9813), np.int32(sizze_9814),
+                                     np.float32(d_9815), x_mem_10627, mem_10632)
+      cl.enqueue_nd_range_kernel(self.queue, self.segmap_10132_var,
+                                 ((np.long(segmap_usable_groups_10144) * np.long(segmap_group_sizze_10138)),),
+                                 (np.long(segmap_group_sizze_10138),))
       if synchronous:
         self.queue.finish()
-    out_arrsizze_8420 = sizze_7570
-    out_mem_8419 = mem_8288
-    return (out_mem_8419, out_arrsizze_8420)
-  def futhark_multiply2(self, x_mem_8284, y_mem_8285, sizze_7555, sizze_7556):
-    dim_zzero_7559 = (np.int32(0) == sizze_7556)
-    dim_zzero_7560 = (np.int32(0) == sizze_7555)
-    both_empty_7561 = (dim_zzero_7559 and dim_zzero_7560)
-    dim_match_7562 = (sizze_7555 == sizze_7556)
-    empty_or_match_7563 = (both_empty_7561 or dim_match_7562)
-    empty_or_match_cert_7564 = True
-    assert empty_or_match_7563, ("Error: %s\n\nBacktrace:\n-> #0  GPU.fut:64:3-14\n   #1  GPU.fut:63:1-64:14\n" % ("function arguments of wrong shape",))
-    sizze_7782 = sext_i32_i64(sizze_7555)
-    segmap_group_sizze_7785 = self.sizes["multiply2.segmap_group_size_7784"]
-    segmap_group_sizze_7786 = sext_i32_i64(segmap_group_sizze_7785)
-    y_7787 = (segmap_group_sizze_7786 - np.int64(1))
-    x_7788 = (sizze_7782 + y_7787)
-    segmap_usable_groups_64_7790 = squot64(x_7788, segmap_group_sizze_7786)
-    segmap_usable_groups_7791 = sext_i64_i32(segmap_usable_groups_64_7790)
-    bytes_8286 = (np.int64(4) * sizze_7782)
-    mem_8288 = opencl_alloc(self, bytes_8286, "mem_8288")
-    if ((1 * (np.long(segmap_usable_groups_7791) * np.long(segmap_group_sizze_7785))) != 0):
-      self.segmap_7781_var.set_args(np.int32(sizze_7555), x_mem_8284,
-                                    y_mem_8285, mem_8288)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_7781_var,
-                                 ((np.long(segmap_usable_groups_7791) * np.long(segmap_group_sizze_7785)),),
-                                 (np.long(segmap_group_sizze_7785),))
+    out_arrsizze_10801 = sizze_9813
+    out_arrsizze_10802 = sizze_9814
+    out_mem_10800 = mem_10632
+    return (out_mem_10800, out_arrsizze_10801, out_arrsizze_10802)
+  def futhark_lmatadd(self, x_mem_10627, sizze_9804, sizze_9805, s_9806):
+    sizze_10116 = sext_i32_i64(sizze_9804)
+    sizze_10117 = sext_i32_i64(sizze_9805)
+    nest_sizze_10119 = (sizze_10116 * sizze_10117)
+    segmap_group_sizze_10121 = self.sizes["lmatadd.segmap_group_size_10120"]
+    segmap_group_sizze_10122 = sext_i32_i64(segmap_group_sizze_10121)
+    y_10123 = (segmap_group_sizze_10122 - np.int64(1))
+    x_10124 = (nest_sizze_10119 + y_10123)
+    segmap_usable_groups_64_10126 = squot64(x_10124, segmap_group_sizze_10122)
+    segmap_usable_groups_10127 = sext_i64_i32(segmap_usable_groups_64_10126)
+    bytes_10628 = (np.int64(4) * nest_sizze_10119)
+    mem_10632 = opencl_alloc(self, bytes_10628, "mem_10632")
+    if ((1 * (np.long(segmap_usable_groups_10127) * np.long(segmap_group_sizze_10121))) != 0):
+      self.segmap_10115_var.set_args(np.int32(sizze_9804), np.int32(sizze_9805),
+                                     np.float32(s_9806), x_mem_10627, mem_10632)
+      cl.enqueue_nd_range_kernel(self.queue, self.segmap_10115_var,
+                                 ((np.long(segmap_usable_groups_10127) * np.long(segmap_group_sizze_10121)),),
+                                 (np.long(segmap_group_sizze_10121),))
       if synchronous:
         self.queue.finish()
-    out_arrsizze_8413 = sizze_7555
-    out_mem_8412 = mem_8288
-    return (out_mem_8412, out_arrsizze_8413)
-  def futhark_substract(self, x_mem_8284, sizze_7549, d_7550):
-    sizze_7768 = sext_i32_i64(sizze_7549)
-    segmap_group_sizze_7771 = self.sizes["substract.segmap_group_size_7770"]
-    segmap_group_sizze_7772 = sext_i32_i64(segmap_group_sizze_7771)
-    y_7773 = (segmap_group_sizze_7772 - np.int64(1))
-    x_7774 = (sizze_7768 + y_7773)
-    segmap_usable_groups_64_7776 = squot64(x_7774, segmap_group_sizze_7772)
-    segmap_usable_groups_7777 = sext_i64_i32(segmap_usable_groups_64_7776)
-    bytes_8285 = (np.int64(4) * sizze_7768)
-    mem_8287 = opencl_alloc(self, bytes_8285, "mem_8287")
-    if ((1 * (np.long(segmap_usable_groups_7777) * np.long(segmap_group_sizze_7771))) != 0):
-      self.segmap_7767_var.set_args(np.int32(sizze_7549), np.float32(d_7550),
-                                    x_mem_8284, mem_8287)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_7767_var,
-                                 ((np.long(segmap_usable_groups_7777) * np.long(segmap_group_sizze_7771)),),
-                                 (np.long(segmap_group_sizze_7771),))
+    out_arrsizze_10793 = sizze_9804
+    out_arrsizze_10794 = sizze_9805
+    out_mem_10792 = mem_10632
+    return (out_mem_10792, out_arrsizze_10793, out_arrsizze_10794)
+  def futhark_substract2(self, x_mem_10627, y_mem_10628, sizze_9789,
+                         sizze_9790):
+    dim_zzero_9793 = (np.int32(0) == sizze_9790)
+    dim_zzero_9794 = (np.int32(0) == sizze_9789)
+    both_empty_9795 = (dim_zzero_9793 and dim_zzero_9794)
+    dim_match_9796 = (sizze_9789 == sizze_9790)
+    empty_or_match_9797 = (both_empty_9795 or dim_match_9796)
+    empty_or_match_cert_9798 = True
+    assert empty_or_match_9797, ("Error: %s\n\nBacktrace:\n-> #0  GPU.fut:141:3-14\n   #1  GPU.fut:140:1-141:14\n" % ("function arguments of wrong shape",))
+    sizze_10100 = sext_i32_i64(sizze_9789)
+    segmap_group_sizze_10103 = self.sizes["substract2.segmap_group_size_10102"]
+    segmap_group_sizze_10104 = sext_i32_i64(segmap_group_sizze_10103)
+    y_10105 = (segmap_group_sizze_10104 - np.int64(1))
+    x_10106 = (sizze_10100 + y_10105)
+    segmap_usable_groups_64_10108 = squot64(x_10106, segmap_group_sizze_10104)
+    segmap_usable_groups_10109 = sext_i64_i32(segmap_usable_groups_64_10108)
+    bytes_10629 = (np.int64(4) * sizze_10100)
+    mem_10631 = opencl_alloc(self, bytes_10629, "mem_10631")
+    if ((1 * (np.long(segmap_usable_groups_10109) * np.long(segmap_group_sizze_10103))) != 0):
+      self.segmap_10099_var.set_args(np.int32(sizze_9789), x_mem_10627,
+                                     y_mem_10628, mem_10631)
+      cl.enqueue_nd_range_kernel(self.queue, self.segmap_10099_var,
+                                 ((np.long(segmap_usable_groups_10109) * np.long(segmap_group_sizze_10103)),),
+                                 (np.long(segmap_group_sizze_10103),))
       if synchronous:
         self.queue.finish()
-    out_arrsizze_8406 = sizze_7549
-    out_mem_8405 = mem_8287
-    return (out_mem_8405, out_arrsizze_8406)
-  def futhark_add(self, x_mem_8284, sizze_7543, s_7545):
-    sizze_7754 = sext_i32_i64(sizze_7543)
-    segmap_group_sizze_7757 = self.sizes["add.segmap_group_size_7756"]
-    segmap_group_sizze_7758 = sext_i32_i64(segmap_group_sizze_7757)
-    y_7759 = (segmap_group_sizze_7758 - np.int64(1))
-    x_7760 = (sizze_7754 + y_7759)
-    segmap_usable_groups_64_7762 = squot64(x_7760, segmap_group_sizze_7758)
-    segmap_usable_groups_7763 = sext_i64_i32(segmap_usable_groups_64_7762)
-    bytes_8285 = (np.int64(4) * sizze_7754)
-    mem_8287 = opencl_alloc(self, bytes_8285, "mem_8287")
-    if ((1 * (np.long(segmap_usable_groups_7763) * np.long(segmap_group_sizze_7757))) != 0):
-      self.segmap_7753_var.set_args(np.int32(sizze_7543), np.float32(s_7545),
-                                    x_mem_8284, mem_8287)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_7753_var,
-                                 ((np.long(segmap_usable_groups_7763) * np.long(segmap_group_sizze_7757)),),
-                                 (np.long(segmap_group_sizze_7757),))
+    out_arrsizze_10786 = sizze_9789
+    out_mem_10785 = mem_10631
+    return (out_mem_10785, out_arrsizze_10786)
+  def futhark_add2(self, x_mem_10627, y_mem_10628, sizze_9774, sizze_9775):
+    dim_zzero_9778 = (np.int32(0) == sizze_9775)
+    dim_zzero_9779 = (np.int32(0) == sizze_9774)
+    both_empty_9780 = (dim_zzero_9778 and dim_zzero_9779)
+    dim_match_9781 = (sizze_9774 == sizze_9775)
+    empty_or_match_9782 = (both_empty_9780 or dim_match_9781)
+    empty_or_match_cert_9783 = True
+    assert empty_or_match_9782, ("Error: %s\n\nBacktrace:\n-> #0  GPU.fut:105:3-14\n   #1  GPU.fut:104:1-105:14\n" % ("function arguments of wrong shape",))
+    sizze_10085 = sext_i32_i64(sizze_9774)
+    segmap_group_sizze_10088 = self.sizes["add2.segmap_group_size_10087"]
+    segmap_group_sizze_10089 = sext_i32_i64(segmap_group_sizze_10088)
+    y_10090 = (segmap_group_sizze_10089 - np.int64(1))
+    x_10091 = (sizze_10085 + y_10090)
+    segmap_usable_groups_64_10093 = squot64(x_10091, segmap_group_sizze_10089)
+    segmap_usable_groups_10094 = sext_i64_i32(segmap_usable_groups_64_10093)
+    bytes_10629 = (np.int64(4) * sizze_10085)
+    mem_10631 = opencl_alloc(self, bytes_10629, "mem_10631")
+    if ((1 * (np.long(segmap_usable_groups_10094) * np.long(segmap_group_sizze_10088))) != 0):
+      self.segmap_10084_var.set_args(np.int32(sizze_9774), x_mem_10627,
+                                     y_mem_10628, mem_10631)
+      cl.enqueue_nd_range_kernel(self.queue, self.segmap_10084_var,
+                                 ((np.long(segmap_usable_groups_10094) * np.long(segmap_group_sizze_10088)),),
+                                 (np.long(segmap_group_sizze_10088),))
       if synchronous:
         self.queue.finish()
-    out_arrsizze_8399 = sizze_7543
-    out_mem_8398 = mem_8287
-    return (out_mem_8398, out_arrsizze_8399)
-  def futhark_multiply(self, x_mem_8284, sizze_7537, m_7539):
-    sizze_7740 = sext_i32_i64(sizze_7537)
-    segmap_group_sizze_7743 = self.sizes["multiply.segmap_group_size_7742"]
-    segmap_group_sizze_7744 = sext_i32_i64(segmap_group_sizze_7743)
-    y_7745 = (segmap_group_sizze_7744 - np.int64(1))
-    x_7746 = (sizze_7740 + y_7745)
-    segmap_usable_groups_64_7748 = squot64(x_7746, segmap_group_sizze_7744)
-    segmap_usable_groups_7749 = sext_i64_i32(segmap_usable_groups_64_7748)
-    bytes_8285 = (np.int64(4) * sizze_7740)
-    mem_8287 = opencl_alloc(self, bytes_8285, "mem_8287")
-    if ((1 * (np.long(segmap_usable_groups_7749) * np.long(segmap_group_sizze_7743))) != 0):
-      self.segmap_7739_var.set_args(np.int32(sizze_7537), np.float32(m_7539),
-                                    x_mem_8284, mem_8287)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_7739_var,
-                                 ((np.long(segmap_usable_groups_7749) * np.long(segmap_group_sizze_7743)),),
-                                 (np.long(segmap_group_sizze_7743),))
+    out_arrsizze_10779 = sizze_9774
+    out_mem_10778 = mem_10631
+    return (out_mem_10778, out_arrsizze_10779)
+  def futhark_lmatmultiply(self, x_mem_10627, sizze_9765, sizze_9766, p_9767):
+    sizze_10069 = sext_i32_i64(sizze_9765)
+    sizze_10070 = sext_i32_i64(sizze_9766)
+    nest_sizze_10072 = (sizze_10069 * sizze_10070)
+    segmap_group_sizze_10074 = self.sizes["lmatmultiply.segmap_group_size_10073"]
+    segmap_group_sizze_10075 = sext_i32_i64(segmap_group_sizze_10074)
+    y_10076 = (segmap_group_sizze_10075 - np.int64(1))
+    x_10077 = (nest_sizze_10072 + y_10076)
+    segmap_usable_groups_64_10079 = squot64(x_10077, segmap_group_sizze_10075)
+    segmap_usable_groups_10080 = sext_i64_i32(segmap_usable_groups_64_10079)
+    bytes_10628 = (np.int64(4) * nest_sizze_10072)
+    mem_10632 = opencl_alloc(self, bytes_10628, "mem_10632")
+    if ((1 * (np.long(segmap_usable_groups_10080) * np.long(segmap_group_sizze_10074))) != 0):
+      self.segmap_10068_var.set_args(np.int32(sizze_9765), np.int32(sizze_9766),
+                                     np.float32(p_9767), x_mem_10627, mem_10632)
+      cl.enqueue_nd_range_kernel(self.queue, self.segmap_10068_var,
+                                 ((np.long(segmap_usable_groups_10080) * np.long(segmap_group_sizze_10074)),),
+                                 (np.long(segmap_group_sizze_10074),))
       if synchronous:
         self.queue.finish()
-    out_arrsizze_8392 = sizze_7537
-    out_mem_8391 = mem_8287
-    return (out_mem_8391, out_arrsizze_8392)
-  def futhark_divide(self, x_mem_8284, sizze_7531, div_7532):
-    sizze_7726 = sext_i32_i64(sizze_7531)
-    segmap_group_sizze_7729 = self.sizes["divide.segmap_group_size_7728"]
-    segmap_group_sizze_7730 = sext_i32_i64(segmap_group_sizze_7729)
-    y_7731 = (segmap_group_sizze_7730 - np.int64(1))
-    x_7732 = (sizze_7726 + y_7731)
-    segmap_usable_groups_64_7734 = squot64(x_7732, segmap_group_sizze_7730)
-    segmap_usable_groups_7735 = sext_i64_i32(segmap_usable_groups_64_7734)
-    bytes_8285 = (np.int64(4) * sizze_7726)
-    mem_8287 = opencl_alloc(self, bytes_8285, "mem_8287")
-    if ((1 * (np.long(segmap_usable_groups_7735) * np.long(segmap_group_sizze_7729))) != 0):
-      self.segmap_7725_var.set_args(np.int32(sizze_7531), np.float32(div_7532),
-                                    x_mem_8284, mem_8287)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_7725_var,
-                                 ((np.long(segmap_usable_groups_7735) * np.long(segmap_group_sizze_7729)),),
-                                 (np.long(segmap_group_sizze_7729),))
+    out_arrsizze_10771 = sizze_9765
+    out_arrsizze_10772 = sizze_9766
+    out_mem_10770 = mem_10632
+    return (out_mem_10770, out_arrsizze_10771, out_arrsizze_10772)
+  def futhark_multiply2(self, x_mem_10627, y_mem_10628, sizze_9750, sizze_9751):
+    dim_zzero_9754 = (np.int32(0) == sizze_9751)
+    dim_zzero_9755 = (np.int32(0) == sizze_9750)
+    both_empty_9756 = (dim_zzero_9754 and dim_zzero_9755)
+    dim_match_9757 = (sizze_9750 == sizze_9751)
+    empty_or_match_9758 = (both_empty_9756 or dim_match_9757)
+    empty_or_match_cert_9759 = True
+    assert empty_or_match_9758, ("Error: %s\n\nBacktrace:\n-> #0  GPU.fut:71:3-14\n   #1  GPU.fut:70:1-71:14\n" % ("function arguments of wrong shape",))
+    sizze_10053 = sext_i32_i64(sizze_9750)
+    segmap_group_sizze_10056 = self.sizes["multiply2.segmap_group_size_10055"]
+    segmap_group_sizze_10057 = sext_i32_i64(segmap_group_sizze_10056)
+    y_10058 = (segmap_group_sizze_10057 - np.int64(1))
+    x_10059 = (sizze_10053 + y_10058)
+    segmap_usable_groups_64_10061 = squot64(x_10059, segmap_group_sizze_10057)
+    segmap_usable_groups_10062 = sext_i64_i32(segmap_usable_groups_64_10061)
+    bytes_10629 = (np.int64(4) * sizze_10053)
+    mem_10631 = opencl_alloc(self, bytes_10629, "mem_10631")
+    if ((1 * (np.long(segmap_usable_groups_10062) * np.long(segmap_group_sizze_10056))) != 0):
+      self.segmap_10052_var.set_args(np.int32(sizze_9750), x_mem_10627,
+                                     y_mem_10628, mem_10631)
+      cl.enqueue_nd_range_kernel(self.queue, self.segmap_10052_var,
+                                 ((np.long(segmap_usable_groups_10062) * np.long(segmap_group_sizze_10056)),),
+                                 (np.long(segmap_group_sizze_10056),))
       if synchronous:
         self.queue.finish()
-    out_arrsizze_8385 = sizze_7531
-    out_mem_8384 = mem_8287
-    return (out_mem_8384, out_arrsizze_8385)
-  def futhark_negation(self, x_mem_8284, sizze_7526):
-    sizze_7712 = sext_i32_i64(sizze_7526)
-    segmap_group_sizze_7715 = self.sizes["negation.segmap_group_size_7714"]
-    segmap_group_sizze_7716 = sext_i32_i64(segmap_group_sizze_7715)
-    y_7717 = (segmap_group_sizze_7716 - np.int64(1))
-    x_7718 = (sizze_7712 + y_7717)
-    segmap_usable_groups_64_7720 = squot64(x_7718, segmap_group_sizze_7716)
-    segmap_usable_groups_7721 = sext_i64_i32(segmap_usable_groups_64_7720)
-    bytes_8285 = (np.int64(4) * sizze_7712)
-    mem_8287 = opencl_alloc(self, bytes_8285, "mem_8287")
-    if ((1 * (np.long(segmap_usable_groups_7721) * np.long(segmap_group_sizze_7715))) != 0):
-      self.segmap_7711_var.set_args(np.int32(sizze_7526), x_mem_8284, mem_8287)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_7711_var,
-                                 ((np.long(segmap_usable_groups_7721) * np.long(segmap_group_sizze_7715)),),
-                                 (np.long(segmap_group_sizze_7715),))
+    out_arrsizze_10764 = sizze_9750
+    out_mem_10763 = mem_10631
+    return (out_mem_10763, out_arrsizze_10764)
+  def futhark_substract(self, x_mem_10627, sizze_9744, d_9745):
+    sizze_10039 = sext_i32_i64(sizze_9744)
+    segmap_group_sizze_10042 = self.sizes["substract.segmap_group_size_10041"]
+    segmap_group_sizze_10043 = sext_i32_i64(segmap_group_sizze_10042)
+    y_10044 = (segmap_group_sizze_10043 - np.int64(1))
+    x_10045 = (sizze_10039 + y_10044)
+    segmap_usable_groups_64_10047 = squot64(x_10045, segmap_group_sizze_10043)
+    segmap_usable_groups_10048 = sext_i64_i32(segmap_usable_groups_64_10047)
+    bytes_10628 = (np.int64(4) * sizze_10039)
+    mem_10630 = opencl_alloc(self, bytes_10628, "mem_10630")
+    if ((1 * (np.long(segmap_usable_groups_10048) * np.long(segmap_group_sizze_10042))) != 0):
+      self.segmap_10038_var.set_args(np.int32(sizze_9744), np.float32(d_9745),
+                                     x_mem_10627, mem_10630)
+      cl.enqueue_nd_range_kernel(self.queue, self.segmap_10038_var,
+                                 ((np.long(segmap_usable_groups_10048) * np.long(segmap_group_sizze_10042)),),
+                                 (np.long(segmap_group_sizze_10042),))
       if synchronous:
         self.queue.finish()
-    out_arrsizze_8378 = sizze_7526
-    out_mem_8377 = mem_8287
-    return (out_mem_8377, out_arrsizze_8378)
-  def futhark_exp(self, x_mem_8284, sizze_7521):
-    sizze_7698 = sext_i32_i64(sizze_7521)
-    segmap_group_sizze_7701 = self.sizes["exp.segmap_group_size_7700"]
-    segmap_group_sizze_7702 = sext_i32_i64(segmap_group_sizze_7701)
-    y_7703 = (segmap_group_sizze_7702 - np.int64(1))
-    x_7704 = (sizze_7698 + y_7703)
-    segmap_usable_groups_64_7706 = squot64(x_7704, segmap_group_sizze_7702)
-    segmap_usable_groups_7707 = sext_i64_i32(segmap_usable_groups_64_7706)
-    bytes_8285 = (np.int64(4) * sizze_7698)
-    mem_8287 = opencl_alloc(self, bytes_8285, "mem_8287")
-    if ((1 * (np.long(segmap_usable_groups_7707) * np.long(segmap_group_sizze_7701))) != 0):
-      self.segmap_7697_var.set_args(np.int32(sizze_7521), x_mem_8284, mem_8287)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_7697_var,
-                                 ((np.long(segmap_usable_groups_7707) * np.long(segmap_group_sizze_7701)),),
-                                 (np.long(segmap_group_sizze_7701),))
+    out_arrsizze_10757 = sizze_9744
+    out_mem_10756 = mem_10630
+    return (out_mem_10756, out_arrsizze_10757)
+  def futhark_add(self, x_mem_10627, sizze_9738, s_9739):
+    sizze_10025 = sext_i32_i64(sizze_9738)
+    segmap_group_sizze_10028 = self.sizes["add.segmap_group_size_10027"]
+    segmap_group_sizze_10029 = sext_i32_i64(segmap_group_sizze_10028)
+    y_10030 = (segmap_group_sizze_10029 - np.int64(1))
+    x_10031 = (sizze_10025 + y_10030)
+    segmap_usable_groups_64_10033 = squot64(x_10031, segmap_group_sizze_10029)
+    segmap_usable_groups_10034 = sext_i64_i32(segmap_usable_groups_64_10033)
+    bytes_10628 = (np.int64(4) * sizze_10025)
+    mem_10630 = opencl_alloc(self, bytes_10628, "mem_10630")
+    if ((1 * (np.long(segmap_usable_groups_10034) * np.long(segmap_group_sizze_10028))) != 0):
+      self.segmap_10024_var.set_args(np.int32(sizze_9738), np.float32(s_9739),
+                                     x_mem_10627, mem_10630)
+      cl.enqueue_nd_range_kernel(self.queue, self.segmap_10024_var,
+                                 ((np.long(segmap_usable_groups_10034) * np.long(segmap_group_sizze_10028)),),
+                                 (np.long(segmap_group_sizze_10028),))
       if synchronous:
         self.queue.finish()
-    out_arrsizze_8371 = sizze_7521
-    out_mem_8370 = mem_8287
-    return (out_mem_8370, out_arrsizze_8371)
-  def futhark_transp(self, x_mem_8284, sizze_7517, sizze_7518):
-    binop_x_8286 = sext_i32_i64(sizze_7518)
-    binop_y_8287 = sext_i32_i64(sizze_7517)
-    binop_x_8288 = (binop_x_8286 * binop_y_8287)
-    bytes_8285 = (np.int64(4) * binop_x_8288)
-    mem_8289 = opencl_alloc(self, bytes_8285, "mem_8289")
-    self.futhark__map_transpose_f32(mem_8289, np.int32(0), x_mem_8284,
-                                    np.int32(0), np.int32(1), sizze_7518,
-                                    sizze_7517, (sizze_7518 * sizze_7517),
-                                    (sizze_7518 * sizze_7517))
-    out_arrsizze_8368 = sizze_7518
-    out_arrsizze_8369 = sizze_7517
-    out_mem_8367 = mem_8289
-    return (out_mem_8367, out_arrsizze_8368, out_arrsizze_8369)
+    out_arrsizze_10750 = sizze_9738
+    out_mem_10749 = mem_10630
+    return (out_mem_10749, out_arrsizze_10750)
+  def futhark_multiply(self, x_mem_10627, sizze_9732, m_9733):
+    sizze_10011 = sext_i32_i64(sizze_9732)
+    segmap_group_sizze_10014 = self.sizes["multiply.segmap_group_size_10013"]
+    segmap_group_sizze_10015 = sext_i32_i64(segmap_group_sizze_10014)
+    y_10016 = (segmap_group_sizze_10015 - np.int64(1))
+    x_10017 = (sizze_10011 + y_10016)
+    segmap_usable_groups_64_10019 = squot64(x_10017, segmap_group_sizze_10015)
+    segmap_usable_groups_10020 = sext_i64_i32(segmap_usable_groups_64_10019)
+    bytes_10628 = (np.int64(4) * sizze_10011)
+    mem_10630 = opencl_alloc(self, bytes_10628, "mem_10630")
+    if ((1 * (np.long(segmap_usable_groups_10020) * np.long(segmap_group_sizze_10014))) != 0):
+      self.segmap_10010_var.set_args(np.int32(sizze_9732), np.float32(m_9733),
+                                     x_mem_10627, mem_10630)
+      cl.enqueue_nd_range_kernel(self.queue, self.segmap_10010_var,
+                                 ((np.long(segmap_usable_groups_10020) * np.long(segmap_group_sizze_10014)),),
+                                 (np.long(segmap_group_sizze_10014),))
+      if synchronous:
+        self.queue.finish()
+    out_arrsizze_10743 = sizze_9732
+    out_mem_10742 = mem_10630
+    return (out_mem_10742, out_arrsizze_10743)
+  def futhark_divide(self, x_mem_10627, sizze_9726, d_9727):
+    sizze_9997 = sext_i32_i64(sizze_9726)
+    segmap_group_sizze_10000 = self.sizes["divide.segmap_group_size_9999"]
+    segmap_group_sizze_10001 = sext_i32_i64(segmap_group_sizze_10000)
+    y_10002 = (segmap_group_sizze_10001 - np.int64(1))
+    x_10003 = (sizze_9997 + y_10002)
+    segmap_usable_groups_64_10005 = squot64(x_10003, segmap_group_sizze_10001)
+    segmap_usable_groups_10006 = sext_i64_i32(segmap_usable_groups_64_10005)
+    bytes_10628 = (np.int64(4) * sizze_9997)
+    mem_10630 = opencl_alloc(self, bytes_10628, "mem_10630")
+    if ((1 * (np.long(segmap_usable_groups_10006) * np.long(segmap_group_sizze_10000))) != 0):
+      self.segmap_9996_var.set_args(np.int32(sizze_9726), np.float32(d_9727),
+                                    x_mem_10627, mem_10630)
+      cl.enqueue_nd_range_kernel(self.queue, self.segmap_9996_var,
+                                 ((np.long(segmap_usable_groups_10006) * np.long(segmap_group_sizze_10000)),),
+                                 (np.long(segmap_group_sizze_10000),))
+      if synchronous:
+        self.queue.finish()
+    out_arrsizze_10736 = sizze_9726
+    out_mem_10735 = mem_10630
+    return (out_mem_10735, out_arrsizze_10736)
+  def futhark_negation(self, x_mem_10627, sizze_9721):
+    sizze_9983 = sext_i32_i64(sizze_9721)
+    segmap_group_sizze_9986 = self.sizes["negation.segmap_group_size_9985"]
+    segmap_group_sizze_9987 = sext_i32_i64(segmap_group_sizze_9986)
+    y_9988 = (segmap_group_sizze_9987 - np.int64(1))
+    x_9989 = (sizze_9983 + y_9988)
+    segmap_usable_groups_64_9991 = squot64(x_9989, segmap_group_sizze_9987)
+    segmap_usable_groups_9992 = sext_i64_i32(segmap_usable_groups_64_9991)
+    bytes_10628 = (np.int64(4) * sizze_9983)
+    mem_10630 = opencl_alloc(self, bytes_10628, "mem_10630")
+    if ((1 * (np.long(segmap_usable_groups_9992) * np.long(segmap_group_sizze_9986))) != 0):
+      self.segmap_9982_var.set_args(np.int32(sizze_9721), x_mem_10627,
+                                    mem_10630)
+      cl.enqueue_nd_range_kernel(self.queue, self.segmap_9982_var,
+                                 ((np.long(segmap_usable_groups_9992) * np.long(segmap_group_sizze_9986)),),
+                                 (np.long(segmap_group_sizze_9986),))
+      if synchronous:
+        self.queue.finish()
+    out_arrsizze_10729 = sizze_9721
+    out_mem_10728 = mem_10630
+    return (out_mem_10728, out_arrsizze_10729)
+  def futhark_exp(self, x_mem_10627, sizze_9716):
+    sizze_9969 = sext_i32_i64(sizze_9716)
+    segmap_group_sizze_9972 = self.sizes["exp.segmap_group_size_9971"]
+    segmap_group_sizze_9973 = sext_i32_i64(segmap_group_sizze_9972)
+    y_9974 = (segmap_group_sizze_9973 - np.int64(1))
+    x_9975 = (sizze_9969 + y_9974)
+    segmap_usable_groups_64_9977 = squot64(x_9975, segmap_group_sizze_9973)
+    segmap_usable_groups_9978 = sext_i64_i32(segmap_usable_groups_64_9977)
+    bytes_10628 = (np.int64(4) * sizze_9969)
+    mem_10630 = opencl_alloc(self, bytes_10628, "mem_10630")
+    if ((1 * (np.long(segmap_usable_groups_9978) * np.long(segmap_group_sizze_9972))) != 0):
+      self.segmap_9968_var.set_args(np.int32(sizze_9716), x_mem_10627,
+                                    mem_10630)
+      cl.enqueue_nd_range_kernel(self.queue, self.segmap_9968_var,
+                                 ((np.long(segmap_usable_groups_9978) * np.long(segmap_group_sizze_9972)),),
+                                 (np.long(segmap_group_sizze_9972),))
+      if synchronous:
+        self.queue.finish()
+    out_arrsizze_10722 = sizze_9716
+    out_mem_10721 = mem_10630
+    return (out_mem_10721, out_arrsizze_10722)
+  def futhark_transp(self, x_mem_10627, sizze_9712, sizze_9713):
+    binop_x_10629 = sext_i32_i64(sizze_9713)
+    binop_y_10630 = sext_i32_i64(sizze_9712)
+    binop_x_10631 = (binop_x_10629 * binop_y_10630)
+    bytes_10628 = (np.int64(4) * binop_x_10631)
+    mem_10632 = opencl_alloc(self, bytes_10628, "mem_10632")
+    self.futhark__map_transpose_f32(mem_10632, np.int32(0), x_mem_10627,
+                                    np.int32(0), np.int32(1), sizze_9713,
+                                    sizze_9712, (sizze_9713 * sizze_9712),
+                                    (sizze_9713 * sizze_9712))
+    out_arrsizze_10719 = sizze_9713
+    out_arrsizze_10720 = sizze_9712
+    out_mem_10718 = mem_10632
+    return (out_mem_10718, out_arrsizze_10719, out_arrsizze_10720)
   def futhark__map_transpose_f32(self, destmem_0, destoffset_1, srcmem_2,
                                  srcoffset_3, num_arrays_4, x_elems_5,
                                  y_elems_6, in_elems_7, out_elems_8):
@@ -3964,491 +4300,638 @@ class GPU:
                 if synchronous:
                   self.queue.finish()
     return ()
-  def matmul(self, a_mem_8284_ext, b_mem_8285_ext):
+  def dot(self, a_mem_10627_ext, b_mem_10628_ext):
     try:
-      assert ((type(a_mem_8284_ext) in [np.ndarray,
-                                        cl.array.Array]) and (a_mem_8284_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7671 = np.int32(a_mem_8284_ext.shape[0])
-      sizze_7672 = np.int32(a_mem_8284_ext.shape[1])
-      if (type(a_mem_8284_ext) == cl.array.Array):
-        a_mem_8284 = a_mem_8284_ext.data
+      assert ((type(a_mem_10627_ext) in [np.ndarray,
+                                         cl.array.Array]) and (a_mem_10627_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9942 = np.int32(a_mem_10627_ext.shape[0])
+      sizze_9943 = np.int32(a_mem_10627_ext.shape[1])
+      if (type(a_mem_10627_ext) == cl.array.Array):
+        a_mem_10627 = a_mem_10627_ext.data
       else:
-        a_mem_8284 = opencl_alloc(self, np.int64(a_mem_8284_ext.nbytes),
-                                  "a_mem_8284")
-        if (np.int64(a_mem_8284_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, a_mem_8284,
-                          normaliseArray(a_mem_8284_ext),
+        a_mem_10627 = opencl_alloc(self, np.int64(a_mem_10627_ext.nbytes),
+                                   "a_mem_10627")
+        if (np.int64(a_mem_10627_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, a_mem_10627,
+                          normaliseArray(a_mem_10627_ext),
                           is_blocking=synchronous)
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][]f32",
-                                                                                                                            type(a_mem_8284_ext),
-                                                                                                                            a_mem_8284_ext))
+                                                                                                                            type(a_mem_10627_ext),
+                                                                                                                            a_mem_10627_ext))
     try:
-      assert ((type(b_mem_8285_ext) in [np.ndarray,
-                                        cl.array.Array]) and (b_mem_8285_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7673 = np.int32(b_mem_8285_ext.shape[0])
-      sizze_7674 = np.int32(b_mem_8285_ext.shape[1])
-      if (type(b_mem_8285_ext) == cl.array.Array):
-        b_mem_8285 = b_mem_8285_ext.data
+      assert ((type(b_mem_10628_ext) in [np.ndarray,
+                                         cl.array.Array]) and (b_mem_10628_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9944 = np.int32(b_mem_10628_ext.shape[0])
+      sizze_9945 = np.int32(b_mem_10628_ext.shape[1])
+      if (type(b_mem_10628_ext) == cl.array.Array):
+        b_mem_10628 = b_mem_10628_ext.data
       else:
-        b_mem_8285 = opencl_alloc(self, np.int64(b_mem_8285_ext.nbytes),
-                                  "b_mem_8285")
-        if (np.int64(b_mem_8285_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, b_mem_8285,
-                          normaliseArray(b_mem_8285_ext),
+        b_mem_10628 = opencl_alloc(self, np.int64(b_mem_10628_ext.nbytes),
+                                   "b_mem_10628")
+        if (np.int64(b_mem_10628_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, b_mem_10628,
+                          normaliseArray(b_mem_10628_ext),
                           is_blocking=synchronous)
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][]f32",
-                                                                                                                            type(b_mem_8285_ext),
-                                                                                                                            b_mem_8285_ext))
-    (out_mem_8465, out_arrsizze_8466,
-     out_arrsizze_8467) = self.futhark_matmul(a_mem_8284, b_mem_8285,
-                                              sizze_7671, sizze_7672,
-                                              sizze_7673, sizze_7674)
-    return cl.array.Array(self.queue, (out_arrsizze_8466, out_arrsizze_8467),
-                          ct.c_float, data=out_mem_8465)
-  def matsubstract(self, x_mem_8284_ext, y_mem_8285_ext):
+                                                                                                                            type(b_mem_10628_ext),
+                                                                                                                            b_mem_10628_ext))
+    (out_mem_10848, out_arrsizze_10849,
+     out_arrsizze_10850) = self.futhark_dot(a_mem_10627, b_mem_10628,
+                                            sizze_9942, sizze_9943, sizze_9944,
+                                            sizze_9945)
+    return cl.array.Array(self.queue, (out_arrsizze_10849, out_arrsizze_10850),
+                          ct.c_float, data=out_mem_10848)
+  def matsubstract(self, x_mem_10627_ext, y_mem_10628_ext):
     try:
-      assert ((type(x_mem_8284_ext) in [np.ndarray,
-                                        cl.array.Array]) and (x_mem_8284_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7642 = np.int32(x_mem_8284_ext.shape[0])
-      sizze_7643 = np.int32(x_mem_8284_ext.shape[1])
-      if (type(x_mem_8284_ext) == cl.array.Array):
-        x_mem_8284 = x_mem_8284_ext.data
+      assert ((type(x_mem_10627_ext) in [np.ndarray,
+                                         cl.array.Array]) and (x_mem_10627_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9913 = np.int32(x_mem_10627_ext.shape[0])
+      sizze_9914 = np.int32(x_mem_10627_ext.shape[1])
+      if (type(x_mem_10627_ext) == cl.array.Array):
+        x_mem_10627 = x_mem_10627_ext.data
       else:
-        x_mem_8284 = opencl_alloc(self, np.int64(x_mem_8284_ext.nbytes),
-                                  "x_mem_8284")
-        if (np.int64(x_mem_8284_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, x_mem_8284,
-                          normaliseArray(x_mem_8284_ext),
+        x_mem_10627 = opencl_alloc(self, np.int64(x_mem_10627_ext.nbytes),
+                                   "x_mem_10627")
+        if (np.int64(x_mem_10627_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, x_mem_10627,
+                          normaliseArray(x_mem_10627_ext),
                           is_blocking=synchronous)
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][]f32",
-                                                                                                                            type(x_mem_8284_ext),
-                                                                                                                            x_mem_8284_ext))
+                                                                                                                            type(x_mem_10627_ext),
+                                                                                                                            x_mem_10627_ext))
     try:
-      assert ((type(y_mem_8285_ext) in [np.ndarray,
-                                        cl.array.Array]) and (y_mem_8285_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7644 = np.int32(y_mem_8285_ext.shape[0])
-      sizze_7645 = np.int32(y_mem_8285_ext.shape[1])
-      if (type(y_mem_8285_ext) == cl.array.Array):
-        y_mem_8285 = y_mem_8285_ext.data
+      assert ((type(y_mem_10628_ext) in [np.ndarray,
+                                         cl.array.Array]) and (y_mem_10628_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9915 = np.int32(y_mem_10628_ext.shape[0])
+      sizze_9916 = np.int32(y_mem_10628_ext.shape[1])
+      if (type(y_mem_10628_ext) == cl.array.Array):
+        y_mem_10628 = y_mem_10628_ext.data
       else:
-        y_mem_8285 = opencl_alloc(self, np.int64(y_mem_8285_ext.nbytes),
-                                  "y_mem_8285")
-        if (np.int64(y_mem_8285_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, y_mem_8285,
-                          normaliseArray(y_mem_8285_ext),
+        y_mem_10628 = opencl_alloc(self, np.int64(y_mem_10628_ext.nbytes),
+                                   "y_mem_10628")
+        if (np.int64(y_mem_10628_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, y_mem_10628,
+                          normaliseArray(y_mem_10628_ext),
                           is_blocking=synchronous)
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][]f32",
-                                                                                                                            type(y_mem_8285_ext),
-                                                                                                                            y_mem_8285_ext))
-    (out_mem_8457, out_arrsizze_8458,
-     out_arrsizze_8459) = self.futhark_matsubstract(x_mem_8284, y_mem_8285,
-                                                    sizze_7642, sizze_7643,
-                                                    sizze_7644, sizze_7645)
-    return cl.array.Array(self.queue, (out_arrsizze_8458, out_arrsizze_8459),
-                          ct.c_float, data=out_mem_8457)
-  def lvecmul(self, u_mem_8284_ext, b_mem_8285_ext):
+                                                                                                                            type(y_mem_10628_ext),
+                                                                                                                            y_mem_10628_ext))
+    (out_mem_10840, out_arrsizze_10841,
+     out_arrsizze_10842) = self.futhark_matsubstract(x_mem_10627, y_mem_10628,
+                                                     sizze_9913, sizze_9914,
+                                                     sizze_9915, sizze_9916)
+    return cl.array.Array(self.queue, (out_arrsizze_10841, out_arrsizze_10842),
+                          ct.c_float, data=out_mem_10840)
+  def matadd(self, x_mem_10627_ext, y_mem_10628_ext):
     try:
-      assert ((type(u_mem_8284_ext) in [np.ndarray,
-                                        cl.array.Array]) and (u_mem_8284_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7620 = np.int32(u_mem_8284_ext.shape[0])
-      if (type(u_mem_8284_ext) == cl.array.Array):
-        u_mem_8284 = u_mem_8284_ext.data
+      assert ((type(x_mem_10627_ext) in [np.ndarray,
+                                         cl.array.Array]) and (x_mem_10627_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9884 = np.int32(x_mem_10627_ext.shape[0])
+      sizze_9885 = np.int32(x_mem_10627_ext.shape[1])
+      if (type(x_mem_10627_ext) == cl.array.Array):
+        x_mem_10627 = x_mem_10627_ext.data
       else:
-        u_mem_8284 = opencl_alloc(self, np.int64(u_mem_8284_ext.nbytes),
-                                  "u_mem_8284")
-        if (np.int64(u_mem_8284_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, u_mem_8284,
-                          normaliseArray(u_mem_8284_ext),
+        x_mem_10627 = opencl_alloc(self, np.int64(x_mem_10627_ext.nbytes),
+                                   "x_mem_10627")
+        if (np.int64(x_mem_10627_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, x_mem_10627,
+                          normaliseArray(x_mem_10627_ext),
+                          is_blocking=synchronous)
+    except (TypeError, AssertionError) as e:
+      raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][]f32",
+                                                                                                                            type(x_mem_10627_ext),
+                                                                                                                            x_mem_10627_ext))
+    try:
+      assert ((type(y_mem_10628_ext) in [np.ndarray,
+                                         cl.array.Array]) and (y_mem_10628_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9886 = np.int32(y_mem_10628_ext.shape[0])
+      sizze_9887 = np.int32(y_mem_10628_ext.shape[1])
+      if (type(y_mem_10628_ext) == cl.array.Array):
+        y_mem_10628 = y_mem_10628_ext.data
+      else:
+        y_mem_10628 = opencl_alloc(self, np.int64(y_mem_10628_ext.nbytes),
+                                   "y_mem_10628")
+        if (np.int64(y_mem_10628_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, y_mem_10628,
+                          normaliseArray(y_mem_10628_ext),
+                          is_blocking=synchronous)
+    except (TypeError, AssertionError) as e:
+      raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][]f32",
+                                                                                                                            type(y_mem_10628_ext),
+                                                                                                                            y_mem_10628_ext))
+    (out_mem_10832, out_arrsizze_10833,
+     out_arrsizze_10834) = self.futhark_matadd(x_mem_10627, y_mem_10628,
+                                               sizze_9884, sizze_9885,
+                                               sizze_9886, sizze_9887)
+    return cl.array.Array(self.queue, (out_arrsizze_10833, out_arrsizze_10834),
+                          ct.c_float, data=out_mem_10832)
+  def matmultiply(self, x_mem_10627_ext, y_mem_10628_ext):
+    try:
+      assert ((type(x_mem_10627_ext) in [np.ndarray,
+                                         cl.array.Array]) and (x_mem_10627_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9855 = np.int32(x_mem_10627_ext.shape[0])
+      sizze_9856 = np.int32(x_mem_10627_ext.shape[1])
+      if (type(x_mem_10627_ext) == cl.array.Array):
+        x_mem_10627 = x_mem_10627_ext.data
+      else:
+        x_mem_10627 = opencl_alloc(self, np.int64(x_mem_10627_ext.nbytes),
+                                   "x_mem_10627")
+        if (np.int64(x_mem_10627_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, x_mem_10627,
+                          normaliseArray(x_mem_10627_ext),
+                          is_blocking=synchronous)
+    except (TypeError, AssertionError) as e:
+      raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][]f32",
+                                                                                                                            type(x_mem_10627_ext),
+                                                                                                                            x_mem_10627_ext))
+    try:
+      assert ((type(y_mem_10628_ext) in [np.ndarray,
+                                         cl.array.Array]) and (y_mem_10628_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9857 = np.int32(y_mem_10628_ext.shape[0])
+      sizze_9858 = np.int32(y_mem_10628_ext.shape[1])
+      if (type(y_mem_10628_ext) == cl.array.Array):
+        y_mem_10628 = y_mem_10628_ext.data
+      else:
+        y_mem_10628 = opencl_alloc(self, np.int64(y_mem_10628_ext.nbytes),
+                                   "y_mem_10628")
+        if (np.int64(y_mem_10628_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, y_mem_10628,
+                          normaliseArray(y_mem_10628_ext),
+                          is_blocking=synchronous)
+    except (TypeError, AssertionError) as e:
+      raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][]f32",
+                                                                                                                            type(y_mem_10628_ext),
+                                                                                                                            y_mem_10628_ext))
+    (out_mem_10824, out_arrsizze_10825,
+     out_arrsizze_10826) = self.futhark_matmultiply(x_mem_10627, y_mem_10628,
+                                                    sizze_9855, sizze_9856,
+                                                    sizze_9857, sizze_9858)
+    return cl.array.Array(self.queue, (out_arrsizze_10825, out_arrsizze_10826),
+                          ct.c_float, data=out_mem_10824)
+  def lvecmul(self, u_mem_10627_ext, b_mem_10628_ext):
+    try:
+      assert ((type(u_mem_10627_ext) in [np.ndarray,
+                                         cl.array.Array]) and (u_mem_10627_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9833 = np.int32(u_mem_10627_ext.shape[0])
+      if (type(u_mem_10627_ext) == cl.array.Array):
+        u_mem_10627 = u_mem_10627_ext.data
+      else:
+        u_mem_10627 = opencl_alloc(self, np.int64(u_mem_10627_ext.nbytes),
+                                   "u_mem_10627")
+        if (np.int64(u_mem_10627_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, u_mem_10627,
+                          normaliseArray(u_mem_10627_ext),
                           is_blocking=synchronous)
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
-                                                                                                                            type(u_mem_8284_ext),
-                                                                                                                            u_mem_8284_ext))
+                                                                                                                            type(u_mem_10627_ext),
+                                                                                                                            u_mem_10627_ext))
     try:
-      assert ((type(b_mem_8285_ext) in [np.ndarray,
-                                        cl.array.Array]) and (b_mem_8285_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7621 = np.int32(b_mem_8285_ext.shape[0])
-      sizze_7622 = np.int32(b_mem_8285_ext.shape[1])
-      if (type(b_mem_8285_ext) == cl.array.Array):
-        b_mem_8285 = b_mem_8285_ext.data
+      assert ((type(b_mem_10628_ext) in [np.ndarray,
+                                         cl.array.Array]) and (b_mem_10628_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9834 = np.int32(b_mem_10628_ext.shape[0])
+      sizze_9835 = np.int32(b_mem_10628_ext.shape[1])
+      if (type(b_mem_10628_ext) == cl.array.Array):
+        b_mem_10628 = b_mem_10628_ext.data
       else:
-        b_mem_8285 = opencl_alloc(self, np.int64(b_mem_8285_ext.nbytes),
-                                  "b_mem_8285")
-        if (np.int64(b_mem_8285_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, b_mem_8285,
-                          normaliseArray(b_mem_8285_ext),
+        b_mem_10628 = opencl_alloc(self, np.int64(b_mem_10628_ext.nbytes),
+                                   "b_mem_10628")
+        if (np.int64(b_mem_10628_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, b_mem_10628,
+                          normaliseArray(b_mem_10628_ext),
                           is_blocking=synchronous)
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][]f32",
-                                                                                                                            type(b_mem_8285_ext),
-                                                                                                                            b_mem_8285_ext))
-    (out_mem_8449, out_arrsizze_8450) = self.futhark_lvecmul(u_mem_8284,
-                                                             b_mem_8285,
-                                                             sizze_7620,
-                                                             sizze_7621,
-                                                             sizze_7622)
-    return cl.array.Array(self.queue, (out_arrsizze_8450,), ct.c_float,
-                          data=out_mem_8449)
-  def sigmoid(self, x_mem_8284_ext):
+                                                                                                                            type(b_mem_10628_ext),
+                                                                                                                            b_mem_10628_ext))
+    (out_mem_10816, out_arrsizze_10817) = self.futhark_lvecmul(u_mem_10627,
+                                                               b_mem_10628,
+                                                               sizze_9833,
+                                                               sizze_9834,
+                                                               sizze_9835)
+    return cl.array.Array(self.queue, (out_arrsizze_10817,), ct.c_float,
+                          data=out_mem_10816)
+  def sigmoid(self, x_mem_10627_ext):
     try:
-      assert ((type(x_mem_8284_ext) in [np.ndarray,
-                                        cl.array.Array]) and (x_mem_8284_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7609 = np.int32(x_mem_8284_ext.shape[0])
-      sizze_7610 = np.int32(x_mem_8284_ext.shape[1])
-      if (type(x_mem_8284_ext) == cl.array.Array):
-        x_mem_8284 = x_mem_8284_ext.data
+      assert ((type(x_mem_10627_ext) in [np.ndarray,
+                                         cl.array.Array]) and (x_mem_10627_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9822 = np.int32(x_mem_10627_ext.shape[0])
+      sizze_9823 = np.int32(x_mem_10627_ext.shape[1])
+      if (type(x_mem_10627_ext) == cl.array.Array):
+        x_mem_10627 = x_mem_10627_ext.data
       else:
-        x_mem_8284 = opencl_alloc(self, np.int64(x_mem_8284_ext.nbytes),
-                                  "x_mem_8284")
-        if (np.int64(x_mem_8284_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, x_mem_8284,
-                          normaliseArray(x_mem_8284_ext),
+        x_mem_10627 = opencl_alloc(self, np.int64(x_mem_10627_ext.nbytes),
+                                   "x_mem_10627")
+        if (np.int64(x_mem_10627_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, x_mem_10627,
+                          normaliseArray(x_mem_10627_ext),
                           is_blocking=synchronous)
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][]f32",
-                                                                                                                            type(x_mem_8284_ext),
-                                                                                                                            x_mem_8284_ext))
-    (out_mem_8441, out_arrsizze_8442,
-     out_arrsizze_8443) = self.futhark_sigmoid(x_mem_8284, sizze_7609,
-                                               sizze_7610)
-    return cl.array.Array(self.queue, (out_arrsizze_8442, out_arrsizze_8443),
-                          ct.c_float, data=out_mem_8441)
-  def lmatsubstract(self, d_7602_ext, x_mem_8284_ext):
+                                                                                                                            type(x_mem_10627_ext),
+                                                                                                                            x_mem_10627_ext))
+    (out_mem_10808, out_arrsizze_10809,
+     out_arrsizze_10810) = self.futhark_sigmoid(x_mem_10627, sizze_9822,
+                                                sizze_9823)
+    return cl.array.Array(self.queue, (out_arrsizze_10809, out_arrsizze_10810),
+                          ct.c_float, data=out_mem_10808)
+  def lmatsubstract(self, d_9815_ext, x_mem_10627_ext):
     try:
-      d_7602 = np.float32(ct.c_float(d_7602_ext))
+      d_9815 = np.float32(ct.c_float(d_9815_ext))
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("f32",
-                                                                                                                            type(d_7602_ext),
-                                                                                                                            d_7602_ext))
+                                                                                                                            type(d_9815_ext),
+                                                                                                                            d_9815_ext))
     try:
-      assert ((type(x_mem_8284_ext) in [np.ndarray,
-                                        cl.array.Array]) and (x_mem_8284_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7600 = np.int32(x_mem_8284_ext.shape[0])
-      sizze_7601 = np.int32(x_mem_8284_ext.shape[1])
-      if (type(x_mem_8284_ext) == cl.array.Array):
-        x_mem_8284 = x_mem_8284_ext.data
+      assert ((type(x_mem_10627_ext) in [np.ndarray,
+                                         cl.array.Array]) and (x_mem_10627_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9813 = np.int32(x_mem_10627_ext.shape[0])
+      sizze_9814 = np.int32(x_mem_10627_ext.shape[1])
+      if (type(x_mem_10627_ext) == cl.array.Array):
+        x_mem_10627 = x_mem_10627_ext.data
       else:
-        x_mem_8284 = opencl_alloc(self, np.int64(x_mem_8284_ext.nbytes),
-                                  "x_mem_8284")
-        if (np.int64(x_mem_8284_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, x_mem_8284,
-                          normaliseArray(x_mem_8284_ext),
+        x_mem_10627 = opencl_alloc(self, np.int64(x_mem_10627_ext.nbytes),
+                                   "x_mem_10627")
+        if (np.int64(x_mem_10627_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, x_mem_10627,
+                          normaliseArray(x_mem_10627_ext),
                           is_blocking=synchronous)
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][]f32",
-                                                                                                                            type(x_mem_8284_ext),
-                                                                                                                            x_mem_8284_ext))
-    (out_mem_8433, out_arrsizze_8434,
-     out_arrsizze_8435) = self.futhark_lmatsubstract(x_mem_8284, sizze_7600,
-                                                     sizze_7601, d_7602)
-    return cl.array.Array(self.queue, (out_arrsizze_8434, out_arrsizze_8435),
-                          ct.c_float, data=out_mem_8433)
-  def substract2(self, x_mem_8284_ext, y_mem_8285_ext):
+                                                                                                                            type(x_mem_10627_ext),
+                                                                                                                            x_mem_10627_ext))
+    (out_mem_10800, out_arrsizze_10801,
+     out_arrsizze_10802) = self.futhark_lmatsubstract(x_mem_10627, sizze_9813,
+                                                      sizze_9814, d_9815)
+    return cl.array.Array(self.queue, (out_arrsizze_10801, out_arrsizze_10802),
+                          ct.c_float, data=out_mem_10800)
+  def lmatadd(self, s_9806_ext, x_mem_10627_ext):
     try:
-      assert ((type(x_mem_8284_ext) in [np.ndarray,
-                                        cl.array.Array]) and (x_mem_8284_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7585 = np.int32(x_mem_8284_ext.shape[0])
-      if (type(x_mem_8284_ext) == cl.array.Array):
-        x_mem_8284 = x_mem_8284_ext.data
-      else:
-        x_mem_8284 = opencl_alloc(self, np.int64(x_mem_8284_ext.nbytes),
-                                  "x_mem_8284")
-        if (np.int64(x_mem_8284_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, x_mem_8284,
-                          normaliseArray(x_mem_8284_ext),
-                          is_blocking=synchronous)
-    except (TypeError, AssertionError) as e:
-      raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
-                                                                                                                            type(x_mem_8284_ext),
-                                                                                                                            x_mem_8284_ext))
-    try:
-      assert ((type(y_mem_8285_ext) in [np.ndarray,
-                                        cl.array.Array]) and (y_mem_8285_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7586 = np.int32(y_mem_8285_ext.shape[0])
-      if (type(y_mem_8285_ext) == cl.array.Array):
-        y_mem_8285 = y_mem_8285_ext.data
-      else:
-        y_mem_8285 = opencl_alloc(self, np.int64(y_mem_8285_ext.nbytes),
-                                  "y_mem_8285")
-        if (np.int64(y_mem_8285_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, y_mem_8285,
-                          normaliseArray(y_mem_8285_ext),
-                          is_blocking=synchronous)
-    except (TypeError, AssertionError) as e:
-      raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
-                                                                                                                            type(y_mem_8285_ext),
-                                                                                                                            y_mem_8285_ext))
-    (out_mem_8426, out_arrsizze_8427) = self.futhark_substract2(x_mem_8284,
-                                                                y_mem_8285,
-                                                                sizze_7585,
-                                                                sizze_7586)
-    return cl.array.Array(self.queue, (out_arrsizze_8427,), ct.c_float,
-                          data=out_mem_8426)
-  def add2(self, x_mem_8284_ext, y_mem_8285_ext):
-    try:
-      assert ((type(x_mem_8284_ext) in [np.ndarray,
-                                        cl.array.Array]) and (x_mem_8284_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7570 = np.int32(x_mem_8284_ext.shape[0])
-      if (type(x_mem_8284_ext) == cl.array.Array):
-        x_mem_8284 = x_mem_8284_ext.data
-      else:
-        x_mem_8284 = opencl_alloc(self, np.int64(x_mem_8284_ext.nbytes),
-                                  "x_mem_8284")
-        if (np.int64(x_mem_8284_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, x_mem_8284,
-                          normaliseArray(x_mem_8284_ext),
-                          is_blocking=synchronous)
-    except (TypeError, AssertionError) as e:
-      raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
-                                                                                                                            type(x_mem_8284_ext),
-                                                                                                                            x_mem_8284_ext))
-    try:
-      assert ((type(y_mem_8285_ext) in [np.ndarray,
-                                        cl.array.Array]) and (y_mem_8285_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7571 = np.int32(y_mem_8285_ext.shape[0])
-      if (type(y_mem_8285_ext) == cl.array.Array):
-        y_mem_8285 = y_mem_8285_ext.data
-      else:
-        y_mem_8285 = opencl_alloc(self, np.int64(y_mem_8285_ext.nbytes),
-                                  "y_mem_8285")
-        if (np.int64(y_mem_8285_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, y_mem_8285,
-                          normaliseArray(y_mem_8285_ext),
-                          is_blocking=synchronous)
-    except (TypeError, AssertionError) as e:
-      raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
-                                                                                                                            type(y_mem_8285_ext),
-                                                                                                                            y_mem_8285_ext))
-    (out_mem_8419, out_arrsizze_8420) = self.futhark_add2(x_mem_8284,
-                                                          y_mem_8285,
-                                                          sizze_7570,
-                                                          sizze_7571)
-    return cl.array.Array(self.queue, (out_arrsizze_8420,), ct.c_float,
-                          data=out_mem_8419)
-  def multiply2(self, x_mem_8284_ext, y_mem_8285_ext):
-    try:
-      assert ((type(x_mem_8284_ext) in [np.ndarray,
-                                        cl.array.Array]) and (x_mem_8284_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7555 = np.int32(x_mem_8284_ext.shape[0])
-      if (type(x_mem_8284_ext) == cl.array.Array):
-        x_mem_8284 = x_mem_8284_ext.data
-      else:
-        x_mem_8284 = opencl_alloc(self, np.int64(x_mem_8284_ext.nbytes),
-                                  "x_mem_8284")
-        if (np.int64(x_mem_8284_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, x_mem_8284,
-                          normaliseArray(x_mem_8284_ext),
-                          is_blocking=synchronous)
-    except (TypeError, AssertionError) as e:
-      raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
-                                                                                                                            type(x_mem_8284_ext),
-                                                                                                                            x_mem_8284_ext))
-    try:
-      assert ((type(y_mem_8285_ext) in [np.ndarray,
-                                        cl.array.Array]) and (y_mem_8285_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7556 = np.int32(y_mem_8285_ext.shape[0])
-      if (type(y_mem_8285_ext) == cl.array.Array):
-        y_mem_8285 = y_mem_8285_ext.data
-      else:
-        y_mem_8285 = opencl_alloc(self, np.int64(y_mem_8285_ext.nbytes),
-                                  "y_mem_8285")
-        if (np.int64(y_mem_8285_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, y_mem_8285,
-                          normaliseArray(y_mem_8285_ext),
-                          is_blocking=synchronous)
-    except (TypeError, AssertionError) as e:
-      raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
-                                                                                                                            type(y_mem_8285_ext),
-                                                                                                                            y_mem_8285_ext))
-    (out_mem_8412, out_arrsizze_8413) = self.futhark_multiply2(x_mem_8284,
-                                                               y_mem_8285,
-                                                               sizze_7555,
-                                                               sizze_7556)
-    return cl.array.Array(self.queue, (out_arrsizze_8413,), ct.c_float,
-                          data=out_mem_8412)
-  def substract(self, d_7550_ext, x_mem_8284_ext):
-    try:
-      d_7550 = np.float32(ct.c_float(d_7550_ext))
+      s_9806 = np.float32(ct.c_float(s_9806_ext))
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("f32",
-                                                                                                                            type(d_7550_ext),
-                                                                                                                            d_7550_ext))
+                                                                                                                            type(s_9806_ext),
+                                                                                                                            s_9806_ext))
     try:
-      assert ((type(x_mem_8284_ext) in [np.ndarray,
-                                        cl.array.Array]) and (x_mem_8284_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7549 = np.int32(x_mem_8284_ext.shape[0])
-      if (type(x_mem_8284_ext) == cl.array.Array):
-        x_mem_8284 = x_mem_8284_ext.data
+      assert ((type(x_mem_10627_ext) in [np.ndarray,
+                                         cl.array.Array]) and (x_mem_10627_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9804 = np.int32(x_mem_10627_ext.shape[0])
+      sizze_9805 = np.int32(x_mem_10627_ext.shape[1])
+      if (type(x_mem_10627_ext) == cl.array.Array):
+        x_mem_10627 = x_mem_10627_ext.data
       else:
-        x_mem_8284 = opencl_alloc(self, np.int64(x_mem_8284_ext.nbytes),
-                                  "x_mem_8284")
-        if (np.int64(x_mem_8284_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, x_mem_8284,
-                          normaliseArray(x_mem_8284_ext),
+        x_mem_10627 = opencl_alloc(self, np.int64(x_mem_10627_ext.nbytes),
+                                   "x_mem_10627")
+        if (np.int64(x_mem_10627_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, x_mem_10627,
+                          normaliseArray(x_mem_10627_ext),
+                          is_blocking=synchronous)
+    except (TypeError, AssertionError) as e:
+      raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][]f32",
+                                                                                                                            type(x_mem_10627_ext),
+                                                                                                                            x_mem_10627_ext))
+    (out_mem_10792, out_arrsizze_10793,
+     out_arrsizze_10794) = self.futhark_lmatadd(x_mem_10627, sizze_9804,
+                                                sizze_9805, s_9806)
+    return cl.array.Array(self.queue, (out_arrsizze_10793, out_arrsizze_10794),
+                          ct.c_float, data=out_mem_10792)
+  def substract2(self, x_mem_10627_ext, y_mem_10628_ext):
+    try:
+      assert ((type(x_mem_10627_ext) in [np.ndarray,
+                                         cl.array.Array]) and (x_mem_10627_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9789 = np.int32(x_mem_10627_ext.shape[0])
+      if (type(x_mem_10627_ext) == cl.array.Array):
+        x_mem_10627 = x_mem_10627_ext.data
+      else:
+        x_mem_10627 = opencl_alloc(self, np.int64(x_mem_10627_ext.nbytes),
+                                   "x_mem_10627")
+        if (np.int64(x_mem_10627_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, x_mem_10627,
+                          normaliseArray(x_mem_10627_ext),
+                          is_blocking=synchronous)
+    except (TypeError, AssertionError) as e:
+      raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
+                                                                                                                            type(x_mem_10627_ext),
+                                                                                                                            x_mem_10627_ext))
+    try:
+      assert ((type(y_mem_10628_ext) in [np.ndarray,
+                                         cl.array.Array]) and (y_mem_10628_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9790 = np.int32(y_mem_10628_ext.shape[0])
+      if (type(y_mem_10628_ext) == cl.array.Array):
+        y_mem_10628 = y_mem_10628_ext.data
+      else:
+        y_mem_10628 = opencl_alloc(self, np.int64(y_mem_10628_ext.nbytes),
+                                   "y_mem_10628")
+        if (np.int64(y_mem_10628_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, y_mem_10628,
+                          normaliseArray(y_mem_10628_ext),
                           is_blocking=synchronous)
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
-                                                                                                                            type(x_mem_8284_ext),
-                                                                                                                            x_mem_8284_ext))
-    (out_mem_8405, out_arrsizze_8406) = self.futhark_substract(x_mem_8284,
-                                                               sizze_7549,
-                                                               d_7550)
-    return cl.array.Array(self.queue, (out_arrsizze_8406,), ct.c_float,
-                          data=out_mem_8405)
-  def add(self, x_mem_8284_ext, s_7545_ext):
+                                                                                                                            type(y_mem_10628_ext),
+                                                                                                                            y_mem_10628_ext))
+    (out_mem_10785, out_arrsizze_10786) = self.futhark_substract2(x_mem_10627,
+                                                                  y_mem_10628,
+                                                                  sizze_9789,
+                                                                  sizze_9790)
+    return cl.array.Array(self.queue, (out_arrsizze_10786,), ct.c_float,
+                          data=out_mem_10785)
+  def add2(self, x_mem_10627_ext, y_mem_10628_ext):
     try:
-      assert ((type(x_mem_8284_ext) in [np.ndarray,
-                                        cl.array.Array]) and (x_mem_8284_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7543 = np.int32(x_mem_8284_ext.shape[0])
-      if (type(x_mem_8284_ext) == cl.array.Array):
-        x_mem_8284 = x_mem_8284_ext.data
+      assert ((type(x_mem_10627_ext) in [np.ndarray,
+                                         cl.array.Array]) and (x_mem_10627_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9774 = np.int32(x_mem_10627_ext.shape[0])
+      if (type(x_mem_10627_ext) == cl.array.Array):
+        x_mem_10627 = x_mem_10627_ext.data
       else:
-        x_mem_8284 = opencl_alloc(self, np.int64(x_mem_8284_ext.nbytes),
-                                  "x_mem_8284")
-        if (np.int64(x_mem_8284_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, x_mem_8284,
-                          normaliseArray(x_mem_8284_ext),
+        x_mem_10627 = opencl_alloc(self, np.int64(x_mem_10627_ext.nbytes),
+                                   "x_mem_10627")
+        if (np.int64(x_mem_10627_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, x_mem_10627,
+                          normaliseArray(x_mem_10627_ext),
                           is_blocking=synchronous)
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
-                                                                                                                            type(x_mem_8284_ext),
-                                                                                                                            x_mem_8284_ext))
+                                                                                                                            type(x_mem_10627_ext),
+                                                                                                                            x_mem_10627_ext))
     try:
-      s_7545 = np.float32(ct.c_float(s_7545_ext))
-    except (TypeError, AssertionError) as e:
-      raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("f32",
-                                                                                                                            type(s_7545_ext),
-                                                                                                                            s_7545_ext))
-    (out_mem_8398, out_arrsizze_8399) = self.futhark_add(x_mem_8284, sizze_7543,
-                                                         s_7545)
-    return cl.array.Array(self.queue, (out_arrsizze_8399,), ct.c_float,
-                          data=out_mem_8398)
-  def multiply(self, x_mem_8284_ext, m_7539_ext):
-    try:
-      assert ((type(x_mem_8284_ext) in [np.ndarray,
-                                        cl.array.Array]) and (x_mem_8284_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7537 = np.int32(x_mem_8284_ext.shape[0])
-      if (type(x_mem_8284_ext) == cl.array.Array):
-        x_mem_8284 = x_mem_8284_ext.data
+      assert ((type(y_mem_10628_ext) in [np.ndarray,
+                                         cl.array.Array]) and (y_mem_10628_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9775 = np.int32(y_mem_10628_ext.shape[0])
+      if (type(y_mem_10628_ext) == cl.array.Array):
+        y_mem_10628 = y_mem_10628_ext.data
       else:
-        x_mem_8284 = opencl_alloc(self, np.int64(x_mem_8284_ext.nbytes),
-                                  "x_mem_8284")
-        if (np.int64(x_mem_8284_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, x_mem_8284,
-                          normaliseArray(x_mem_8284_ext),
+        y_mem_10628 = opencl_alloc(self, np.int64(y_mem_10628_ext.nbytes),
+                                   "y_mem_10628")
+        if (np.int64(y_mem_10628_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, y_mem_10628,
+                          normaliseArray(y_mem_10628_ext),
                           is_blocking=synchronous)
     except (TypeError, AssertionError) as e:
-      raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
-                                                                                                                            type(x_mem_8284_ext),
-                                                                                                                            x_mem_8284_ext))
+      raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
+                                                                                                                            type(y_mem_10628_ext),
+                                                                                                                            y_mem_10628_ext))
+    (out_mem_10778, out_arrsizze_10779) = self.futhark_add2(x_mem_10627,
+                                                            y_mem_10628,
+                                                            sizze_9774,
+                                                            sizze_9775)
+    return cl.array.Array(self.queue, (out_arrsizze_10779,), ct.c_float,
+                          data=out_mem_10778)
+  def lmatmultiply(self, p_9767_ext, x_mem_10627_ext):
     try:
-      m_7539 = np.float32(ct.c_float(m_7539_ext))
-    except (TypeError, AssertionError) as e:
-      raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("f32",
-                                                                                                                            type(m_7539_ext),
-                                                                                                                            m_7539_ext))
-    (out_mem_8391, out_arrsizze_8392) = self.futhark_multiply(x_mem_8284,
-                                                              sizze_7537,
-                                                              m_7539)
-    return cl.array.Array(self.queue, (out_arrsizze_8392,), ct.c_float,
-                          data=out_mem_8391)
-  def divide(self, div_7532_ext, x_mem_8284_ext):
-    try:
-      div_7532 = np.float32(ct.c_float(div_7532_ext))
+      p_9767 = np.float32(ct.c_float(p_9767_ext))
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("f32",
-                                                                                                                            type(div_7532_ext),
-                                                                                                                            div_7532_ext))
+                                                                                                                            type(p_9767_ext),
+                                                                                                                            p_9767_ext))
     try:
-      assert ((type(x_mem_8284_ext) in [np.ndarray,
-                                        cl.array.Array]) and (x_mem_8284_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7531 = np.int32(x_mem_8284_ext.shape[0])
-      if (type(x_mem_8284_ext) == cl.array.Array):
-        x_mem_8284 = x_mem_8284_ext.data
+      assert ((type(x_mem_10627_ext) in [np.ndarray,
+                                         cl.array.Array]) and (x_mem_10627_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9765 = np.int32(x_mem_10627_ext.shape[0])
+      sizze_9766 = np.int32(x_mem_10627_ext.shape[1])
+      if (type(x_mem_10627_ext) == cl.array.Array):
+        x_mem_10627 = x_mem_10627_ext.data
       else:
-        x_mem_8284 = opencl_alloc(self, np.int64(x_mem_8284_ext.nbytes),
-                                  "x_mem_8284")
-        if (np.int64(x_mem_8284_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, x_mem_8284,
-                          normaliseArray(x_mem_8284_ext),
+        x_mem_10627 = opencl_alloc(self, np.int64(x_mem_10627_ext.nbytes),
+                                   "x_mem_10627")
+        if (np.int64(x_mem_10627_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, x_mem_10627,
+                          normaliseArray(x_mem_10627_ext),
+                          is_blocking=synchronous)
+    except (TypeError, AssertionError) as e:
+      raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][]f32",
+                                                                                                                            type(x_mem_10627_ext),
+                                                                                                                            x_mem_10627_ext))
+    (out_mem_10770, out_arrsizze_10771,
+     out_arrsizze_10772) = self.futhark_lmatmultiply(x_mem_10627, sizze_9765,
+                                                     sizze_9766, p_9767)
+    return cl.array.Array(self.queue, (out_arrsizze_10771, out_arrsizze_10772),
+                          ct.c_float, data=out_mem_10770)
+  def multiply2(self, x_mem_10627_ext, y_mem_10628_ext):
+    try:
+      assert ((type(x_mem_10627_ext) in [np.ndarray,
+                                         cl.array.Array]) and (x_mem_10627_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9750 = np.int32(x_mem_10627_ext.shape[0])
+      if (type(x_mem_10627_ext) == cl.array.Array):
+        x_mem_10627 = x_mem_10627_ext.data
+      else:
+        x_mem_10627 = opencl_alloc(self, np.int64(x_mem_10627_ext.nbytes),
+                                   "x_mem_10627")
+        if (np.int64(x_mem_10627_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, x_mem_10627,
+                          normaliseArray(x_mem_10627_ext),
+                          is_blocking=synchronous)
+    except (TypeError, AssertionError) as e:
+      raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
+                                                                                                                            type(x_mem_10627_ext),
+                                                                                                                            x_mem_10627_ext))
+    try:
+      assert ((type(y_mem_10628_ext) in [np.ndarray,
+                                         cl.array.Array]) and (y_mem_10628_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9751 = np.int32(y_mem_10628_ext.shape[0])
+      if (type(y_mem_10628_ext) == cl.array.Array):
+        y_mem_10628 = y_mem_10628_ext.data
+      else:
+        y_mem_10628 = opencl_alloc(self, np.int64(y_mem_10628_ext.nbytes),
+                                   "y_mem_10628")
+        if (np.int64(y_mem_10628_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, y_mem_10628,
+                          normaliseArray(y_mem_10628_ext),
                           is_blocking=synchronous)
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
-                                                                                                                            type(x_mem_8284_ext),
-                                                                                                                            x_mem_8284_ext))
-    (out_mem_8384, out_arrsizze_8385) = self.futhark_divide(x_mem_8284,
-                                                            sizze_7531,
-                                                            div_7532)
-    return cl.array.Array(self.queue, (out_arrsizze_8385,), ct.c_float,
-                          data=out_mem_8384)
-  def negation(self, x_mem_8284_ext):
+                                                                                                                            type(y_mem_10628_ext),
+                                                                                                                            y_mem_10628_ext))
+    (out_mem_10763, out_arrsizze_10764) = self.futhark_multiply2(x_mem_10627,
+                                                                 y_mem_10628,
+                                                                 sizze_9750,
+                                                                 sizze_9751)
+    return cl.array.Array(self.queue, (out_arrsizze_10764,), ct.c_float,
+                          data=out_mem_10763)
+  def substract(self, d_9745_ext, x_mem_10627_ext):
     try:
-      assert ((type(x_mem_8284_ext) in [np.ndarray,
-                                        cl.array.Array]) and (x_mem_8284_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7526 = np.int32(x_mem_8284_ext.shape[0])
-      if (type(x_mem_8284_ext) == cl.array.Array):
-        x_mem_8284 = x_mem_8284_ext.data
+      d_9745 = np.float32(ct.c_float(d_9745_ext))
+    except (TypeError, AssertionError) as e:
+      raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("f32",
+                                                                                                                            type(d_9745_ext),
+                                                                                                                            d_9745_ext))
+    try:
+      assert ((type(x_mem_10627_ext) in [np.ndarray,
+                                         cl.array.Array]) and (x_mem_10627_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9744 = np.int32(x_mem_10627_ext.shape[0])
+      if (type(x_mem_10627_ext) == cl.array.Array):
+        x_mem_10627 = x_mem_10627_ext.data
       else:
-        x_mem_8284 = opencl_alloc(self, np.int64(x_mem_8284_ext.nbytes),
-                                  "x_mem_8284")
-        if (np.int64(x_mem_8284_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, x_mem_8284,
-                          normaliseArray(x_mem_8284_ext),
+        x_mem_10627 = opencl_alloc(self, np.int64(x_mem_10627_ext.nbytes),
+                                   "x_mem_10627")
+        if (np.int64(x_mem_10627_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, x_mem_10627,
+                          normaliseArray(x_mem_10627_ext),
+                          is_blocking=synchronous)
+    except (TypeError, AssertionError) as e:
+      raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
+                                                                                                                            type(x_mem_10627_ext),
+                                                                                                                            x_mem_10627_ext))
+    (out_mem_10756, out_arrsizze_10757) = self.futhark_substract(x_mem_10627,
+                                                                 sizze_9744,
+                                                                 d_9745)
+    return cl.array.Array(self.queue, (out_arrsizze_10757,), ct.c_float,
+                          data=out_mem_10756)
+  def add(self, s_9739_ext, x_mem_10627_ext):
+    try:
+      s_9739 = np.float32(ct.c_float(s_9739_ext))
+    except (TypeError, AssertionError) as e:
+      raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("f32",
+                                                                                                                            type(s_9739_ext),
+                                                                                                                            s_9739_ext))
+    try:
+      assert ((type(x_mem_10627_ext) in [np.ndarray,
+                                         cl.array.Array]) and (x_mem_10627_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9738 = np.int32(x_mem_10627_ext.shape[0])
+      if (type(x_mem_10627_ext) == cl.array.Array):
+        x_mem_10627 = x_mem_10627_ext.data
+      else:
+        x_mem_10627 = opencl_alloc(self, np.int64(x_mem_10627_ext.nbytes),
+                                   "x_mem_10627")
+        if (np.int64(x_mem_10627_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, x_mem_10627,
+                          normaliseArray(x_mem_10627_ext),
+                          is_blocking=synchronous)
+    except (TypeError, AssertionError) as e:
+      raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
+                                                                                                                            type(x_mem_10627_ext),
+                                                                                                                            x_mem_10627_ext))
+    (out_mem_10749, out_arrsizze_10750) = self.futhark_add(x_mem_10627,
+                                                           sizze_9738, s_9739)
+    return cl.array.Array(self.queue, (out_arrsizze_10750,), ct.c_float,
+                          data=out_mem_10749)
+  def multiply(self, m_9733_ext, x_mem_10627_ext):
+    try:
+      m_9733 = np.float32(ct.c_float(m_9733_ext))
+    except (TypeError, AssertionError) as e:
+      raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("f32",
+                                                                                                                            type(m_9733_ext),
+                                                                                                                            m_9733_ext))
+    try:
+      assert ((type(x_mem_10627_ext) in [np.ndarray,
+                                         cl.array.Array]) and (x_mem_10627_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9732 = np.int32(x_mem_10627_ext.shape[0])
+      if (type(x_mem_10627_ext) == cl.array.Array):
+        x_mem_10627 = x_mem_10627_ext.data
+      else:
+        x_mem_10627 = opencl_alloc(self, np.int64(x_mem_10627_ext.nbytes),
+                                   "x_mem_10627")
+        if (np.int64(x_mem_10627_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, x_mem_10627,
+                          normaliseArray(x_mem_10627_ext),
+                          is_blocking=synchronous)
+    except (TypeError, AssertionError) as e:
+      raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
+                                                                                                                            type(x_mem_10627_ext),
+                                                                                                                            x_mem_10627_ext))
+    (out_mem_10742, out_arrsizze_10743) = self.futhark_multiply(x_mem_10627,
+                                                                sizze_9732,
+                                                                m_9733)
+    return cl.array.Array(self.queue, (out_arrsizze_10743,), ct.c_float,
+                          data=out_mem_10742)
+  def divide(self, d_9727_ext, x_mem_10627_ext):
+    try:
+      d_9727 = np.float32(ct.c_float(d_9727_ext))
+    except (TypeError, AssertionError) as e:
+      raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("f32",
+                                                                                                                            type(d_9727_ext),
+                                                                                                                            d_9727_ext))
+    try:
+      assert ((type(x_mem_10627_ext) in [np.ndarray,
+                                         cl.array.Array]) and (x_mem_10627_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9726 = np.int32(x_mem_10627_ext.shape[0])
+      if (type(x_mem_10627_ext) == cl.array.Array):
+        x_mem_10627 = x_mem_10627_ext.data
+      else:
+        x_mem_10627 = opencl_alloc(self, np.int64(x_mem_10627_ext.nbytes),
+                                   "x_mem_10627")
+        if (np.int64(x_mem_10627_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, x_mem_10627,
+                          normaliseArray(x_mem_10627_ext),
+                          is_blocking=synchronous)
+    except (TypeError, AssertionError) as e:
+      raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
+                                                                                                                            type(x_mem_10627_ext),
+                                                                                                                            x_mem_10627_ext))
+    (out_mem_10735, out_arrsizze_10736) = self.futhark_divide(x_mem_10627,
+                                                              sizze_9726,
+                                                              d_9727)
+    return cl.array.Array(self.queue, (out_arrsizze_10736,), ct.c_float,
+                          data=out_mem_10735)
+  def negation(self, x_mem_10627_ext):
+    try:
+      assert ((type(x_mem_10627_ext) in [np.ndarray,
+                                         cl.array.Array]) and (x_mem_10627_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9721 = np.int32(x_mem_10627_ext.shape[0])
+      if (type(x_mem_10627_ext) == cl.array.Array):
+        x_mem_10627 = x_mem_10627_ext.data
+      else:
+        x_mem_10627 = opencl_alloc(self, np.int64(x_mem_10627_ext.nbytes),
+                                   "x_mem_10627")
+        if (np.int64(x_mem_10627_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, x_mem_10627,
+                          normaliseArray(x_mem_10627_ext),
                           is_blocking=synchronous)
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
-                                                                                                                            type(x_mem_8284_ext),
-                                                                                                                            x_mem_8284_ext))
-    (out_mem_8377, out_arrsizze_8378) = self.futhark_negation(x_mem_8284,
-                                                              sizze_7526)
-    return cl.array.Array(self.queue, (out_arrsizze_8378,), ct.c_float,
-                          data=out_mem_8377)
-  def exp(self, x_mem_8284_ext):
+                                                                                                                            type(x_mem_10627_ext),
+                                                                                                                            x_mem_10627_ext))
+    (out_mem_10728, out_arrsizze_10729) = self.futhark_negation(x_mem_10627,
+                                                                sizze_9721)
+    return cl.array.Array(self.queue, (out_arrsizze_10729,), ct.c_float,
+                          data=out_mem_10728)
+  def exp(self, x_mem_10627_ext):
     try:
-      assert ((type(x_mem_8284_ext) in [np.ndarray,
-                                        cl.array.Array]) and (x_mem_8284_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7521 = np.int32(x_mem_8284_ext.shape[0])
-      if (type(x_mem_8284_ext) == cl.array.Array):
-        x_mem_8284 = x_mem_8284_ext.data
+      assert ((type(x_mem_10627_ext) in [np.ndarray,
+                                         cl.array.Array]) and (x_mem_10627_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9716 = np.int32(x_mem_10627_ext.shape[0])
+      if (type(x_mem_10627_ext) == cl.array.Array):
+        x_mem_10627 = x_mem_10627_ext.data
       else:
-        x_mem_8284 = opencl_alloc(self, np.int64(x_mem_8284_ext.nbytes),
-                                  "x_mem_8284")
-        if (np.int64(x_mem_8284_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, x_mem_8284,
-                          normaliseArray(x_mem_8284_ext),
+        x_mem_10627 = opencl_alloc(self, np.int64(x_mem_10627_ext.nbytes),
+                                   "x_mem_10627")
+        if (np.int64(x_mem_10627_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, x_mem_10627,
+                          normaliseArray(x_mem_10627_ext),
                           is_blocking=synchronous)
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[]f32",
-                                                                                                                            type(x_mem_8284_ext),
-                                                                                                                            x_mem_8284_ext))
-    (out_mem_8370, out_arrsizze_8371) = self.futhark_exp(x_mem_8284, sizze_7521)
-    return cl.array.Array(self.queue, (out_arrsizze_8371,), ct.c_float,
-                          data=out_mem_8370)
-  def transp(self, x_mem_8284_ext):
+                                                                                                                            type(x_mem_10627_ext),
+                                                                                                                            x_mem_10627_ext))
+    (out_mem_10721, out_arrsizze_10722) = self.futhark_exp(x_mem_10627,
+                                                           sizze_9716)
+    return cl.array.Array(self.queue, (out_arrsizze_10722,), ct.c_float,
+                          data=out_mem_10721)
+  def transp(self, x_mem_10627_ext):
     try:
-      assert ((type(x_mem_8284_ext) in [np.ndarray,
-                                        cl.array.Array]) and (x_mem_8284_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_7517 = np.int32(x_mem_8284_ext.shape[0])
-      sizze_7518 = np.int32(x_mem_8284_ext.shape[1])
-      if (type(x_mem_8284_ext) == cl.array.Array):
-        x_mem_8284 = x_mem_8284_ext.data
+      assert ((type(x_mem_10627_ext) in [np.ndarray,
+                                         cl.array.Array]) and (x_mem_10627_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_9712 = np.int32(x_mem_10627_ext.shape[0])
+      sizze_9713 = np.int32(x_mem_10627_ext.shape[1])
+      if (type(x_mem_10627_ext) == cl.array.Array):
+        x_mem_10627 = x_mem_10627_ext.data
       else:
-        x_mem_8284 = opencl_alloc(self, np.int64(x_mem_8284_ext.nbytes),
-                                  "x_mem_8284")
-        if (np.int64(x_mem_8284_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, x_mem_8284,
-                          normaliseArray(x_mem_8284_ext),
+        x_mem_10627 = opencl_alloc(self, np.int64(x_mem_10627_ext.nbytes),
+                                   "x_mem_10627")
+        if (np.int64(x_mem_10627_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, x_mem_10627,
+                          normaliseArray(x_mem_10627_ext),
                           is_blocking=synchronous)
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][]f32",
-                                                                                                                            type(x_mem_8284_ext),
-                                                                                                                            x_mem_8284_ext))
-    (out_mem_8367, out_arrsizze_8368,
-     out_arrsizze_8369) = self.futhark_transp(x_mem_8284, sizze_7517,
-                                              sizze_7518)
-    return cl.array.Array(self.queue, (out_arrsizze_8368, out_arrsizze_8369),
-                          ct.c_float, data=out_mem_8367)
+                                                                                                                            type(x_mem_10627_ext),
+                                                                                                                            x_mem_10627_ext))
+    (out_mem_10718, out_arrsizze_10719,
+     out_arrsizze_10720) = self.futhark_transp(x_mem_10627, sizze_9712,
+                                               sizze_9713)
+    return cl.array.Array(self.queue, (out_arrsizze_10719, out_arrsizze_10720),
+                          ct.c_float, data=out_mem_10718)

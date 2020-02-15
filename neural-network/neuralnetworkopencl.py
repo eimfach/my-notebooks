@@ -1,10 +1,13 @@
 import gpu
 import numpy
 
+a = 1.75
+b = numpy.array([[1,2,3], [4,5,6]])
+print(a+b)
+
 gpu_api = gpu.GPU()
 
-# CPU based calculations
-
+# GPU based calculations
 
 class NeuralNetwork:
 
@@ -48,34 +51,28 @@ class NeuralNetwork:
 
         # calculate signals into hidden layer
         # hidden_inputs = [[0.00038f32], [0.0002f32] ...]
-        hidden_inputs = gpu_api.matmul(self.wih, inputs)
+        hidden_inputs = gpu_api.dot(self.wih, inputs)
         
         # calculate the signals emerging from hidden layer
         hidden_outputs = self.activation_function(hidden_inputs)
 
         # calculate signals into final output layer
-        final_inputs = gpu_api.matmul(self.who, hidden_outputs)
+        final_inputs = gpu_api.dot(self.who, hidden_outputs)
         # calculate the signals emerging from final output layer
         final_outputs = self.activation_function(final_inputs)
 
         # output layer error is the (target - actual)
         output_errors = gpu_api.matsubstract(targets, final_outputs)
         # hidden layer error is the output_errors, split by weights, recombined at hidden nodes
-        hidden_errors = gpu_api.matmul(self.who.T, output_errors)
+        hidden_errors = gpu_api.dot(self.who.T, output_errors)
 
-        # print("output_errors",type(output_errors))
-        # print("final_outputs",type(final_outputs))
-        # print("hidden_outputs",type(hidden_outputs))
-        # print("hidden_errors",type(hidden_errors))
-        # print("inputs",type(inputs))
-        prod1 = gpu_api.multiply2(gpu_api.multiply2(output_errors, final_outputs), gpu_api.lmatsubstract(1.0, final_outputs))
-
+        prod1 = gpu_api.matmultiply(gpu_api.matmultiply(output_errors, final_outputs), gpu_api.lmatsubstract(1.0, final_outputs))
         # update the weights for the links between the hidden and output layers
-        self.who = gpu_api.add2(self.who, gpu_api.multiply(gpu_api.matmul(prod1, gpu_api.transp(hidden_outputs)), self.lr))
+        self.who = gpu_api.matadd(self.who, gpu_api.lmatmultiply(self.lr, gpu_api.dot(prod1, gpu_api.transp(hidden_outputs))))
 
-        prod2 = gpu_api.multiply2(gpu_api.multiply2(hidden_errors, hidden_outputs), gpu_api.substract(1.0, hidden_outputs))
+        prod2 = gpu_api.matmultiply(gpu_api.matmultiply(hidden_errors, hidden_outputs), gpu_api.lmatsubstract(1.0, hidden_outputs))
         # update the weights for the links between the input and hidden layers
-        self.wih = gpu_api.add2(self.wih, gpu_api.multiply(gpu_api.matmul(prod2, gpu_api.transp(inputs)), self.lr)) 
+        self.wih = gpu_api.matadd(self.wih, gpu_api.lmatmultiply(self.lr, gpu_api.dot(prod2, gpu_api.transp(inputs)))) 
 
         pass
 
@@ -86,14 +83,14 @@ class NeuralNetwork:
         inputs = numpy.array(inputs_list, ndmin=2, dtype=numpy.float32).T
 
         # calculate signals into hidden layer
-        hidden_inputs = gpu_api.matmul(self.wih, inputs)
+        hidden_inputs = gpu_api.dot(self.wih, inputs)
         # calculate the signals emerging from hidden layer
         hidden_outputs = self.activation_function(hidden_inputs)
 
         # calculate signals into final output layer
-        final_inputs = gpu_api.mat_mul(self.who, hidden_outputs)
+        final_inputs = gpu_api.dot(self.who, hidden_outputs)
         # calculate the signals emerging from final output layer
         final_outputs = self.activation_function(final_inputs)
 
         # convert to numpy array
-        return final_outputs.get()
+        return final_outputs
