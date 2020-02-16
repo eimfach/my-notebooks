@@ -1,12 +1,15 @@
 import numpy
+import scipy.special
+import GPUTraining
+
+gpu_training = GPUTraining.GPUTraining()
 
 # GPU based calculations
 
 class NeuralNetwork:
 
     # initialise the neural network
-    def __init__(self, gpuApi, learningRate, iNodes, hNodes, oNodes):
-        self.gpu_api = gpuApi
+    def __init__(self, learningRate, iNodes, hNodes, oNodes):
 
         # set number of nodes in each input, hidden, output layer
         self.inodes = iNodes
@@ -19,66 +22,47 @@ class NeuralNetwork:
         # w12 w22 etc
         # cpu based
         # matrix: [[0.014, 0.056, -0.032 ... ] ... [0.045, 0.032, -0.067 ... ] ... ]
-        self.wih = self.gpu_api.arr(numpy.array(numpy.random.normal(
-            0.0, pow(self.inodes, -0.5), (self.hnodes, self.inodes)), dtype=numpy.float32))
+        self.wih = numpy.array(numpy.random.normal(
+            0.0, pow(self.inodes, -0.5), (self.hnodes, self.inodes)), dtype=numpy.float32)
+
         # matrix: [[0.014, 0.056, -0.032 ... ] ... [0.045, 0.032, -0.067 ... ] ... ]
-        self.who = self.gpu_api.arr(numpy.array(numpy.random.normal(
-            0.0, pow(self.hnodes, -0.5), (self.onodes, self.hnodes)), dtype=numpy.float32))
+        self.who = numpy.array(numpy.random.normal(
+            0.0, pow(self.hnodes, -0.5), (self.onodes, self.hnodes)), dtype=numpy.float32)
 
         # learning rate
         self.lr = learningRate
 
         # activation function is the sigmoid function
-        self.activation_function = lambda x: self.gpu_api.sigmoid(x)
+        self.activation_function = lambda x: scipy.special.expit(x)
 
         pass
 
     # train the neural network
-
     def train(self, inputs, targets):
+        # gpu based
 
-        # calculate signals into hidden layer
-        # hidden_inputs = [[0.00038f32], [0.0002f32] ...]
-        hidden_inputs = self.gpu_api.dot(self.wih, inputs)
-        
-        # calculate the signals emerging from hidden layer
-        hidden_outputs = self.activation_function(hidden_inputs)
+        inputs = numpy.array(inputs, ndmin=2, dtype=numpy.float32).T
+        targets = numpy.array(targets, ndmin=2, dtype=numpy.float32).T
 
-        # calculate signals into final output layer
-        final_inputs = self.gpu_api.dot(self.who, hidden_outputs)
-        # calculate the signals emerging from final output layer
-        final_outputs = self.activation_function(final_inputs)
-
-        # output layer error is the (target - actual)
-        output_errors = self.gpu_api.matsubstract(targets, final_outputs)
-        # hidden layer error is the output_errors, split by weights, recombined at hidden nodes
-        hidden_errors = self.gpu_api.dot(self.who.T, output_errors)
-
-        prod1 = self.gpu_api.matmultiply(self.gpu_api.matmultiply(output_errors, final_outputs), self.gpu_api.lmatsubstract(1.0, final_outputs))
-        # update the weights for the links between the hidden and output layers
-        self.who = self.gpu_api.matadd(self.who, self.gpu_api.lmatmultiply(self.lr, self.gpu_api.dot(prod1, self.gpu_api.transp(hidden_outputs))))
-
-        prod2 = self.gpu_api.matmultiply(self.gpu_api.matmultiply(hidden_errors, hidden_outputs), self.gpu_api.lmatsubstract(1.0, hidden_outputs))
-        # update the weights for the links between the input and hidden layers
-        self.wih = self.gpu_api.matadd(self.wih, self.gpu_api.lmatmultiply(self.lr, self.gpu_api.dot(prod2, self.gpu_api.transp(inputs)))) 
-
+        updated_who, updated_wih = gpu_training.main(self.lr, self.wih, self.who, inputs, targets)
+        self.who = updated_who
+        self.wih = updated_wih
         pass
 
     # query the neural network
-    def query(self, inputs_list):
-        # convert inputs list to 2d array
+    def query(self, inputs):
         # cpu based
-        inputs = numpy.array(inputs_list, ndmin=2, dtype=numpy.float32).T
+        # convert inputs list to 2d array
+        inputs = numpy.array(inputs, ndmin=2).T
 
         # calculate signals into hidden layer
-        hidden_inputs = self.gpu_api.dot(self.wih, inputs)
+        hidden_inputs = numpy.dot(self.wih.get(), inputs)
         # calculate the signals emerging from hidden layer
         hidden_outputs = self.activation_function(hidden_inputs)
 
         # calculate signals into final output layer
-        final_inputs = self.gpu_api.dot(self.who, hidden_outputs)
+        final_inputs = numpy.dot(self.who.get(), hidden_outputs)
         # calculate the signals emerging from final output layer
         final_outputs = self.activation_function(final_inputs)
 
-        # convert to numpy array
         return final_outputs
