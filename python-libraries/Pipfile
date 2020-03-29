@@ -6,12 +6,9 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-pyopencl = "*"
-scipy = "*"
-mako = "*"
-numpy = "*"
-imageio = "*"
-matplotlib = "*"
+mistune = "*"
+markdown = "*"
+mistletoe = "*"
 
 [requires]
 python_version = "3.8"

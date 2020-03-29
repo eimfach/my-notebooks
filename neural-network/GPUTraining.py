@@ -1420,2045 +1420,3474 @@ __kernel void map_transpose_f32_small(__local volatile
             ((__global float *) srcmem_2)[idata_offset_34 + index_in_35];
     }
 }
-__kernel void segmap_11374(int32_t sizze_11066, int32_t sizze_11067,
-                           int32_t sizze_11068, __global
-                           unsigned char *targets_mem_13443, __global
-                           unsigned char *mem_13529, __global
-                           unsigned char *mem_13534)
+__kernel void segred_nonseg_13152(__local volatile
+                                  int64_t *sync_arr_mem_13434_backing_aligned_0,
+                                  int32_t sizze_12930, int32_t sizze_12932,
+                                  int32_t sizze_12933, int32_t sizze_12934,
+                                  int32_t sizze_12935, int32_t sizze_12936,
+                                  int32_t sizze_12937, int32_t sizze_12938,
+                                  float lr_12939, int32_t num_groups_13146,
+                                  __global unsigned char *wih_mem_13263,
+                                  __global unsigned char *who_mem_13264,
+                                  __global unsigned char *mem_13271, __global
+                                  unsigned char *mem_13276,
+                                  int32_t num_threads_13277, __global
+                                  unsigned char *mem_13285, __global
+                                  unsigned char *mem_13293, __global
+                                  unsigned char *mem_13298, __global
+                                  unsigned char *mem_13301, __global
+                                  unsigned char *mem_13306, __global
+                                  unsigned char *mem_13311, __global
+                                  unsigned char *mem_13314, __global
+                                  unsigned char *mem_13317, __global
+                                  unsigned char *mem_13322, __global
+                                  unsigned char *mem_13325, __global
+                                  unsigned char *mem_13328, __global
+                                  unsigned char *mem_13333, __global
+                                  unsigned char *mem_13336, __global
+                                  unsigned char *mem_13341, __global
+                                  unsigned char *mem_13344, __global
+                                  unsigned char *mem_13347, __global
+                                  unsigned char *mem_13352, __global
+                                  unsigned char *mem_13355, __global
+                                  unsigned char *mem_13362, __global
+                                  unsigned char *mem_13369, __global
+                                  unsigned char *counter_mem_13422, __global
+                                  unsigned char *group_res_arr_mem_13424,
+                                  __global
+                                  unsigned char *group_res_arr_mem_13426)
 {
-    const int32_t segmap_group_sizze_11380 = mainzisegmap_group_sizze_11379;
+    const int32_t segred_group_sizze_13144 = mainzisegred_group_sizze_13143;
     const int block_dim0 = 0;
     const int block_dim1 = 1;
     const int block_dim2 = 2;
-    int32_t global_tid_13825;
-    int32_t local_tid_13826;
-    int32_t group_sizze_13829;
-    int32_t wave_sizze_13828;
-    int32_t group_tid_13827;
+    __local volatile char *restrict sync_arr_mem_13434_backing_0 =
+                          (__local volatile
+                           char *) sync_arr_mem_13434_backing_aligned_0;
+    int32_t global_tid_13429;
+    int32_t local_tid_13430;
+    int32_t group_sizze_13433;
+    int32_t wave_sizze_13432;
+    int32_t group_tid_13431;
     
-    global_tid_13825 = get_global_id(0);
-    local_tid_13826 = get_local_id(0);
-    group_sizze_13829 = get_local_size(0);
-    wave_sizze_13828 = LOCKSTEP_WIDTH;
-    group_tid_13827 = get_group_id(0);
+    global_tid_13429 = get_global_id(0);
+    local_tid_13430 = get_local_id(0);
+    group_sizze_13433 = get_local_size(0);
+    wave_sizze_13432 = LOCKSTEP_WIDTH;
+    group_tid_13431 = get_group_id(0);
     
-    int32_t phys_tid_11374 = global_tid_13825;
-    int32_t gtid_11372 = squot32(group_tid_13827 * segmap_group_sizze_11380 +
-                                 local_tid_13826, sizze_11068);
-    int32_t gtid_11373;
+    int32_t phys_tid_13152 = global_tid_13429;
+    __local char *sync_arr_mem_13434;
     
-    gtid_11373 = group_tid_13827 * segmap_group_sizze_11380 + local_tid_13826 -
-        squot32(group_tid_13827 * segmap_group_sizze_11380 + local_tid_13826,
-                sizze_11068) * sizze_11068;
-    if (slt32(gtid_11372, sizze_11067) && slt32(gtid_11373, sizze_11068)) {
-        float x_11387 = ((__global float *) targets_mem_13443)[gtid_11372 *
-                                                               sizze_11068 +
-                                                               gtid_11373];
-        int32_t binop_x_11657 = sizze_11068 * gtid_11372;
-        int32_t binop_x_11658 = gtid_11373 + binop_x_11657;
-        int32_t new_index_11659 = squot32(binop_x_11658, sizze_11066);
-        int32_t binop_y_11665 = sizze_11066 * new_index_11659;
-        int32_t new_index_11666 = binop_x_11658 - binop_y_11665;
-        float x_11388 = ((__global float *) mem_13529)[new_index_11659 *
-                                                       sizze_11066 +
-                                                       new_index_11666];
-        float res_11389 = x_11387 - x_11388;
-        
-        ((__global float *) mem_13534)[gtid_11372 * sizze_11068 + gtid_11373] =
-            res_11389;
-    }
-}
-__kernel void segmap_11392(int32_t sizze_11063, int32_t sizze_11066, __global
-                           unsigned char *mem_13529, __global
-                           unsigned char *mem_13539)
-{
-    const int32_t segmap_group_sizze_11398 = mainzisegmap_group_sizze_11397;
-    const int block_dim0 = 0;
-    const int block_dim1 = 1;
-    const int block_dim2 = 2;
-    int32_t global_tid_13830;
-    int32_t local_tid_13831;
-    int32_t group_sizze_13834;
-    int32_t wave_sizze_13833;
-    int32_t group_tid_13832;
+    sync_arr_mem_13434 = (__local char *) sync_arr_mem_13434_backing_0;
     
-    global_tid_13830 = get_global_id(0);
-    local_tid_13831 = get_local_id(0);
-    group_sizze_13834 = get_local_size(0);
-    wave_sizze_13833 = LOCKSTEP_WIDTH;
-    group_tid_13832 = get_group_id(0);
+    int32_t dummy_13150 = 0;
+    int32_t gtid_13151;
     
-    int32_t phys_tid_11392 = global_tid_13830;
-    int32_t gtid_11390 = squot32(group_tid_13832 * segmap_group_sizze_11398 +
-                                 local_tid_13831, sizze_11066);
-    int32_t gtid_11391;
+    gtid_13151 = 0;
     
-    gtid_11391 = group_tid_13832 * segmap_group_sizze_11398 + local_tid_13831 -
-        squot32(group_tid_13832 * segmap_group_sizze_11398 + local_tid_13831,
-                sizze_11066) * sizze_11066;
-    if (slt32(gtid_11390, sizze_11063) && slt32(gtid_11391, sizze_11066)) {
-        float x_11405 = ((__global float *) mem_13529)[gtid_11390 *
-                                                       sizze_11066 +
-                                                       gtid_11391];
-        float res_11406 = 1.0F - x_11405;
-        
-        ((__global float *) mem_13539)[gtid_11390 * sizze_11066 + gtid_11391] =
-            res_11406;
-    }
-}
-__kernel void segmap_11466(int32_t sizze_11066, int32_t sizze_11067,
-                           int32_t sizze_11068, __global
-                           unsigned char *mem_13529, __global
-                           unsigned char *mem_13534, __global
-                           unsigned char *mem_13539, __global
-                           unsigned char *mem_13544)
-{
-    const int32_t segmap_group_sizze_11472 = mainzisegmap_group_sizze_11471;
-    const int block_dim0 = 0;
-    const int block_dim1 = 1;
-    const int block_dim2 = 2;
-    int32_t global_tid_13835;
-    int32_t local_tid_13836;
-    int32_t group_sizze_13839;
-    int32_t wave_sizze_13838;
-    int32_t group_tid_13837;
+    int32_t chunk_sizze_13438;
+    int32_t starting_point_13439 = phys_tid_13152 * squot32(sizze_12933 +
+                                                            segred_group_sizze_13144 *
+                                                            num_groups_13146 -
+                                                            1,
+                                                            segred_group_sizze_13144 *
+                                                            num_groups_13146);
+    int32_t remaining_elements_13440 = sizze_12933 - starting_point_13439;
     
-    global_tid_13835 = get_global_id(0);
-    local_tid_13836 = get_local_id(0);
-    group_sizze_13839 = get_local_size(0);
-    wave_sizze_13838 = LOCKSTEP_WIDTH;
-    group_tid_13837 = get_group_id(0);
-    
-    int32_t phys_tid_11466 = global_tid_13835;
-    int32_t gtid_11464 = squot32(group_tid_13837 * segmap_group_sizze_11472 +
-                                 local_tid_13836, sizze_11068);
-    int32_t gtid_11465;
-    
-    gtid_11465 = group_tid_13837 * segmap_group_sizze_11472 + local_tid_13836 -
-        squot32(group_tid_13837 * segmap_group_sizze_11472 + local_tid_13836,
-                sizze_11068) * sizze_11068;
-    if (slt32(gtid_11464, sizze_11067) && slt32(gtid_11465, sizze_11068)) {
-        float x_11479 = ((__global float *) mem_13534)[gtid_11464 *
-                                                       sizze_11068 +
-                                                       gtid_11465];
-        int32_t binop_x_11667 = sizze_11068 * gtid_11464;
-        int32_t binop_x_11668 = gtid_11465 + binop_x_11667;
-        int32_t new_index_11669 = squot32(binop_x_11668, sizze_11066);
-        int32_t binop_y_11675 = sizze_11066 * new_index_11669;
-        int32_t new_index_11676 = binop_x_11668 - binop_y_11675;
-        float x_11480 = ((__global float *) mem_13529)[new_index_11669 *
-                                                       sizze_11066 +
-                                                       new_index_11676];
-        float x_11481 = ((__global float *) mem_13539)[new_index_11669 *
-                                                       sizze_11066 +
-                                                       new_index_11676];
-        float res_11482 = x_11479 * x_11480;
-        float res_11483 = x_11481 * res_11482;
-        
-        ((__global float *) mem_13544)[gtid_11464 * sizze_11068 + gtid_11465] =
-            res_11483;
-    }
-}
-__kernel void segmap_11487(int32_t sizze_11061, int32_t sizze_11063,
-                           int32_t sizze_11064, __global
-                           unsigned char *who_mem_13441, __global
-                           unsigned char *mem_13591, __global
-                           unsigned char *mem_13596)
-{
-    const int32_t segmap_group_sizze_11493 = mainzisegmap_group_sizze_11492;
-    const int block_dim0 = 0;
-    const int block_dim1 = 1;
-    const int block_dim2 = 2;
-    int32_t global_tid_13853;
-    int32_t local_tid_13854;
-    int32_t group_sizze_13857;
-    int32_t wave_sizze_13856;
-    int32_t group_tid_13855;
-    
-    global_tid_13853 = get_global_id(0);
-    local_tid_13854 = get_local_id(0);
-    group_sizze_13857 = get_local_size(0);
-    wave_sizze_13856 = LOCKSTEP_WIDTH;
-    group_tid_13855 = get_group_id(0);
-    
-    int32_t phys_tid_11487 = global_tid_13853;
-    int32_t gtid_11485 = squot32(group_tid_13855 * segmap_group_sizze_11493 +
-                                 local_tid_13854, sizze_11064);
-    int32_t gtid_11486;
-    
-    gtid_11486 = group_tid_13855 * segmap_group_sizze_11493 + local_tid_13854 -
-        squot32(group_tid_13855 * segmap_group_sizze_11493 + local_tid_13854,
-                sizze_11064) * sizze_11064;
-    if (slt32(gtid_11485, sizze_11063) && slt32(gtid_11486, sizze_11064)) {
-        float x_11500 = ((__global float *) who_mem_13441)[gtid_11485 *
-                                                           sizze_11064 +
-                                                           gtid_11486];
-        int32_t binop_x_11687 = sizze_11064 * gtid_11485;
-        int32_t binop_x_11688 = gtid_11486 + binop_x_11687;
-        int32_t new_index_11689 = squot32(binop_x_11688, sizze_11061);
-        int32_t binop_y_11695 = sizze_11061 * new_index_11689;
-        int32_t new_index_11696 = binop_x_11688 - binop_y_11695;
-        float x_11501 = ((__global float *) mem_13591)[new_index_11689 *
-                                                       sizze_11061 +
-                                                       new_index_11696];
-        float res_11502 = x_11500 + x_11501;
-        
-        ((__global float *) mem_13596)[gtid_11485 * sizze_11064 + gtid_11486] =
-            res_11502;
-    }
-}
-__kernel void segmap_11505(int32_t sizze_11061, int32_t sizze_11066, __global
-                           unsigned char *mem_13486, __global
-                           unsigned char *mem_13601)
-{
-    const int32_t segmap_group_sizze_11511 = mainzisegmap_group_sizze_11510;
-    const int block_dim0 = 0;
-    const int block_dim1 = 1;
-    const int block_dim2 = 2;
-    int32_t global_tid_13858;
-    int32_t local_tid_13859;
-    int32_t group_sizze_13862;
-    int32_t wave_sizze_13861;
-    int32_t group_tid_13860;
-    
-    global_tid_13858 = get_global_id(0);
-    local_tid_13859 = get_local_id(0);
-    group_sizze_13862 = get_local_size(0);
-    wave_sizze_13861 = LOCKSTEP_WIDTH;
-    group_tid_13860 = get_group_id(0);
-    
-    int32_t phys_tid_11505 = global_tid_13858;
-    int32_t gtid_11503 = squot32(group_tid_13860 * segmap_group_sizze_11511 +
-                                 local_tid_13859, sizze_11066);
-    int32_t gtid_11504;
-    
-    gtid_11504 = group_tid_13860 * segmap_group_sizze_11511 + local_tid_13859 -
-        squot32(group_tid_13860 * segmap_group_sizze_11511 + local_tid_13859,
-                sizze_11066) * sizze_11066;
-    if (slt32(gtid_11503, sizze_11061) && slt32(gtid_11504, sizze_11066)) {
-        float x_11518 = ((__global float *) mem_13486)[gtid_11503 *
-                                                       sizze_11066 +
-                                                       gtid_11504];
-        float res_11519 = 1.0F - x_11518;
-        
-        ((__global float *) mem_13601)[gtid_11503 * sizze_11066 + gtid_11504] =
-            res_11519;
-    }
-}
-__kernel void segmap_11641(int32_t sizze_11061, int32_t sizze_11062,
-                           int32_t sizze_11065, __global
-                           unsigned char *wih_mem_13440, __global
-                           unsigned char *mem_13695, __global
-                           unsigned char *mem_13700)
-{
-    const int32_t segmap_group_sizze_11647 = mainzisegmap_group_sizze_11646;
-    const int block_dim0 = 0;
-    const int block_dim1 = 1;
-    const int block_dim2 = 2;
-    int32_t global_tid_13889;
-    int32_t local_tid_13890;
-    int32_t group_sizze_13893;
-    int32_t wave_sizze_13892;
-    int32_t group_tid_13891;
-    
-    global_tid_13889 = get_global_id(0);
-    local_tid_13890 = get_local_id(0);
-    group_sizze_13893 = get_local_size(0);
-    wave_sizze_13892 = LOCKSTEP_WIDTH;
-    group_tid_13891 = get_group_id(0);
-    
-    int32_t phys_tid_11641 = global_tid_13889;
-    int32_t gtid_11639 = squot32(group_tid_13891 * segmap_group_sizze_11647 +
-                                 local_tid_13890, sizze_11062);
-    int32_t gtid_11640;
-    
-    gtid_11640 = group_tid_13891 * segmap_group_sizze_11647 + local_tid_13890 -
-        squot32(group_tid_13891 * segmap_group_sizze_11647 + local_tid_13890,
-                sizze_11062) * sizze_11062;
-    if (slt32(gtid_11639, sizze_11061) && slt32(gtid_11640, sizze_11062)) {
-        float x_11654 = ((__global float *) wih_mem_13440)[gtid_11639 *
-                                                           sizze_11062 +
-                                                           gtid_11640];
-        int32_t binop_x_11717 = sizze_11062 * gtid_11639;
-        int32_t binop_x_11718 = gtid_11640 + binop_x_11717;
-        int32_t new_index_11719 = squot32(binop_x_11718, sizze_11065);
-        int32_t binop_y_11725 = sizze_11065 * new_index_11719;
-        int32_t new_index_11726 = binop_x_11718 - binop_y_11725;
-        float x_11655 = ((__global float *) mem_13695)[new_index_11719 *
-                                                       sizze_11065 +
-                                                       new_index_11726];
-        float res_11656 = x_11654 + x_11655;
-        
-        ((__global float *) mem_13700)[gtid_11639 * sizze_11062 + gtid_11640] =
-            res_11656;
-    }
-}
-__kernel void segmap_intragroup_11753(__local volatile
-                                      int64_t *mem_13452_backing_aligned_0,
-                                      __local volatile
-                                      int64_t *mem_13457_backing_aligned_1,
-                                      __local volatile
-                                      int64_t *mem_13467_backing_aligned_2,
-                                      __local volatile
-                                      int64_t *mem_13472_backing_aligned_3,
-                                      int32_t sizze_11061, int32_t sizze_11062,
-                                      int32_t sizze_11066,
-                                      int32_t num_groups_y_11751,
-                                      int32_t num_whole_tiles_11754,
-                                      int32_t residual_input_11887,
-                                      unsigned char cond_11888, __global
-                                      unsigned char *wih_mem_13440, __global
-                                      unsigned char *inputs_mem_13442, __global
-                                      unsigned char *mem_13486)
-{
-    const int32_t tile_sizze_11744 = mainzitile_sizze_11743;
-    const int32_t group_sizze_11745 = mainzitile_sizze_11743 *
-                  mainzitile_sizze_11743;
-    const int block_dim0 = 0;
-    const int block_dim1 = 1;
-    const int block_dim2 = 2;
-    __local volatile char *restrict mem_13452_backing_0 = (__local volatile
-                                                           char *) mem_13452_backing_aligned_0;
-    __local volatile char *restrict mem_13457_backing_1 = (__local volatile
-                                                           char *) mem_13457_backing_aligned_1;
-    __local volatile char *restrict mem_13467_backing_2 = (__local volatile
-                                                           char *) mem_13467_backing_aligned_2;
-    __local volatile char *restrict mem_13472_backing_3 = (__local volatile
-                                                           char *) mem_13472_backing_aligned_3;
-    int32_t global_tid_13799;
-    int32_t local_tid_13800;
-    int32_t group_sizze_13803;
-    int32_t wave_sizze_13802;
-    int32_t group_tid_13801;
-    
-    global_tid_13799 = get_global_id(0);
-    local_tid_13800 = get_local_id(0);
-    group_sizze_13803 = get_local_size(0);
-    wave_sizze_13802 = LOCKSTEP_WIDTH;
-    group_tid_13801 = get_group_id(0);
-    
-    int32_t gid_flat_11753 = group_tid_13801;
-    int32_t gid_x_11741 = squot32(group_tid_13801, num_groups_y_11751);
-    int32_t gid_y_11742;
-    
-    gid_y_11742 = group_tid_13801 - squot32(group_tid_13801,
-                                            num_groups_y_11751) *
-        num_groups_y_11751;
-    
-    float mem_13447;
-    int32_t ltid_x_11770 = squot32(local_tid_13800, tile_sizze_11744);
-    int32_t ltid_y_11771;
-    
-    ltid_y_11771 = local_tid_13800 - squot32(local_tid_13800,
-                                             tile_sizze_11744) *
-        tile_sizze_11744;
-    
-    int32_t ltid_flat_11772;
-    
-    ltid_flat_11772 = local_tid_13800;
-    if (slt32(ltid_x_11770, tile_sizze_11744) && slt32(ltid_y_11771,
-                                                       tile_sizze_11744)) {
-        mem_13447 = 0.0F;
-    }
-    barrier(CLK_LOCAL_MEM_FENCE);
-    
-    int32_t binop_x_11849 = gid_x_11741 * tile_sizze_11744;
-    int32_t binop_x_11851 = gid_y_11742 * tile_sizze_11744;
-    __local char *mem_13452;
-    
-    mem_13452 = (__local char *) mem_13452_backing_0;
-    
-    __local char *mem_13457;
-    
-    mem_13457 = (__local char *) mem_13457_backing_1;
-    
-    float mem_13461;
-    
-    for (int32_t tile_id_11781 = 0; tile_id_11781 < num_whole_tiles_11754;
-         tile_id_11781++) {
-        int32_t binop_x_11845 = tile_sizze_11744 * tile_id_11781;
-        int32_t ltid_x_11782 = squot32(local_tid_13800, tile_sizze_11744);
-        int32_t ltid_y_11783;
-        
-        ltid_y_11783 = local_tid_13800 - squot32(local_tid_13800,
-                                                 tile_sizze_11744) *
-            tile_sizze_11744;
-        
-        int32_t ltid_flat_11784;
-        
-        ltid_flat_11784 = local_tid_13800;
-        if (slt32(ltid_x_11782, tile_sizze_11744) && slt32(ltid_y_11783,
-                                                           tile_sizze_11744)) {
-            int32_t i_11846 = ltid_x_11782 + binop_x_11845;
-            int32_t j_11848 = ltid_y_11783 + binop_x_11845;
-            int32_t gtid_11850 = ltid_x_11782 + binop_x_11849;
-            int32_t gtid_11852 = ltid_y_11783 + binop_x_11851;
-            float tile_elem_11856 = ((__global
-                                      float *) wih_mem_13440)[gtid_11850 *
-                                                              sizze_11062 +
-                                                              j_11848];
-            float tile_elem_11857 = ((__global
-                                      float *) inputs_mem_13442)[i_11846 *
-                                                                 sizze_11066 +
-                                                                 gtid_11852];
-            
-            ((__local float *) mem_13452)[ltid_x_11782 * tile_sizze_11744 +
-                                          ltid_y_11783] = tile_elem_11856;
-            ((__local float *) mem_13457)[ltid_x_11782 * tile_sizze_11744 +
-                                          ltid_y_11783] = tile_elem_11857;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-        
-        int32_t ltid_x_11808 = squot32(local_tid_13800, tile_sizze_11744);
-        int32_t ltid_y_11809;
-        
-        ltid_y_11809 = local_tid_13800 - squot32(local_tid_13800,
-                                                 tile_sizze_11744) *
-            tile_sizze_11744;
-        
-        int32_t ltid_flat_11810;
-        
-        ltid_flat_11810 = local_tid_13800;
-        if (slt32(ltid_x_11808, tile_sizze_11744) && slt32(ltid_y_11809,
-                                                           tile_sizze_11744)) {
-            int32_t gtid_11860 = ltid_x_11808 + binop_x_11849;
-            int32_t gtid_11862 = ltid_y_11809 + binop_x_11851;
-            float acc_11866 = mem_13447;
-            bool binop_x_11869 = slt32(gtid_11860, sizze_11061);
-            bool binop_y_11870 = slt32(gtid_11862, sizze_11066);
-            bool cond_11871 = binop_x_11869 && binop_y_11870;
-            float acc_11872;
-            
-            if (cond_11871) {
-                float x_11873;
-                float redout_13300 = acc_11866;
-                
-                for (int32_t i_13301 = 0; i_13301 < tile_sizze_11744;
-                     i_13301++) {
-                    float x_11877 = ((__local float *) mem_13452)[ltid_x_11808 *
-                                                                  tile_sizze_11744 +
-                                                                  i_13301];
-                    float x_11878 = ((__local float *) mem_13457)[i_13301 *
-                                                                  tile_sizze_11744 +
-                                                                  ltid_y_11809];
-                    float res_11879 = x_11877 * x_11878;
-                    float res_11876 = res_11879 + redout_13300;
-                    float redout_tmp_13805 = res_11876;
-                    
-                    redout_13300 = redout_tmp_13805;
-                }
-                x_11873 = redout_13300;
-                acc_11872 = x_11873;
-            } else {
-                acc_11872 = acc_11866;
-            }
-            mem_13461 = acc_11872;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-        for (int32_t i_13806 = 0; i_13806 < squot32(tile_sizze_11744 *
-                                                    tile_sizze_11744 -
-                                                    local_tid_13800 +
-                                                    group_sizze_11745 - 1,
-                                                    group_sizze_11745);
-             i_13806++) {
-            mem_13447 = mem_13461;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-    }
-    
-    __local char *mem_13467;
-    
-    mem_13467 = (__local char *) mem_13467_backing_2;
-    
-    __local char *mem_13472;
-    
-    mem_13472 = (__local char *) mem_13472_backing_3;
-    
-    float mem_13476;
-    float mem_13712;
-    
-    if (cond_11888) {
-        for (int32_t i_13807 = 0; i_13807 < squot32(tile_sizze_11744 *
-                                                    tile_sizze_11744 -
-                                                    local_tid_13800 +
-                                                    group_sizze_11745 - 1,
-                                                    group_sizze_11745);
-             i_13807++) {
-            mem_13712 = mem_13447;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
+    if (sle32(remaining_elements_13440, 0) || sle32(sizze_12933,
+                                                    starting_point_13439)) {
+        chunk_sizze_13438 = 0;
     } else {
-        int32_t binop_x_11974 = tile_sizze_11744 * num_whole_tiles_11754;
-        int32_t ltid_x_11889 = squot32(local_tid_13800, tile_sizze_11744);
-        int32_t ltid_y_11890;
-        
-        ltid_y_11890 = local_tid_13800 - squot32(local_tid_13800,
-                                                 tile_sizze_11744) *
-            tile_sizze_11744;
-        
-        int32_t ltid_flat_11891;
-        
-        ltid_flat_11891 = local_tid_13800;
-        if (slt32(ltid_x_11889, tile_sizze_11744) && slt32(ltid_y_11890,
-                                                           tile_sizze_11744)) {
-            int32_t i_11975 = ltid_x_11889 + binop_x_11974;
-            int32_t j_11977 = ltid_y_11890 + binop_x_11974;
-            int32_t gtid_11979 = binop_x_11849 + ltid_x_11889;
-            int32_t gtid_11981 = binop_x_11851 + ltid_y_11890;
-            bool binop_x_11985 = slt32(j_11977, sizze_11062);
-            bool binop_y_11986 = slt32(gtid_11979, sizze_11061);
-            bool cond_11987 = binop_x_11985 && binop_y_11986;
-            float pre_11988;
-            
-            if (cond_11987) {
-                float x_11989 = ((__global float *) wih_mem_13440)[gtid_11979 *
-                                                                   sizze_11062 +
-                                                                   j_11977];
-                
-                pre_11988 = x_11989;
-            } else {
-                pre_11988 = 0.0F;
-            }
-            
-            bool binop_x_11991 = slt32(i_11975, sizze_11062);
-            bool binop_y_11992 = slt32(gtid_11981, sizze_11066);
-            bool cond_11993 = binop_x_11991 && binop_y_11992;
-            float pre_11994;
-            
-            if (cond_11993) {
-                float x_11995 = ((__global float *) inputs_mem_13442)[i_11975 *
-                                                                      sizze_11066 +
-                                                                      gtid_11981];
-                
-                pre_11994 = x_11995;
-            } else {
-                pre_11994 = 0.0F;
-            }
-            ((__local float *) mem_13467)[ltid_x_11889 * tile_sizze_11744 +
-                                          ltid_y_11890] = pre_11988;
-            ((__local float *) mem_13472)[ltid_x_11889 * tile_sizze_11744 +
-                                          ltid_y_11890] = pre_11994;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-        
-        int32_t ltid_x_11937 = squot32(local_tid_13800, tile_sizze_11744);
-        int32_t ltid_y_11938;
-        
-        ltid_y_11938 = local_tid_13800 - squot32(local_tid_13800,
-                                                 tile_sizze_11744) *
-            tile_sizze_11744;
-        
-        int32_t ltid_flat_11939;
-        
-        ltid_flat_11939 = local_tid_13800;
-        if (slt32(ltid_x_11937, tile_sizze_11744) && slt32(ltid_y_11938,
-                                                           tile_sizze_11744)) {
-            int32_t gtid_12001 = binop_x_11849 + ltid_x_11937;
-            int32_t gtid_12003 = binop_x_11851 + ltid_y_11938;
-            float acc_12007 = mem_13447;
-            bool binop_x_12010 = slt32(gtid_12001, sizze_11061);
-            bool binop_y_12011 = slt32(gtid_12003, sizze_11066);
-            bool cond_12012 = binop_x_12010 && binop_y_12011;
-            float acc_12013;
-            
-            if (cond_12012) {
-                float x_12014;
-                float redout_13302 = acc_12007;
-                
-                for (int32_t i_13303 = 0; i_13303 < residual_input_11887;
-                     i_13303++) {
-                    float x_12018 = ((__local float *) mem_13467)[ltid_x_11937 *
-                                                                  tile_sizze_11744 +
-                                                                  i_13303];
-                    float x_12019 = ((__local float *) mem_13472)[i_13303 *
-                                                                  tile_sizze_11744 +
-                                                                  ltid_y_11938];
-                    float res_12020 = x_12018 * x_12019;
-                    float res_12017 = res_12020 + redout_13302;
-                    float redout_tmp_13808 = res_12017;
-                    
-                    redout_13302 = redout_tmp_13808;
-                }
-                x_12014 = redout_13302;
-                acc_12013 = x_12014;
-            } else {
-                acc_12013 = acc_12007;
-            }
-            mem_13476 = acc_12013;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-        for (int32_t i_13809 = 0; i_13809 < squot32(tile_sizze_11744 *
-                                                    tile_sizze_11744 -
-                                                    local_tid_13800 +
-                                                    group_sizze_11745 - 1,
-                                                    group_sizze_11745);
-             i_13809++) {
-            mem_13712 = mem_13476;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-    }
-    
-    float mem_13481;
-    int32_t ltid_x_12022 = squot32(local_tid_13800, tile_sizze_11744);
-    int32_t ltid_y_12023;
-    
-    ltid_y_12023 = local_tid_13800 - squot32(local_tid_13800,
-                                             tile_sizze_11744) *
-        tile_sizze_11744;
-    
-    int32_t ltid_flat_12024;
-    
-    ltid_flat_12024 = local_tid_13800;
-    if (slt32(ltid_x_12022, tile_sizze_11744) && slt32(ltid_y_12023,
-                                                       tile_sizze_11744)) {
-        int32_t gtid_12033 = binop_x_11849 + ltid_x_12022;
-        int32_t gtid_12035 = binop_x_11851 + ltid_y_12023;
-        bool binop_x_12037 = slt32(gtid_12033, sizze_11061);
-        bool binop_y_12038 = slt32(gtid_12035, sizze_11066);
-        bool cond_12039 = binop_x_12037 && binop_y_12038;
-        float postlude_12040;
-        
-        if (cond_12039) {
-            float res_12036 = mem_13712;
-            float res_12044 = 0.0F - res_12036;
-            float res_12045 = fpow32(2.7182817F, res_12044);
-            float res_12046 = 1.0F + res_12045;
-            float res_12047 = 1.0F / res_12046;
-            
-            postlude_12040 = res_12047;
+        if (slt32(sizze_12933, (phys_tid_13152 + 1) * squot32(sizze_12933 +
+                                                              segred_group_sizze_13144 *
+                                                              num_groups_13146 -
+                                                              1,
+                                                              segred_group_sizze_13144 *
+                                                              num_groups_13146))) {
+            chunk_sizze_13438 = sizze_12933 - phys_tid_13152 *
+                squot32(sizze_12933 + segred_group_sizze_13144 *
+                        num_groups_13146 - 1, segred_group_sizze_13144 *
+                        num_groups_13146);
         } else {
-            postlude_12040 = 0.0F;
+            chunk_sizze_13438 = squot32(sizze_12933 + segred_group_sizze_13144 *
+                                        num_groups_13146 - 1,
+                                        segred_group_sizze_13144 *
+                                        num_groups_13146);
         }
-        mem_13481 = postlude_12040;
     }
-    barrier(CLK_LOCAL_MEM_FENCE);
-    
-    int32_t thread_out_index_13810 = gid_x_11741 * tile_sizze_11744 +
-            squot32(local_tid_13800, tile_sizze_11744);
-    int32_t thread_out_index_13811;
-    
-    thread_out_index_13811 = gid_y_11742 * tile_sizze_11744 + (local_tid_13800 -
-                                                               squot32(local_tid_13800,
-                                                                       tile_sizze_11744) *
-                                                               tile_sizze_11744);
-    if (slt32(thread_out_index_13810, sizze_11061) &&
-        slt32(thread_out_index_13811, sizze_11066)) {
-        ((__global float *) mem_13486)[thread_out_index_13810 * sizze_11066 +
-                                       thread_out_index_13811] = mem_13481;
-    }
-}
-__kernel void segmap_intragroup_12062(__local volatile
-                                      int64_t *mem_13495_backing_aligned_0,
-                                      __local volatile
-                                      int64_t *mem_13500_backing_aligned_1,
-                                      __local volatile
-                                      int64_t *mem_13510_backing_aligned_2,
-                                      __local volatile
-                                      int64_t *mem_13515_backing_aligned_3,
-                                      int32_t sizze_11063, int32_t sizze_11064,
-                                      int32_t sizze_11066,
-                                      int32_t num_groups_y_12060,
-                                      int32_t num_whole_tiles_12063,
-                                      int32_t residual_input_12196,
-                                      unsigned char cond_12197, __global
-                                      unsigned char *who_mem_13441, __global
-                                      unsigned char *mem_13486, __global
-                                      unsigned char *mem_13529)
-{
-    const int32_t tile_sizze_12053 = mainzitile_sizze_12052;
-    const int32_t group_sizze_12054 = mainzitile_sizze_12052 *
-                  mainzitile_sizze_12052;
-    const int block_dim0 = 0;
-    const int block_dim1 = 1;
-    const int block_dim2 = 2;
-    __local volatile char *restrict mem_13495_backing_0 = (__local volatile
-                                                           char *) mem_13495_backing_aligned_0;
-    __local volatile char *restrict mem_13500_backing_1 = (__local volatile
-                                                           char *) mem_13500_backing_aligned_1;
-    __local volatile char *restrict mem_13510_backing_2 = (__local volatile
-                                                           char *) mem_13510_backing_aligned_2;
-    __local volatile char *restrict mem_13515_backing_3 = (__local volatile
-                                                           char *) mem_13515_backing_aligned_3;
-    int32_t global_tid_13812;
-    int32_t local_tid_13813;
-    int32_t group_sizze_13816;
-    int32_t wave_sizze_13815;
-    int32_t group_tid_13814;
-    
-    global_tid_13812 = get_global_id(0);
-    local_tid_13813 = get_local_id(0);
-    group_sizze_13816 = get_local_size(0);
-    wave_sizze_13815 = LOCKSTEP_WIDTH;
-    group_tid_13814 = get_group_id(0);
-    
-    int32_t gid_flat_12062 = group_tid_13814;
-    int32_t gid_x_12050 = squot32(group_tid_13814, num_groups_y_12060);
-    int32_t gid_y_12051;
-    
-    gid_y_12051 = group_tid_13814 - squot32(group_tid_13814,
-                                            num_groups_y_12060) *
-        num_groups_y_12060;
-    
-    float mem_13490;
-    int32_t ltid_x_12079 = squot32(local_tid_13813, tile_sizze_12053);
-    int32_t ltid_y_12080;
-    
-    ltid_y_12080 = local_tid_13813 - squot32(local_tid_13813,
-                                             tile_sizze_12053) *
-        tile_sizze_12053;
-    
-    int32_t ltid_flat_12081;
-    
-    ltid_flat_12081 = local_tid_13813;
-    if (slt32(ltid_x_12079, tile_sizze_12053) && slt32(ltid_y_12080,
-                                                       tile_sizze_12053)) {
-        mem_13490 = 0.0F;
-    }
-    barrier(CLK_LOCAL_MEM_FENCE);
-    
-    int32_t binop_x_12158 = gid_x_12050 * tile_sizze_12053;
-    int32_t binop_x_12160 = gid_y_12051 * tile_sizze_12053;
-    __local char *mem_13495;
-    
-    mem_13495 = (__local char *) mem_13495_backing_0;
-    
-    __local char *mem_13500;
-    
-    mem_13500 = (__local char *) mem_13500_backing_1;
-    
-    float mem_13504;
-    
-    for (int32_t tile_id_12090 = 0; tile_id_12090 < num_whole_tiles_12063;
-         tile_id_12090++) {
-        int32_t binop_x_12154 = tile_sizze_12053 * tile_id_12090;
-        int32_t ltid_x_12091 = squot32(local_tid_13813, tile_sizze_12053);
-        int32_t ltid_y_12092;
-        
-        ltid_y_12092 = local_tid_13813 - squot32(local_tid_13813,
-                                                 tile_sizze_12053) *
-            tile_sizze_12053;
-        
-        int32_t ltid_flat_12093;
-        
-        ltid_flat_12093 = local_tid_13813;
-        if (slt32(ltid_x_12091, tile_sizze_12053) && slt32(ltid_y_12092,
-                                                           tile_sizze_12053)) {
-            int32_t i_12155 = ltid_x_12091 + binop_x_12154;
-            int32_t j_12157 = ltid_y_12092 + binop_x_12154;
-            int32_t gtid_12159 = ltid_x_12091 + binop_x_12158;
-            int32_t gtid_12161 = ltid_y_12092 + binop_x_12160;
-            float tile_elem_12165 = ((__global
-                                      float *) who_mem_13441)[gtid_12159 *
-                                                              sizze_11064 +
-                                                              j_12157];
-            float tile_elem_12166 = ((__global float *) mem_13486)[i_12155 *
-                                                                   sizze_11066 +
-                                                                   gtid_12161];
-            
-            ((__local float *) mem_13495)[ltid_x_12091 * tile_sizze_12053 +
-                                          ltid_y_12092] = tile_elem_12165;
-            ((__local float *) mem_13500)[ltid_x_12091 * tile_sizze_12053 +
-                                          ltid_y_12092] = tile_elem_12166;
+    // neutral-initialise the accumulators
+    {
+        for (int32_t i_13441 = 0; i_13441 < sizze_12934; i_13441++) {
+            for (int32_t i_13442 = 0; i_13442 < sizze_12935; i_13442++) {
+                ((__global float *) group_res_arr_mem_13424)[group_tid_13431 *
+                                                             (segred_group_sizze_13144 *
+                                                              sizze_12935 *
+                                                              sizze_12934) +
+                                                             segred_group_sizze_13144 *
+                                                             sizze_12935 * 0 +
+                                                             segred_group_sizze_13144 *
+                                                             0 +
+                                                             local_tid_13430 +
+                                                             (i_13441 *
+                                                              (segred_group_sizze_13144 *
+                                                               sizze_12935) +
+                                                              i_13442 *
+                                                              segred_group_sizze_13144)] =
+                    ((__global float *) wih_mem_13263)[i_13441 * sizze_12930 +
+                                                       i_13442];
+            }
         }
-        barrier(CLK_LOCAL_MEM_FENCE);
-        
-        int32_t ltid_x_12117 = squot32(local_tid_13813, tile_sizze_12053);
-        int32_t ltid_y_12118;
-        
-        ltid_y_12118 = local_tid_13813 - squot32(local_tid_13813,
-                                                 tile_sizze_12053) *
-            tile_sizze_12053;
-        
-        int32_t ltid_flat_12119;
-        
-        ltid_flat_12119 = local_tid_13813;
-        if (slt32(ltid_x_12117, tile_sizze_12053) && slt32(ltid_y_12118,
-                                                           tile_sizze_12053)) {
-            int32_t gtid_12169 = ltid_x_12117 + binop_x_12158;
-            int32_t gtid_12171 = ltid_y_12118 + binop_x_12160;
-            float acc_12175 = mem_13490;
-            bool binop_x_12178 = slt32(gtid_12169, sizze_11063);
-            bool binop_y_12179 = slt32(gtid_12171, sizze_11066);
-            bool cond_12180 = binop_x_12178 && binop_y_12179;
-            float acc_12181;
-            
-            if (cond_12180) {
-                float x_12182;
-                float redout_13304 = acc_12175;
-                
-                for (int32_t i_13305 = 0; i_13305 < tile_sizze_12053;
-                     i_13305++) {
-                    float x_12186 = ((__local float *) mem_13495)[ltid_x_12117 *
-                                                                  tile_sizze_12053 +
-                                                                  i_13305];
-                    float x_12187 = ((__local float *) mem_13500)[i_13305 *
-                                                                  tile_sizze_12053 +
-                                                                  ltid_y_12118];
-                    float res_12188 = x_12186 * x_12187;
-                    float res_12185 = res_12188 + redout_13304;
-                    float redout_tmp_13818 = res_12185;
-                    
-                    redout_13304 = redout_tmp_13818;
+        for (int32_t i_13443 = 0; i_13443 < sizze_12937; i_13443++) {
+            for (int32_t i_13444 = 0; i_13444 < sizze_12938; i_13444++) {
+                ((__global float *) group_res_arr_mem_13426)[group_tid_13431 *
+                                                             (segred_group_sizze_13144 *
+                                                              sizze_12938 *
+                                                              sizze_12937) +
+                                                             segred_group_sizze_13144 *
+                                                             sizze_12938 * 0 +
+                                                             segred_group_sizze_13144 *
+                                                             0 +
+                                                             local_tid_13430 +
+                                                             (i_13443 *
+                                                              (segred_group_sizze_13144 *
+                                                               sizze_12938) +
+                                                              i_13444 *
+                                                              segred_group_sizze_13144)] =
+                    ((__global float *) who_mem_13264)[i_13443 * sizze_12932 +
+                                                       i_13444];
+            }
+        }
+    }
+    for (int32_t i_13592 = 0; i_13592 < squot32(sizze_12933 +
+                                                segred_group_sizze_13144 *
+                                                num_groups_13146 - 1,
+                                                segred_group_sizze_13144 *
+                                                num_groups_13146); i_13592++) {
+        gtid_13151 = local_tid_13430 + (squot32(phys_tid_13152,
+                                                segred_group_sizze_13144) *
+                                        squot32(sizze_12933 +
+                                                segred_group_sizze_13144 *
+                                                num_groups_13146 - 1,
+                                                segred_group_sizze_13144 *
+                                                num_groups_13146) + i_13592) *
+            segred_group_sizze_13144;
+        if (slt32(gtid_13151, sizze_12933)) {
+            // apply map function
+            {
+                // save map-out results
+                { }
+                // load accumulator
+                {
+                    for (int32_t i_13593 = 0; i_13593 < sizze_12934;
+                         i_13593++) {
+                        for (int32_t i_13594 = 0; i_13594 < sizze_12935;
+                             i_13594++) {
+                            ((__global float *) mem_13285)[phys_tid_13152 *
+                                                           (sizze_12935 *
+                                                            sizze_12934) +
+                                                           (i_13593 *
+                                                            sizze_12935 +
+                                                            i_13594)] =
+                                ((__global
+                                  float *) group_res_arr_mem_13424)[group_tid_13431 *
+                                                                    (segred_group_sizze_13144 *
+                                                                     sizze_12935 *
+                                                                     sizze_12934) +
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12935 *
+                                                                    0 +
+                                                                    segred_group_sizze_13144 *
+                                                                    0 +
+                                                                    local_tid_13430 +
+                                                                    (i_13593 *
+                                                                     (segred_group_sizze_13144 *
+                                                                      sizze_12935) +
+                                                                     i_13594 *
+                                                                     segred_group_sizze_13144)];
+                        }
+                    }
+                    for (int32_t i_13595 = 0; i_13595 < sizze_12937;
+                         i_13595++) {
+                        for (int32_t i_13596 = 0; i_13596 < sizze_12938;
+                             i_13596++) {
+                            ((__global float *) mem_13293)[phys_tid_13152 *
+                                                           (sizze_12938 *
+                                                            sizze_12937) +
+                                                           (i_13595 *
+                                                            sizze_12938 +
+                                                            i_13596)] =
+                                ((__global
+                                  float *) group_res_arr_mem_13426)[group_tid_13431 *
+                                                                    (segred_group_sizze_13144 *
+                                                                     sizze_12938 *
+                                                                     sizze_12937) +
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12938 *
+                                                                    0 +
+                                                                    segred_group_sizze_13144 *
+                                                                    0 +
+                                                                    local_tid_13430 +
+                                                                    (i_13595 *
+                                                                     (segred_group_sizze_13144 *
+                                                                      sizze_12938) +
+                                                                     i_13596 *
+                                                                     segred_group_sizze_13144)];
+                        }
+                    }
                 }
-                x_12182 = redout_13304;
-                acc_12181 = x_12182;
-            } else {
-                acc_12181 = acc_12175;
-            }
-            mem_13504 = acc_12181;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-        for (int32_t i_13819 = 0; i_13819 < squot32(tile_sizze_12053 *
-                                                    tile_sizze_12053 -
-                                                    local_tid_13813 +
-                                                    group_sizze_12054 - 1,
-                                                    group_sizze_12054);
-             i_13819++) {
-            mem_13490 = mem_13504;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-    }
-    
-    __local char *mem_13510;
-    
-    mem_13510 = (__local char *) mem_13510_backing_2;
-    
-    __local char *mem_13515;
-    
-    mem_13515 = (__local char *) mem_13515_backing_3;
-    
-    float mem_13519;
-    float mem_13726;
-    
-    if (cond_12197) {
-        for (int32_t i_13820 = 0; i_13820 < squot32(tile_sizze_12053 *
-                                                    tile_sizze_12053 -
-                                                    local_tid_13813 +
-                                                    group_sizze_12054 - 1,
-                                                    group_sizze_12054);
-             i_13820++) {
-            mem_13726 = mem_13490;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-    } else {
-        int32_t binop_x_12283 = tile_sizze_12053 * num_whole_tiles_12063;
-        int32_t ltid_x_12198 = squot32(local_tid_13813, tile_sizze_12053);
-        int32_t ltid_y_12199;
-        
-        ltid_y_12199 = local_tid_13813 - squot32(local_tid_13813,
-                                                 tile_sizze_12053) *
-            tile_sizze_12053;
-        
-        int32_t ltid_flat_12200;
-        
-        ltid_flat_12200 = local_tid_13813;
-        if (slt32(ltid_x_12198, tile_sizze_12053) && slt32(ltid_y_12199,
-                                                           tile_sizze_12053)) {
-            int32_t i_12284 = ltid_x_12198 + binop_x_12283;
-            int32_t j_12286 = ltid_y_12199 + binop_x_12283;
-            int32_t gtid_12288 = binop_x_12158 + ltid_x_12198;
-            int32_t gtid_12290 = binop_x_12160 + ltid_y_12199;
-            bool binop_x_12294 = slt32(j_12286, sizze_11064);
-            bool binop_y_12295 = slt32(gtid_12288, sizze_11063);
-            bool cond_12296 = binop_x_12294 && binop_y_12295;
-            float pre_12297;
-            
-            if (cond_12296) {
-                float x_12298 = ((__global float *) who_mem_13441)[gtid_12288 *
-                                                                   sizze_11064 +
-                                                                   j_12286];
-                
-                pre_12297 = x_12298;
-            } else {
-                pre_12297 = 0.0F;
-            }
-            
-            bool binop_x_12300 = slt32(i_12284, sizze_11064);
-            bool binop_y_12301 = slt32(gtid_12290, sizze_11066);
-            bool cond_12302 = binop_x_12300 && binop_y_12301;
-            float pre_12303;
-            
-            if (cond_12302) {
-                float x_12304 = ((__global float *) mem_13486)[i_12284 *
-                                                               sizze_11066 +
-                                                               gtid_12290];
-                
-                pre_12303 = x_12304;
-            } else {
-                pre_12303 = 0.0F;
-            }
-            ((__local float *) mem_13510)[ltid_x_12198 * tile_sizze_12053 +
-                                          ltid_y_12199] = pre_12297;
-            ((__local float *) mem_13515)[ltid_x_12198 * tile_sizze_12053 +
-                                          ltid_y_12199] = pre_12303;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-        
-        int32_t ltid_x_12246 = squot32(local_tid_13813, tile_sizze_12053);
-        int32_t ltid_y_12247;
-        
-        ltid_y_12247 = local_tid_13813 - squot32(local_tid_13813,
-                                                 tile_sizze_12053) *
-            tile_sizze_12053;
-        
-        int32_t ltid_flat_12248;
-        
-        ltid_flat_12248 = local_tid_13813;
-        if (slt32(ltid_x_12246, tile_sizze_12053) && slt32(ltid_y_12247,
-                                                           tile_sizze_12053)) {
-            int32_t gtid_12310 = binop_x_12158 + ltid_x_12246;
-            int32_t gtid_12312 = binop_x_12160 + ltid_y_12247;
-            float acc_12316 = mem_13490;
-            bool binop_x_12319 = slt32(gtid_12310, sizze_11063);
-            bool binop_y_12320 = slt32(gtid_12312, sizze_11066);
-            bool cond_12321 = binop_x_12319 && binop_y_12320;
-            float acc_12322;
-            
-            if (cond_12321) {
-                float x_12323;
-                float redout_13306 = acc_12316;
-                
-                for (int32_t i_13307 = 0; i_13307 < residual_input_12196;
-                     i_13307++) {
-                    float x_12327 = ((__local float *) mem_13510)[ltid_x_12246 *
-                                                                  tile_sizze_12053 +
-                                                                  i_13307];
-                    float x_12328 = ((__local float *) mem_13515)[i_13307 *
-                                                                  tile_sizze_12053 +
-                                                                  ltid_y_12247];
-                    float res_12329 = x_12327 * x_12328;
-                    float res_12326 = res_12329 + redout_13306;
-                    float redout_tmp_13821 = res_12326;
-                    
-                    redout_13306 = redout_tmp_13821;
+                // load new values
+                {
+                    for (int32_t i_13597 = 0; i_13597 < sizze_12934;
+                         i_13597++) {
+                        for (int32_t i_13598 = 0; i_13598 < sizze_12935;
+                             i_13598++) {
+                            ((__global float *) mem_13285)[(phys_tid_13152 +
+                                                            num_threads_13277) *
+                                                           (sizze_12935 *
+                                                            sizze_12934) +
+                                                           (i_13597 *
+                                                            sizze_12935 +
+                                                            i_13598)] =
+                                ((__global float *) mem_13271)[gtid_13151 +
+                                                               (i_13597 *
+                                                                (sizze_12933 *
+                                                                 sizze_12935) +
+                                                                i_13598 *
+                                                                sizze_12933)];
+                        }
+                    }
+                    for (int32_t i_13599 = 0; i_13599 < sizze_12937;
+                         i_13599++) {
+                        for (int32_t i_13600 = 0; i_13600 < sizze_12938;
+                             i_13600++) {
+                            ((__global float *) mem_13293)[(phys_tid_13152 +
+                                                            num_threads_13277) *
+                                                           (sizze_12938 *
+                                                            sizze_12937) +
+                                                           (i_13599 *
+                                                            sizze_12938 +
+                                                            i_13600)] =
+                                ((__global float *) mem_13276)[gtid_13151 +
+                                                               (i_13599 *
+                                                                (sizze_12936 *
+                                                                 sizze_12938) +
+                                                                i_13600 *
+                                                                sizze_12936)];
+                        }
+                    }
                 }
-                x_12323 = redout_13306;
-                acc_12322 = x_12323;
-            } else {
-                acc_12322 = acc_12316;
+                // apply reduction operator
+                {
+                    for (int32_t i_13158 = 0; i_13158 < sizze_12934;
+                         i_13158++) {
+                        for (int32_t i_13162 = 0; i_13162 < sizze_12935;
+                             i_13162++) {
+                            float res_13016;
+                            float redout_13164 = 0.0F;
+                            
+                            for (int32_t i_13165 = 0; i_13165 < sizze_12935;
+                                 i_13165++) {
+                                float x_13020 = ((__global
+                                                  float *) mem_13285)[phys_tid_13152 *
+                                                                      (sizze_12935 *
+                                                                       sizze_12934) +
+                                                                      (i_13158 *
+                                                                       sizze_12935 +
+                                                                       i_13165)];
+                                float x_13021 = ((__global
+                                                  float *) mem_13285)[(phys_tid_13152 +
+                                                                       num_threads_13277) *
+                                                                      (sizze_12935 *
+                                                                       sizze_12934) +
+                                                                      (i_13165 *
+                                                                       sizze_12935 +
+                                                                       i_13162)];
+                                float res_13022 = x_13020 * x_13021;
+                                float res_13019 = res_13022 + redout_13164;
+                                float redout_tmp_13603 = res_13019;
+                                
+                                redout_13164 = redout_tmp_13603;
+                            }
+                            res_13016 = redout_13164;
+                            
+                            float res_13023 = 0.0F - res_13016;
+                            float res_13024 = fpow32(2.7182817F, res_13023);
+                            float res_13025 = 1.0F + res_13024;
+                            float res_13026 = 1.0F / res_13025;
+                            
+                            ((__global float *) mem_13301)[phys_tid_13152 +
+                                                           i_13162 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                res_13026;
+                        }
+                        for (int32_t i_13604 = 0; i_13604 < sizze_12935;
+                             i_13604++) {
+                            ((__global float *) mem_13298)[phys_tid_13152 +
+                                                           i_13158 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12935) +
+                                                           i_13604 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                ((__global float *) mem_13301)[phys_tid_13152 +
+                                                               i_13604 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)];
+                        }
+                    }
+                    for (int32_t i_13170 = 0; i_13170 < sizze_12937;
+                         i_13170++) {
+                        for (int32_t i_13175 = 0; i_13175 < sizze_12935;
+                             i_13175++) {
+                            float res_13035;
+                            float redout_13177 = 0.0F;
+                            
+                            for (int32_t i_13178 = 0; i_13178 < sizze_12938;
+                                 i_13178++) {
+                                float x_13039 = ((__global
+                                                  float *) mem_13293)[phys_tid_13152 *
+                                                                      (sizze_12938 *
+                                                                       sizze_12937) +
+                                                                      (i_13170 *
+                                                                       sizze_12938 +
+                                                                       i_13178)];
+                                float x_13040 = ((__global
+                                                  float *) mem_13298)[phys_tid_13152 +
+                                                                      (i_13178 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12935) +
+                                                                       i_13175 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float res_13041 = x_13039 * x_13040;
+                                float res_13038 = res_13041 + redout_13177;
+                                float redout_tmp_13608 = res_13038;
+                                
+                                redout_13177 = redout_tmp_13608;
+                            }
+                            res_13035 = redout_13177;
+                            
+                            float res_13042 = 0.0F - res_13035;
+                            float res_13043 = fpow32(2.7182817F, res_13042);
+                            float res_13044 = 1.0F + res_13043;
+                            float res_13045 = 1.0F / res_13044;
+                            
+                            ((__global float *) mem_13314)[phys_tid_13152 +
+                                                           i_13175 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                res_13045;
+                        }
+                        for (int32_t i_13181 = 0; i_13181 < sizze_12938;
+                             i_13181++) {
+                            float x_13048 = ((__global
+                                              float *) mem_13293)[(phys_tid_13152 +
+                                                                   num_threads_13277) *
+                                                                  (sizze_12938 *
+                                                                   sizze_12937) +
+                                                                  (i_13170 *
+                                                                   sizze_12938 +
+                                                                   i_13181)];
+                            float x_13049 = ((__global
+                                              float *) mem_13314)[phys_tid_13152 +
+                                                                  i_13181 *
+                                                                  (num_groups_13146 *
+                                                                   segred_group_sizze_13144)];
+                            float res_13050 = x_13048 - x_13049;
+                            
+                            ((__global float *) mem_13317)[phys_tid_13152 +
+                                                           i_13181 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                res_13050;
+                        }
+                        for (int32_t i_13610 = 0; i_13610 < sizze_12938;
+                             i_13610++) {
+                            ((__global float *) mem_13306)[phys_tid_13152 +
+                                                           i_13170 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12938) +
+                                                           i_13610 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                ((__global float *) mem_13317)[phys_tid_13152 +
+                                                               i_13610 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)];
+                        }
+                        for (int32_t i_13611 = 0; i_13611 < sizze_12935;
+                             i_13611++) {
+                            ((__global float *) mem_13311)[phys_tid_13152 +
+                                                           i_13170 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12935) +
+                                                           i_13611 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                ((__global float *) mem_13314)[phys_tid_13152 +
+                                                               i_13611 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)];
+                        }
+                    }
+                    for (int32_t i_13185 = 0; i_13185 < sizze_12937;
+                         i_13185++) {
+                        for (int32_t i_13189 = 0; i_13189 < sizze_12938;
+                             i_13189++) {
+                            float x_13058 = ((__global
+                                              float *) mem_13306)[phys_tid_13152 +
+                                                                  (i_13185 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12938) +
+                                                                   i_13189 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144))];
+                            float x_13059 = ((__global
+                                              float *) mem_13311)[phys_tid_13152 +
+                                                                  (i_13185 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12935) +
+                                                                   i_13189 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144))];
+                            float res_13061 = x_13058 * x_13059;
+                            float res_13062 = 1.0F - x_13059;
+                            float res_13063 = res_13061 * res_13062;
+                            
+                            ((__global float *) mem_13325)[phys_tid_13152 +
+                                                           i_13189 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                res_13063;
+                        }
+                        for (int32_t i_13193 = 0; i_13193 < sizze_12938;
+                             i_13193++) {
+                            float x_13078 = ((__global
+                                              float *) mem_13293)[phys_tid_13152 *
+                                                                  (sizze_12938 *
+                                                                   sizze_12937) +
+                                                                  (i_13185 *
+                                                                   sizze_12938 +
+                                                                   i_13193)];
+                            float res_13080;
+                            float redout_13195 = 0.0F;
+                            
+                            for (int32_t i_13196 = 0; i_13196 < sizze_12938;
+                                 i_13196++) {
+                                float x_13084 = ((__global
+                                                  float *) mem_13325)[phys_tid_13152 +
+                                                                      i_13196 *
+                                                                      (num_groups_13146 *
+                                                                       segred_group_sizze_13144)];
+                                float x_13085 = ((__global
+                                                  float *) mem_13298)[phys_tid_13152 +
+                                                                      (i_13193 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12935) +
+                                                                       i_13196 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float res_13086 = x_13084 * x_13085;
+                                float res_13083 = res_13086 + redout_13195;
+                                float redout_tmp_13615 = res_13083;
+                                
+                                redout_13195 = redout_tmp_13615;
+                            }
+                            res_13080 = redout_13195;
+                            
+                            float res_13087 = lr_12939 * res_13080;
+                            float res_13088 = x_13078 + res_13087;
+                            
+                            ((__global float *) mem_13328)[phys_tid_13152 +
+                                                           i_13193 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                res_13088;
+                        }
+                        for (int32_t i_13616 = 0; i_13616 < sizze_12938;
+                             i_13616++) {
+                            ((__global float *) mem_13322)[phys_tid_13152 +
+                                                           i_13185 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12938) +
+                                                           i_13616 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                ((__global float *) mem_13328)[phys_tid_13152 +
+                                                               i_13616 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)];
+                        }
+                    }
+                    for (int32_t i_13199 = 0; i_13199 < sizze_12934;
+                         i_13199++) {
+                        for (int32_t i_13203 = 0; i_13203 < sizze_12935;
+                             i_13203++) {
+                            float x_13093 = ((__global
+                                              float *) mem_13298)[phys_tid_13152 +
+                                                                  (i_13199 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12935) +
+                                                                   i_13203 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144))];
+                            float res_13094 = 1.0F - x_13093;
+                            
+                            ((__global float *) mem_13336)[phys_tid_13152 +
+                                                           i_13203 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                res_13094;
+                        }
+                        for (int32_t i_13619 = 0; i_13619 < sizze_12935;
+                             i_13619++) {
+                            ((__global float *) mem_13333)[phys_tid_13152 +
+                                                           i_13199 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12935) +
+                                                           i_13619 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                ((__global float *) mem_13336)[phys_tid_13152 +
+                                                               i_13619 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)];
+                        }
+                    }
+                    for (int32_t i_13207 = 0; i_13207 < sizze_12938;
+                         i_13207++) {
+                        for (int32_t i_13211 = 0; i_13211 < sizze_12938;
+                             i_13211++) {
+                            float x_13106 = ((__global
+                                              float *) mem_13298)[phys_tid_13152 +
+                                                                  (i_13207 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12935) +
+                                                                   i_13211 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144))];
+                            float x_13107 = ((__global
+                                              float *) mem_13333)[phys_tid_13152 +
+                                                                  (i_13207 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12935) +
+                                                                   i_13211 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144))];
+                            float res_13108;
+                            float redout_13213 = 0.0F;
+                            
+                            for (int32_t i_13214 = 0; i_13214 < sizze_12937;
+                                 i_13214++) {
+                                float x_13112 = ((__global
+                                                  float *) mem_13293)[phys_tid_13152 *
+                                                                      (sizze_12938 *
+                                                                       sizze_12937) +
+                                                                      (i_13214 *
+                                                                       sizze_12938 +
+                                                                       i_13207)];
+                                float x_13113 = ((__global
+                                                  float *) mem_13306)[phys_tid_13152 +
+                                                                      (i_13214 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12938) +
+                                                                       i_13211 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float res_13114 = x_13112 * x_13113;
+                                float res_13111 = res_13114 + redout_13213;
+                                float redout_tmp_13622 = res_13111;
+                                
+                                redout_13213 = redout_tmp_13622;
+                            }
+                            res_13108 = redout_13213;
+                            
+                            float res_13115 = x_13106 * res_13108;
+                            float res_13116 = x_13107 * res_13115;
+                            
+                            ((__global float *) mem_13344)[phys_tid_13152 +
+                                                           i_13211 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                res_13116;
+                        }
+                        for (int32_t i_13217 = 0; i_13217 < sizze_12934;
+                             i_13217++) {
+                            float res_13120;
+                            float redout_13219 = 0.0F;
+                            
+                            for (int32_t i_13220 = 0; i_13220 < sizze_12938;
+                                 i_13220++) {
+                                float x_13124 = ((__global
+                                                  float *) mem_13344)[phys_tid_13152 +
+                                                                      i_13220 *
+                                                                      (num_groups_13146 *
+                                                                       segred_group_sizze_13144)];
+                                float x_13125 = ((__global
+                                                  float *) mem_13285)[(phys_tid_13152 +
+                                                                       num_threads_13277) *
+                                                                      (sizze_12935 *
+                                                                       sizze_12934) +
+                                                                      (i_13217 *
+                                                                       sizze_12935 +
+                                                                       i_13220)];
+                                float res_13126 = x_13124 * x_13125;
+                                float res_13123 = res_13126 + redout_13219;
+                                float redout_tmp_13624 = res_13123;
+                                
+                                redout_13219 = redout_tmp_13624;
+                            }
+                            res_13120 = redout_13219;
+                            
+                            float res_13127 = lr_12939 * res_13120;
+                            
+                            ((__global float *) mem_13347)[phys_tid_13152 +
+                                                           i_13217 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                res_13127;
+                        }
+                        for (int32_t i_13625 = 0; i_13625 < sizze_12934;
+                             i_13625++) {
+                            ((__global float *) mem_13341)[phys_tid_13152 +
+                                                           i_13207 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12934) +
+                                                           i_13625 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                ((__global float *) mem_13347)[phys_tid_13152 +
+                                                               i_13625 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)];
+                        }
+                    }
+                    for (int32_t i_13223 = 0; i_13223 < sizze_12934;
+                         i_13223++) {
+                        for (int32_t i_13227 = 0; i_13227 < sizze_12935;
+                             i_13227++) {
+                            float x_13134 = ((__global
+                                              float *) mem_13285)[phys_tid_13152 *
+                                                                  (sizze_12935 *
+                                                                   sizze_12934) +
+                                                                  (i_13223 *
+                                                                   sizze_12935 +
+                                                                   i_13227)];
+                            float x_13135 = ((__global
+                                              float *) mem_13341)[phys_tid_13152 +
+                                                                  (i_13223 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12934) +
+                                                                   i_13227 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144))];
+                            float res_13136 = x_13134 + x_13135;
+                            
+                            ((__global float *) mem_13355)[phys_tid_13152 +
+                                                           i_13227 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                res_13136;
+                        }
+                        for (int32_t i_13628 = 0; i_13628 < sizze_12935;
+                             i_13628++) {
+                            ((__global float *) mem_13352)[phys_tid_13152 +
+                                                           i_13223 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12935) +
+                                                           i_13628 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                ((__global float *) mem_13355)[phys_tid_13152 +
+                                                               i_13628 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)];
+                        }
+                    }
+                    // store in accumulator
+                    {
+                        for (int32_t i_13629 = 0; i_13629 < sizze_12934;
+                             i_13629++) {
+                            for (int32_t i_13630 = 0; i_13630 < sizze_12935;
+                                 i_13630++) {
+                                ((__global
+                                  float *) group_res_arr_mem_13424)[group_tid_13431 *
+                                                                    (segred_group_sizze_13144 *
+                                                                     sizze_12935 *
+                                                                     sizze_12934) +
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12935 *
+                                                                    0 +
+                                                                    segred_group_sizze_13144 *
+                                                                    0 +
+                                                                    local_tid_13430 +
+                                                                    (i_13629 *
+                                                                     (segred_group_sizze_13144 *
+                                                                      sizze_12935) +
+                                                                     i_13630 *
+                                                                     segred_group_sizze_13144)] =
+                                    ((__global
+                                      float *) mem_13352)[phys_tid_13152 +
+                                                          (i_13629 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12935) +
+                                                           i_13630 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144))];
+                            }
+                        }
+                        for (int32_t i_13631 = 0; i_13631 < sizze_12937;
+                             i_13631++) {
+                            for (int32_t i_13632 = 0; i_13632 < sizze_12938;
+                                 i_13632++) {
+                                ((__global
+                                  float *) group_res_arr_mem_13426)[group_tid_13431 *
+                                                                    (segred_group_sizze_13144 *
+                                                                     sizze_12938 *
+                                                                     sizze_12937) +
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12938 *
+                                                                    0 +
+                                                                    segred_group_sizze_13144 *
+                                                                    0 +
+                                                                    local_tid_13430 +
+                                                                    (i_13631 *
+                                                                     (segred_group_sizze_13144 *
+                                                                      sizze_12938) +
+                                                                     i_13632 *
+                                                                     segred_group_sizze_13144)] =
+                                    ((__global
+                                      float *) mem_13322)[phys_tid_13152 +
+                                                          (i_13631 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12938) +
+                                                           i_13632 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144))];
+                            }
+                        }
+                    }
+                }
             }
-            mem_13519 = acc_12322;
+        }
+        // to reduce current chunk, first store our result in memory
+        {
+            for (int32_t i_13633 = 0; i_13633 < sizze_12934; i_13633++) {
+                for (int32_t i_13634 = 0; i_13634 < sizze_12935; i_13634++) {
+                    ((__global float *) mem_13285)[phys_tid_13152 *
+                                                   (sizze_12935 * sizze_12934) +
+                                                   (i_13633 * sizze_12935 +
+                                                    i_13634)] = ((__global
+                                                                  float *) group_res_arr_mem_13424)[group_tid_13431 *
+                                                                                                    (segred_group_sizze_13144 *
+                                                                                                     sizze_12935 *
+                                                                                                     sizze_12934) +
+                                                                                                    segred_group_sizze_13144 *
+                                                                                                    sizze_12935 *
+                                                                                                    0 +
+                                                                                                    segred_group_sizze_13144 *
+                                                                                                    0 +
+                                                                                                    local_tid_13430 +
+                                                                                                    (i_13633 *
+                                                                                                     (segred_group_sizze_13144 *
+                                                                                                      sizze_12935) +
+                                                                                                     i_13634 *
+                                                                                                     segred_group_sizze_13144)];
+                }
+            }
+            for (int32_t i_13635 = 0; i_13635 < sizze_12937; i_13635++) {
+                for (int32_t i_13636 = 0; i_13636 < sizze_12938; i_13636++) {
+                    ((__global float *) mem_13293)[phys_tid_13152 *
+                                                   (sizze_12938 * sizze_12937) +
+                                                   (i_13635 * sizze_12938 +
+                                                    i_13636)] = ((__global
+                                                                  float *) group_res_arr_mem_13426)[group_tid_13431 *
+                                                                                                    (segred_group_sizze_13144 *
+                                                                                                     sizze_12938 *
+                                                                                                     sizze_12937) +
+                                                                                                    segred_group_sizze_13144 *
+                                                                                                    sizze_12938 *
+                                                                                                    0 +
+                                                                                                    segred_group_sizze_13144 *
+                                                                                                    0 +
+                                                                                                    local_tid_13430 +
+                                                                                                    (i_13635 *
+                                                                                                     (segred_group_sizze_13144 *
+                                                                                                      sizze_12938) +
+                                                                                                     i_13636 *
+                                                                                                     segred_group_sizze_13144)];
+                }
+            }
         }
         barrier(CLK_LOCAL_MEM_FENCE);
-        for (int32_t i_13822 = 0; i_13822 < squot32(tile_sizze_12053 *
-                                                    tile_sizze_12053 -
-                                                    local_tid_13813 +
-                                                    group_sizze_12054 - 1,
-                                                    group_sizze_12054);
-             i_13822++) {
-            mem_13726 = mem_13519;
+        
+        int32_t offset_13637;
+        int32_t skip_waves_13638;
+        
+        offset_13637 = 0;
+        // participating threads read initial accumulator
+        {
+            if (slt32(local_tid_13430, segred_group_sizze_13144)) {
+                for (int32_t i_13639 = 0; i_13639 < sizze_12934; i_13639++) {
+                    for (int32_t i_13640 = 0; i_13640 < sizze_12935;
+                         i_13640++) {
+                        ((__global float *) mem_13285)[phys_tid_13152 *
+                                                       (sizze_12935 *
+                                                        sizze_12934) +
+                                                       (i_13639 * sizze_12935 +
+                                                        i_13640)] = ((__global
+                                                                      float *) mem_13285)[(global_tid_13429 +
+                                                                                           offset_13637) *
+                                                                                          (sizze_12935 *
+                                                                                           sizze_12934) +
+                                                                                          (i_13639 *
+                                                                                           sizze_12935 +
+                                                                                           i_13640)];
+                    }
+                }
+                for (int32_t i_13641 = 0; i_13641 < sizze_12937; i_13641++) {
+                    for (int32_t i_13642 = 0; i_13642 < sizze_12938;
+                         i_13642++) {
+                        ((__global float *) mem_13293)[phys_tid_13152 *
+                                                       (sizze_12938 *
+                                                        sizze_12937) +
+                                                       (i_13641 * sizze_12938 +
+                                                        i_13642)] = ((__global
+                                                                      float *) mem_13293)[(global_tid_13429 +
+                                                                                           offset_13637) *
+                                                                                          (sizze_12938 *
+                                                                                           sizze_12937) +
+                                                                                          (i_13641 *
+                                                                                           sizze_12938 +
+                                                                                           i_13642)];
+                    }
+                }
+            }
+        }
+        offset_13637 = 1;
+        while (slt32(offset_13637, wave_sizze_13432)) {
+            if (slt32(local_tid_13430 + offset_13637,
+                      segred_group_sizze_13144) && ((local_tid_13430 -
+                                                     squot32(local_tid_13430,
+                                                             wave_sizze_13432) *
+                                                     wave_sizze_13432) & (2 *
+                                                                          offset_13637 -
+                                                                          1)) ==
+                0) {
+                // read array element
+                {
+                    for (int32_t i_13643 = 0; i_13643 < sizze_12934;
+                         i_13643++) {
+                        for (int32_t i_13644 = 0; i_13644 < sizze_12935;
+                             i_13644++) {
+                            ((volatile __global
+                              float *) mem_13285)[(phys_tid_13152 +
+                                                   num_threads_13277) *
+                                                  (sizze_12935 * sizze_12934) +
+                                                  (i_13643 * sizze_12935 +
+                                                   i_13644)] =
+                                ((volatile __global
+                                  float *) mem_13285)[(global_tid_13429 +
+                                                       offset_13637) *
+                                                      (sizze_12935 *
+                                                       sizze_12934) + (i_13643 *
+                                                                       sizze_12935 +
+                                                                       i_13644)];
+                        }
+                    }
+                    for (int32_t i_13645 = 0; i_13645 < sizze_12937;
+                         i_13645++) {
+                        for (int32_t i_13646 = 0; i_13646 < sizze_12938;
+                             i_13646++) {
+                            ((volatile __global
+                              float *) mem_13293)[(phys_tid_13152 +
+                                                   num_threads_13277) *
+                                                  (sizze_12938 * sizze_12937) +
+                                                  (i_13645 * sizze_12938 +
+                                                   i_13646)] =
+                                ((volatile __global
+                                  float *) mem_13293)[(global_tid_13429 +
+                                                       offset_13637) *
+                                                      (sizze_12938 *
+                                                       sizze_12937) + (i_13645 *
+                                                                       sizze_12938 +
+                                                                       i_13646)];
+                        }
+                    }
+                }
+                // apply reduction operation
+                {
+                    for (int32_t i_13452 = 0; i_13452 < sizze_12934;
+                         i_13452++) {
+                        for (int32_t i_13456 = 0; i_13456 < sizze_12935;
+                             i_13456++) {
+                            float res_13457;
+                            float redout_13458 = 0.0F;
+                            
+                            for (int32_t i_13459 = 0; i_13459 < sizze_12935;
+                                 i_13459++) {
+                                float x_13460 = ((volatile __global
+                                                  float *) mem_13285)[phys_tid_13152 *
+                                                                      (sizze_12935 *
+                                                                       sizze_12934) +
+                                                                      (i_13452 *
+                                                                       sizze_12935 +
+                                                                       i_13459)];
+                                float x_13461 = ((volatile __global
+                                                  float *) mem_13285)[(phys_tid_13152 +
+                                                                       num_threads_13277) *
+                                                                      (sizze_12935 *
+                                                                       sizze_12934) +
+                                                                      (i_13459 *
+                                                                       sizze_12935 +
+                                                                       i_13456)];
+                                float res_13462 = x_13460 * x_13461;
+                                float res_13463 = res_13462 + redout_13458;
+                                float redout_tmp_13649 = res_13463;
+                                
+                                redout_13458 = redout_tmp_13649;
+                            }
+                            res_13457 = redout_13458;
+                            
+                            float res_13464 = 0.0F - res_13457;
+                            float res_13465 = fpow32(2.7182817F, res_13464);
+                            float res_13466 = 1.0F + res_13465;
+                            float res_13467 = 1.0F / res_13466;
+                            
+                            ((volatile __global
+                              float *) mem_13301)[phys_tid_13152 + i_13456 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144)] =
+                                res_13467;
+                        }
+                        for (int32_t i_13650 = 0; i_13650 < sizze_12935;
+                             i_13650++) {
+                            ((volatile __global
+                              float *) mem_13298)[phys_tid_13152 + i_13452 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144 *
+                                                   sizze_12935) + i_13650 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144)] =
+                                ((volatile __global
+                                  float *) mem_13301)[phys_tid_13152 + i_13650 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)];
+                        }
+                    }
+                    for (int32_t i_13476 = 0; i_13476 < sizze_12937;
+                         i_13476++) {
+                        for (int32_t i_13480 = 0; i_13480 < sizze_12935;
+                             i_13480++) {
+                            float res_13481;
+                            float redout_13482 = 0.0F;
+                            
+                            for (int32_t i_13483 = 0; i_13483 < sizze_12938;
+                                 i_13483++) {
+                                float x_13484 = ((volatile __global
+                                                  float *) mem_13293)[phys_tid_13152 *
+                                                                      (sizze_12938 *
+                                                                       sizze_12937) +
+                                                                      (i_13476 *
+                                                                       sizze_12938 +
+                                                                       i_13483)];
+                                float x_13485 = ((volatile __global
+                                                  float *) mem_13298)[phys_tid_13152 +
+                                                                      (i_13483 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12935) +
+                                                                       i_13480 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float res_13486 = x_13484 * x_13485;
+                                float res_13487 = res_13486 + redout_13482;
+                                float redout_tmp_13654 = res_13487;
+                                
+                                redout_13482 = redout_tmp_13654;
+                            }
+                            res_13481 = redout_13482;
+                            
+                            float res_13488 = 0.0F - res_13481;
+                            float res_13489 = fpow32(2.7182817F, res_13488);
+                            float res_13490 = 1.0F + res_13489;
+                            float res_13491 = 1.0F / res_13490;
+                            
+                            ((volatile __global
+                              float *) mem_13314)[phys_tid_13152 + i_13480 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144)] =
+                                res_13491;
+                        }
+                        for (int32_t i_13496 = 0; i_13496 < sizze_12938;
+                             i_13496++) {
+                            float x_13497 = ((volatile __global
+                                              float *) mem_13293)[(phys_tid_13152 +
+                                                                   num_threads_13277) *
+                                                                  (sizze_12938 *
+                                                                   sizze_12937) +
+                                                                  (i_13476 *
+                                                                   sizze_12938 +
+                                                                   i_13496)];
+                            float x_13498 = ((volatile __global
+                                              float *) mem_13314)[phys_tid_13152 +
+                                                                  i_13496 *
+                                                                  (num_groups_13146 *
+                                                                   segred_group_sizze_13144)];
+                            float res_13499 = x_13497 - x_13498;
+                            
+                            ((volatile __global
+                              float *) mem_13317)[phys_tid_13152 + i_13496 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144)] =
+                                res_13499;
+                        }
+                        for (int32_t i_13656 = 0; i_13656 < sizze_12938;
+                             i_13656++) {
+                            ((volatile __global
+                              float *) mem_13306)[phys_tid_13152 + i_13476 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144 *
+                                                   sizze_12938) + i_13656 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144)] =
+                                ((volatile __global
+                                  float *) mem_13317)[phys_tid_13152 + i_13656 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)];
+                        }
+                        for (int32_t i_13657 = 0; i_13657 < sizze_12935;
+                             i_13657++) {
+                            ((volatile __global
+                              float *) mem_13311)[phys_tid_13152 + i_13476 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144 *
+                                                   sizze_12935) + i_13657 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144)] =
+                                ((volatile __global
+                                  float *) mem_13314)[phys_tid_13152 + i_13657 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)];
+                        }
+                    }
+                    for (int32_t i_13506 = 0; i_13506 < sizze_12937;
+                         i_13506++) {
+                        for (int32_t i_13510 = 0; i_13510 < sizze_12938;
+                             i_13510++) {
+                            float x_13511 = ((volatile __global
+                                              float *) mem_13306)[phys_tid_13152 +
+                                                                  (i_13506 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12938) +
+                                                                   i_13510 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144))];
+                            float x_13512 = ((volatile __global
+                                              float *) mem_13311)[phys_tid_13152 +
+                                                                  (i_13506 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12935) +
+                                                                   i_13510 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144))];
+                            float res_13513 = x_13511 * x_13512;
+                            float res_13514 = 1.0F - x_13512;
+                            float res_13515 = res_13513 * res_13514;
+                            
+                            ((volatile __global
+                              float *) mem_13325)[phys_tid_13152 + i_13510 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144)] =
+                                res_13515;
+                        }
+                        for (int32_t i_13520 = 0; i_13520 < sizze_12938;
+                             i_13520++) {
+                            float x_13521 = ((volatile __global
+                                              float *) mem_13293)[phys_tid_13152 *
+                                                                  (sizze_12938 *
+                                                                   sizze_12937) +
+                                                                  (i_13506 *
+                                                                   sizze_12938 +
+                                                                   i_13520)];
+                            float res_13522;
+                            float redout_13523 = 0.0F;
+                            
+                            for (int32_t i_13524 = 0; i_13524 < sizze_12938;
+                                 i_13524++) {
+                                float x_13525 = ((volatile __global
+                                                  float *) mem_13325)[phys_tid_13152 +
+                                                                      i_13524 *
+                                                                      (num_groups_13146 *
+                                                                       segred_group_sizze_13144)];
+                                float x_13526 = ((volatile __global
+                                                  float *) mem_13298)[phys_tid_13152 +
+                                                                      (i_13520 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12935) +
+                                                                       i_13524 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float res_13527 = x_13525 * x_13526;
+                                float res_13528 = res_13527 + redout_13523;
+                                float redout_tmp_13661 = res_13528;
+                                
+                                redout_13523 = redout_tmp_13661;
+                            }
+                            res_13522 = redout_13523;
+                            
+                            float res_13529 = lr_12939 * res_13522;
+                            float res_13530 = x_13521 + res_13529;
+                            
+                            ((volatile __global
+                              float *) mem_13328)[phys_tid_13152 + i_13520 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144)] =
+                                res_13530;
+                        }
+                        for (int32_t i_13662 = 0; i_13662 < sizze_12938;
+                             i_13662++) {
+                            ((volatile __global
+                              float *) mem_13322)[phys_tid_13152 + i_13506 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144 *
+                                                   sizze_12938) + i_13662 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144)] =
+                                ((volatile __global
+                                  float *) mem_13328)[phys_tid_13152 + i_13662 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)];
+                        }
+                    }
+                    for (int32_t i_13536 = 0; i_13536 < sizze_12934;
+                         i_13536++) {
+                        for (int32_t i_13540 = 0; i_13540 < sizze_12935;
+                             i_13540++) {
+                            float x_13541 = ((volatile __global
+                                              float *) mem_13298)[phys_tid_13152 +
+                                                                  (i_13536 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12935) +
+                                                                   i_13540 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144))];
+                            float res_13542 = 1.0F - x_13541;
+                            
+                            ((volatile __global
+                              float *) mem_13336)[phys_tid_13152 + i_13540 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144)] =
+                                res_13542;
+                        }
+                        for (int32_t i_13665 = 0; i_13665 < sizze_12935;
+                             i_13665++) {
+                            ((volatile __global
+                              float *) mem_13333)[phys_tid_13152 + i_13536 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144 *
+                                                   sizze_12935) + i_13665 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144)] =
+                                ((volatile __global
+                                  float *) mem_13336)[phys_tid_13152 + i_13665 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)];
+                        }
+                    }
+                    for (int32_t i_13548 = 0; i_13548 < sizze_12938;
+                         i_13548++) {
+                        for (int32_t i_13552 = 0; i_13552 < sizze_12938;
+                             i_13552++) {
+                            float x_13553 = ((volatile __global
+                                              float *) mem_13298)[phys_tid_13152 +
+                                                                  (i_13548 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12935) +
+                                                                   i_13552 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144))];
+                            float x_13554 = ((volatile __global
+                                              float *) mem_13333)[phys_tid_13152 +
+                                                                  (i_13548 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12935) +
+                                                                   i_13552 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144))];
+                            float res_13555;
+                            float redout_13556 = 0.0F;
+                            
+                            for (int32_t i_13557 = 0; i_13557 < sizze_12937;
+                                 i_13557++) {
+                                float x_13558 = ((volatile __global
+                                                  float *) mem_13293)[phys_tid_13152 *
+                                                                      (sizze_12938 *
+                                                                       sizze_12937) +
+                                                                      (i_13557 *
+                                                                       sizze_12938 +
+                                                                       i_13548)];
+                                float x_13559 = ((volatile __global
+                                                  float *) mem_13306)[phys_tid_13152 +
+                                                                      (i_13557 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12938) +
+                                                                       i_13552 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float res_13560 = x_13558 * x_13559;
+                                float res_13561 = res_13560 + redout_13556;
+                                float redout_tmp_13668 = res_13561;
+                                
+                                redout_13556 = redout_tmp_13668;
+                            }
+                            res_13555 = redout_13556;
+                            
+                            float res_13562 = x_13553 * res_13555;
+                            float res_13563 = x_13554 * res_13562;
+                            
+                            ((volatile __global
+                              float *) mem_13344)[phys_tid_13152 + i_13552 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144)] =
+                                res_13563;
+                        }
+                        for (int32_t i_13568 = 0; i_13568 < sizze_12934;
+                             i_13568++) {
+                            float res_13569;
+                            float redout_13570 = 0.0F;
+                            
+                            for (int32_t i_13571 = 0; i_13571 < sizze_12938;
+                                 i_13571++) {
+                                float x_13572 = ((volatile __global
+                                                  float *) mem_13344)[phys_tid_13152 +
+                                                                      i_13571 *
+                                                                      (num_groups_13146 *
+                                                                       segred_group_sizze_13144)];
+                                float x_13573 = ((volatile __global
+                                                  float *) mem_13285)[(phys_tid_13152 +
+                                                                       num_threads_13277) *
+                                                                      (sizze_12935 *
+                                                                       sizze_12934) +
+                                                                      (i_13568 *
+                                                                       sizze_12935 +
+                                                                       i_13571)];
+                                float res_13574 = x_13572 * x_13573;
+                                float res_13575 = res_13574 + redout_13570;
+                                float redout_tmp_13670 = res_13575;
+                                
+                                redout_13570 = redout_tmp_13670;
+                            }
+                            res_13569 = redout_13570;
+                            
+                            float res_13576 = lr_12939 * res_13569;
+                            
+                            ((volatile __global
+                              float *) mem_13347)[phys_tid_13152 + i_13568 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144)] =
+                                res_13576;
+                        }
+                        for (int32_t i_13671 = 0; i_13671 < sizze_12934;
+                             i_13671++) {
+                            ((volatile __global
+                              float *) mem_13341)[phys_tid_13152 + i_13548 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144 *
+                                                   sizze_12934) + i_13671 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144)] =
+                                ((volatile __global
+                                  float *) mem_13347)[phys_tid_13152 + i_13671 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)];
+                        }
+                    }
+                    for (int32_t i_13582 = 0; i_13582 < sizze_12934;
+                         i_13582++) {
+                        for (int32_t i_13586 = 0; i_13586 < sizze_12935;
+                             i_13586++) {
+                            float x_13587 = ((volatile __global
+                                              float *) mem_13285)[phys_tid_13152 *
+                                                                  (sizze_12935 *
+                                                                   sizze_12934) +
+                                                                  (i_13582 *
+                                                                   sizze_12935 +
+                                                                   i_13586)];
+                            float x_13588 = ((volatile __global
+                                              float *) mem_13341)[phys_tid_13152 +
+                                                                  (i_13582 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12934) +
+                                                                   i_13586 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144))];
+                            float res_13589 = x_13587 + x_13588;
+                            
+                            ((volatile __global
+                              float *) mem_13355)[phys_tid_13152 + i_13586 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144)] =
+                                res_13589;
+                        }
+                        for (int32_t i_13674 = 0; i_13674 < sizze_12935;
+                             i_13674++) {
+                            ((volatile __global
+                              float *) mem_13352)[phys_tid_13152 + i_13582 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144 *
+                                                   sizze_12935) + i_13674 *
+                                                  (num_groups_13146 *
+                                                   segred_group_sizze_13144)] =
+                                ((volatile __global
+                                  float *) mem_13355)[phys_tid_13152 + i_13674 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)];
+                        }
+                    }
+                    for (int32_t i_13675 = 0; i_13675 < sizze_12934;
+                         i_13675++) {
+                        for (int32_t i_13676 = 0; i_13676 < sizze_12935;
+                             i_13676++) {
+                            ((volatile __global
+                              float *) mem_13285)[phys_tid_13152 *
+                                                  (sizze_12935 * sizze_12934) +
+                                                  (i_13675 * sizze_12935 +
+                                                   i_13676)] =
+                                ((volatile __global
+                                  float *) mem_13352)[phys_tid_13152 +
+                                                      (i_13675 *
+                                                       (num_groups_13146 *
+                                                        segred_group_sizze_13144 *
+                                                        sizze_12935) + i_13676 *
+                                                       (num_groups_13146 *
+                                                        segred_group_sizze_13144))];
+                        }
+                    }
+                    for (int32_t i_13677 = 0; i_13677 < sizze_12937;
+                         i_13677++) {
+                        for (int32_t i_13678 = 0; i_13678 < sizze_12938;
+                             i_13678++) {
+                            ((volatile __global
+                              float *) mem_13293)[phys_tid_13152 *
+                                                  (sizze_12938 * sizze_12937) +
+                                                  (i_13677 * sizze_12938 +
+                                                   i_13678)] =
+                                ((volatile __global
+                                  float *) mem_13322)[phys_tid_13152 +
+                                                      (i_13677 *
+                                                       (num_groups_13146 *
+                                                        segred_group_sizze_13144 *
+                                                        sizze_12938) + i_13678 *
+                                                       (num_groups_13146 *
+                                                        segred_group_sizze_13144))];
+                        }
+                    }
+                }
+                // write result of operation
+                { }
+            }
+            offset_13637 *= 2;
+        }
+        skip_waves_13638 = 1;
+        while (slt32(skip_waves_13638, squot32(segred_group_sizze_13144 +
+                                               wave_sizze_13432 - 1,
+                                               wave_sizze_13432))) {
+            barrier(CLK_GLOBAL_MEM_FENCE);
+            offset_13637 = skip_waves_13638 * wave_sizze_13432;
+            if (slt32(local_tid_13430 + offset_13637,
+                      segred_group_sizze_13144) && ((local_tid_13430 -
+                                                     squot32(local_tid_13430,
+                                                             wave_sizze_13432) *
+                                                     wave_sizze_13432) == 0 &&
+                                                    (squot32(local_tid_13430,
+                                                             wave_sizze_13432) &
+                                                     (2 * skip_waves_13638 -
+                                                      1)) == 0)) {
+                // read array element
+                {
+                    for (int32_t i_13679 = 0; i_13679 < sizze_12934;
+                         i_13679++) {
+                        for (int32_t i_13680 = 0; i_13680 < sizze_12935;
+                             i_13680++) {
+                            ((__global float *) mem_13285)[(phys_tid_13152 +
+                                                            num_threads_13277) *
+                                                           (sizze_12935 *
+                                                            sizze_12934) +
+                                                           (i_13679 *
+                                                            sizze_12935 +
+                                                            i_13680)] =
+                                ((__global
+                                  float *) mem_13285)[(global_tid_13429 +
+                                                       offset_13637) *
+                                                      (sizze_12935 *
+                                                       sizze_12934) + (i_13679 *
+                                                                       sizze_12935 +
+                                                                       i_13680)];
+                        }
+                    }
+                    for (int32_t i_13681 = 0; i_13681 < sizze_12937;
+                         i_13681++) {
+                        for (int32_t i_13682 = 0; i_13682 < sizze_12938;
+                             i_13682++) {
+                            ((__global float *) mem_13293)[(phys_tid_13152 +
+                                                            num_threads_13277) *
+                                                           (sizze_12938 *
+                                                            sizze_12937) +
+                                                           (i_13681 *
+                                                            sizze_12938 +
+                                                            i_13682)] =
+                                ((__global
+                                  float *) mem_13293)[(global_tid_13429 +
+                                                       offset_13637) *
+                                                      (sizze_12938 *
+                                                       sizze_12937) + (i_13681 *
+                                                                       sizze_12938 +
+                                                                       i_13682)];
+                        }
+                    }
+                }
+                // apply reduction operation
+                {
+                    for (int32_t i_13452 = 0; i_13452 < sizze_12934;
+                         i_13452++) {
+                        for (int32_t i_13456 = 0; i_13456 < sizze_12935;
+                             i_13456++) {
+                            float res_13457;
+                            float redout_13458 = 0.0F;
+                            
+                            for (int32_t i_13459 = 0; i_13459 < sizze_12935;
+                                 i_13459++) {
+                                float x_13460 = ((__global
+                                                  float *) mem_13285)[phys_tid_13152 *
+                                                                      (sizze_12935 *
+                                                                       sizze_12934) +
+                                                                      (i_13452 *
+                                                                       sizze_12935 +
+                                                                       i_13459)];
+                                float x_13461 = ((__global
+                                                  float *) mem_13285)[(phys_tid_13152 +
+                                                                       num_threads_13277) *
+                                                                      (sizze_12935 *
+                                                                       sizze_12934) +
+                                                                      (i_13459 *
+                                                                       sizze_12935 +
+                                                                       i_13456)];
+                                float res_13462 = x_13460 * x_13461;
+                                float res_13463 = res_13462 + redout_13458;
+                                float redout_tmp_13685 = res_13463;
+                                
+                                redout_13458 = redout_tmp_13685;
+                            }
+                            res_13457 = redout_13458;
+                            
+                            float res_13464 = 0.0F - res_13457;
+                            float res_13465 = fpow32(2.7182817F, res_13464);
+                            float res_13466 = 1.0F + res_13465;
+                            float res_13467 = 1.0F / res_13466;
+                            
+                            ((__global float *) mem_13301)[phys_tid_13152 +
+                                                           i_13456 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                res_13467;
+                        }
+                        for (int32_t i_13686 = 0; i_13686 < sizze_12935;
+                             i_13686++) {
+                            ((__global float *) mem_13298)[phys_tid_13152 +
+                                                           i_13452 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12935) +
+                                                           i_13686 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                ((__global float *) mem_13301)[phys_tid_13152 +
+                                                               i_13686 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)];
+                        }
+                    }
+                    for (int32_t i_13476 = 0; i_13476 < sizze_12937;
+                         i_13476++) {
+                        for (int32_t i_13480 = 0; i_13480 < sizze_12935;
+                             i_13480++) {
+                            float res_13481;
+                            float redout_13482 = 0.0F;
+                            
+                            for (int32_t i_13483 = 0; i_13483 < sizze_12938;
+                                 i_13483++) {
+                                float x_13484 = ((__global
+                                                  float *) mem_13293)[phys_tid_13152 *
+                                                                      (sizze_12938 *
+                                                                       sizze_12937) +
+                                                                      (i_13476 *
+                                                                       sizze_12938 +
+                                                                       i_13483)];
+                                float x_13485 = ((__global
+                                                  float *) mem_13298)[phys_tid_13152 +
+                                                                      (i_13483 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12935) +
+                                                                       i_13480 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float res_13486 = x_13484 * x_13485;
+                                float res_13487 = res_13486 + redout_13482;
+                                float redout_tmp_13690 = res_13487;
+                                
+                                redout_13482 = redout_tmp_13690;
+                            }
+                            res_13481 = redout_13482;
+                            
+                            float res_13488 = 0.0F - res_13481;
+                            float res_13489 = fpow32(2.7182817F, res_13488);
+                            float res_13490 = 1.0F + res_13489;
+                            float res_13491 = 1.0F / res_13490;
+                            
+                            ((__global float *) mem_13314)[phys_tid_13152 +
+                                                           i_13480 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                res_13491;
+                        }
+                        for (int32_t i_13496 = 0; i_13496 < sizze_12938;
+                             i_13496++) {
+                            float x_13497 = ((__global
+                                              float *) mem_13293)[(phys_tid_13152 +
+                                                                   num_threads_13277) *
+                                                                  (sizze_12938 *
+                                                                   sizze_12937) +
+                                                                  (i_13476 *
+                                                                   sizze_12938 +
+                                                                   i_13496)];
+                            float x_13498 = ((__global
+                                              float *) mem_13314)[phys_tid_13152 +
+                                                                  i_13496 *
+                                                                  (num_groups_13146 *
+                                                                   segred_group_sizze_13144)];
+                            float res_13499 = x_13497 - x_13498;
+                            
+                            ((__global float *) mem_13317)[phys_tid_13152 +
+                                                           i_13496 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                res_13499;
+                        }
+                        for (int32_t i_13692 = 0; i_13692 < sizze_12938;
+                             i_13692++) {
+                            ((__global float *) mem_13306)[phys_tid_13152 +
+                                                           i_13476 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12938) +
+                                                           i_13692 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                ((__global float *) mem_13317)[phys_tid_13152 +
+                                                               i_13692 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)];
+                        }
+                        for (int32_t i_13693 = 0; i_13693 < sizze_12935;
+                             i_13693++) {
+                            ((__global float *) mem_13311)[phys_tid_13152 +
+                                                           i_13476 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12935) +
+                                                           i_13693 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                ((__global float *) mem_13314)[phys_tid_13152 +
+                                                               i_13693 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)];
+                        }
+                    }
+                    for (int32_t i_13506 = 0; i_13506 < sizze_12937;
+                         i_13506++) {
+                        for (int32_t i_13510 = 0; i_13510 < sizze_12938;
+                             i_13510++) {
+                            float x_13511 = ((__global
+                                              float *) mem_13306)[phys_tid_13152 +
+                                                                  (i_13506 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12938) +
+                                                                   i_13510 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144))];
+                            float x_13512 = ((__global
+                                              float *) mem_13311)[phys_tid_13152 +
+                                                                  (i_13506 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12935) +
+                                                                   i_13510 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144))];
+                            float res_13513 = x_13511 * x_13512;
+                            float res_13514 = 1.0F - x_13512;
+                            float res_13515 = res_13513 * res_13514;
+                            
+                            ((__global float *) mem_13325)[phys_tid_13152 +
+                                                           i_13510 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                res_13515;
+                        }
+                        for (int32_t i_13520 = 0; i_13520 < sizze_12938;
+                             i_13520++) {
+                            float x_13521 = ((__global
+                                              float *) mem_13293)[phys_tid_13152 *
+                                                                  (sizze_12938 *
+                                                                   sizze_12937) +
+                                                                  (i_13506 *
+                                                                   sizze_12938 +
+                                                                   i_13520)];
+                            float res_13522;
+                            float redout_13523 = 0.0F;
+                            
+                            for (int32_t i_13524 = 0; i_13524 < sizze_12938;
+                                 i_13524++) {
+                                float x_13525 = ((__global
+                                                  float *) mem_13325)[phys_tid_13152 +
+                                                                      i_13524 *
+                                                                      (num_groups_13146 *
+                                                                       segred_group_sizze_13144)];
+                                float x_13526 = ((__global
+                                                  float *) mem_13298)[phys_tid_13152 +
+                                                                      (i_13520 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12935) +
+                                                                       i_13524 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float res_13527 = x_13525 * x_13526;
+                                float res_13528 = res_13527 + redout_13523;
+                                float redout_tmp_13697 = res_13528;
+                                
+                                redout_13523 = redout_tmp_13697;
+                            }
+                            res_13522 = redout_13523;
+                            
+                            float res_13529 = lr_12939 * res_13522;
+                            float res_13530 = x_13521 + res_13529;
+                            
+                            ((__global float *) mem_13328)[phys_tid_13152 +
+                                                           i_13520 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                res_13530;
+                        }
+                        for (int32_t i_13698 = 0; i_13698 < sizze_12938;
+                             i_13698++) {
+                            ((__global float *) mem_13322)[phys_tid_13152 +
+                                                           i_13506 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12938) +
+                                                           i_13698 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                ((__global float *) mem_13328)[phys_tid_13152 +
+                                                               i_13698 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)];
+                        }
+                    }
+                    for (int32_t i_13536 = 0; i_13536 < sizze_12934;
+                         i_13536++) {
+                        for (int32_t i_13540 = 0; i_13540 < sizze_12935;
+                             i_13540++) {
+                            float x_13541 = ((__global
+                                              float *) mem_13298)[phys_tid_13152 +
+                                                                  (i_13536 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12935) +
+                                                                   i_13540 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144))];
+                            float res_13542 = 1.0F - x_13541;
+                            
+                            ((__global float *) mem_13336)[phys_tid_13152 +
+                                                           i_13540 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                res_13542;
+                        }
+                        for (int32_t i_13701 = 0; i_13701 < sizze_12935;
+                             i_13701++) {
+                            ((__global float *) mem_13333)[phys_tid_13152 +
+                                                           i_13536 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12935) +
+                                                           i_13701 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                ((__global float *) mem_13336)[phys_tid_13152 +
+                                                               i_13701 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)];
+                        }
+                    }
+                    for (int32_t i_13548 = 0; i_13548 < sizze_12938;
+                         i_13548++) {
+                        for (int32_t i_13552 = 0; i_13552 < sizze_12938;
+                             i_13552++) {
+                            float x_13553 = ((__global
+                                              float *) mem_13298)[phys_tid_13152 +
+                                                                  (i_13548 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12935) +
+                                                                   i_13552 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144))];
+                            float x_13554 = ((__global
+                                              float *) mem_13333)[phys_tid_13152 +
+                                                                  (i_13548 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12935) +
+                                                                   i_13552 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144))];
+                            float res_13555;
+                            float redout_13556 = 0.0F;
+                            
+                            for (int32_t i_13557 = 0; i_13557 < sizze_12937;
+                                 i_13557++) {
+                                float x_13558 = ((__global
+                                                  float *) mem_13293)[phys_tid_13152 *
+                                                                      (sizze_12938 *
+                                                                       sizze_12937) +
+                                                                      (i_13557 *
+                                                                       sizze_12938 +
+                                                                       i_13548)];
+                                float x_13559 = ((__global
+                                                  float *) mem_13306)[phys_tid_13152 +
+                                                                      (i_13557 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12938) +
+                                                                       i_13552 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float res_13560 = x_13558 * x_13559;
+                                float res_13561 = res_13560 + redout_13556;
+                                float redout_tmp_13704 = res_13561;
+                                
+                                redout_13556 = redout_tmp_13704;
+                            }
+                            res_13555 = redout_13556;
+                            
+                            float res_13562 = x_13553 * res_13555;
+                            float res_13563 = x_13554 * res_13562;
+                            
+                            ((__global float *) mem_13344)[phys_tid_13152 +
+                                                           i_13552 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                res_13563;
+                        }
+                        for (int32_t i_13568 = 0; i_13568 < sizze_12934;
+                             i_13568++) {
+                            float res_13569;
+                            float redout_13570 = 0.0F;
+                            
+                            for (int32_t i_13571 = 0; i_13571 < sizze_12938;
+                                 i_13571++) {
+                                float x_13572 = ((__global
+                                                  float *) mem_13344)[phys_tid_13152 +
+                                                                      i_13571 *
+                                                                      (num_groups_13146 *
+                                                                       segred_group_sizze_13144)];
+                                float x_13573 = ((__global
+                                                  float *) mem_13285)[(phys_tid_13152 +
+                                                                       num_threads_13277) *
+                                                                      (sizze_12935 *
+                                                                       sizze_12934) +
+                                                                      (i_13568 *
+                                                                       sizze_12935 +
+                                                                       i_13571)];
+                                float res_13574 = x_13572 * x_13573;
+                                float res_13575 = res_13574 + redout_13570;
+                                float redout_tmp_13706 = res_13575;
+                                
+                                redout_13570 = redout_tmp_13706;
+                            }
+                            res_13569 = redout_13570;
+                            
+                            float res_13576 = lr_12939 * res_13569;
+                            
+                            ((__global float *) mem_13347)[phys_tid_13152 +
+                                                           i_13568 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                res_13576;
+                        }
+                        for (int32_t i_13707 = 0; i_13707 < sizze_12934;
+                             i_13707++) {
+                            ((__global float *) mem_13341)[phys_tid_13152 +
+                                                           i_13548 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12934) +
+                                                           i_13707 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                ((__global float *) mem_13347)[phys_tid_13152 +
+                                                               i_13707 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)];
+                        }
+                    }
+                    for (int32_t i_13582 = 0; i_13582 < sizze_12934;
+                         i_13582++) {
+                        for (int32_t i_13586 = 0; i_13586 < sizze_12935;
+                             i_13586++) {
+                            float x_13587 = ((__global
+                                              float *) mem_13285)[phys_tid_13152 *
+                                                                  (sizze_12935 *
+                                                                   sizze_12934) +
+                                                                  (i_13582 *
+                                                                   sizze_12935 +
+                                                                   i_13586)];
+                            float x_13588 = ((__global
+                                              float *) mem_13341)[phys_tid_13152 +
+                                                                  (i_13582 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144 *
+                                                                    sizze_12934) +
+                                                                   i_13586 *
+                                                                   (num_groups_13146 *
+                                                                    segred_group_sizze_13144))];
+                            float res_13589 = x_13587 + x_13588;
+                            
+                            ((__global float *) mem_13355)[phys_tid_13152 +
+                                                           i_13586 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                res_13589;
+                        }
+                        for (int32_t i_13710 = 0; i_13710 < sizze_12935;
+                             i_13710++) {
+                            ((__global float *) mem_13352)[phys_tid_13152 +
+                                                           i_13582 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12935) +
+                                                           i_13710 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144)] =
+                                ((__global float *) mem_13355)[phys_tid_13152 +
+                                                               i_13710 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)];
+                        }
+                    }
+                    for (int32_t i_13711 = 0; i_13711 < sizze_12934;
+                         i_13711++) {
+                        for (int32_t i_13712 = 0; i_13712 < sizze_12935;
+                             i_13712++) {
+                            ((__global float *) mem_13285)[phys_tid_13152 *
+                                                           (sizze_12935 *
+                                                            sizze_12934) +
+                                                           (i_13711 *
+                                                            sizze_12935 +
+                                                            i_13712)] =
+                                ((__global float *) mem_13352)[phys_tid_13152 +
+                                                               (i_13711 *
+                                                                (num_groups_13146 *
+                                                                 segred_group_sizze_13144 *
+                                                                 sizze_12935) +
+                                                                i_13712 *
+                                                                (num_groups_13146 *
+                                                                 segred_group_sizze_13144))];
+                        }
+                    }
+                    for (int32_t i_13713 = 0; i_13713 < sizze_12937;
+                         i_13713++) {
+                        for (int32_t i_13714 = 0; i_13714 < sizze_12938;
+                             i_13714++) {
+                            ((__global float *) mem_13293)[phys_tid_13152 *
+                                                           (sizze_12938 *
+                                                            sizze_12937) +
+                                                           (i_13713 *
+                                                            sizze_12938 +
+                                                            i_13714)] =
+                                ((__global float *) mem_13322)[phys_tid_13152 +
+                                                               (i_13713 *
+                                                                (num_groups_13146 *
+                                                                 segred_group_sizze_13144 *
+                                                                 sizze_12938) +
+                                                                i_13714 *
+                                                                (num_groups_13146 *
+                                                                 segred_group_sizze_13144))];
+                        }
+                    }
+                }
+                // write result of operation
+                { }
+            }
+            skip_waves_13638 *= 2;
         }
         barrier(CLK_LOCAL_MEM_FENCE);
+        // first thread saves the result in accumulator
+        {
+            if (local_tid_13430 == 0) {
+                for (int32_t i_13715 = 0; i_13715 < sizze_12934; i_13715++) {
+                    for (int32_t i_13716 = 0; i_13716 < sizze_12935;
+                         i_13716++) {
+                        ((__global
+                          float *) group_res_arr_mem_13424)[group_tid_13431 *
+                                                            (segred_group_sizze_13144 *
+                                                             sizze_12935 *
+                                                             sizze_12934) +
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12935 * 0 +
+                                                            segred_group_sizze_13144 *
+                                                            0 +
+                                                            local_tid_13430 +
+                                                            (i_13715 *
+                                                             (segred_group_sizze_13144 *
+                                                              sizze_12935) +
+                                                             i_13716 *
+                                                             segred_group_sizze_13144)] =
+                            ((__global float *) mem_13285)[phys_tid_13152 *
+                                                           (sizze_12935 *
+                                                            sizze_12934) +
+                                                           (i_13715 *
+                                                            sizze_12935 +
+                                                            i_13716)];
+                    }
+                }
+                for (int32_t i_13717 = 0; i_13717 < sizze_12937; i_13717++) {
+                    for (int32_t i_13718 = 0; i_13718 < sizze_12938;
+                         i_13718++) {
+                        ((__global
+                          float *) group_res_arr_mem_13426)[group_tid_13431 *
+                                                            (segred_group_sizze_13144 *
+                                                             sizze_12938 *
+                                                             sizze_12937) +
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12938 * 0 +
+                                                            segred_group_sizze_13144 *
+                                                            0 +
+                                                            local_tid_13430 +
+                                                            (i_13717 *
+                                                             (segred_group_sizze_13144 *
+                                                              sizze_12938) +
+                                                             i_13718 *
+                                                             segred_group_sizze_13144)] =
+                            ((__global float *) mem_13293)[phys_tid_13152 *
+                                                           (sizze_12938 *
+                                                            sizze_12937) +
+                                                           (i_13717 *
+                                                            sizze_12938 +
+                                                            i_13718)];
+                    }
+                }
+            }
+        }
+        // first thread keeps accumulator; others reset to neutral element
+        {
+            if (!(local_tid_13430 == 0)) {
+                for (int32_t i_13719 = 0; i_13719 < sizze_12934; i_13719++) {
+                    for (int32_t i_13720 = 0; i_13720 < sizze_12935;
+                         i_13720++) {
+                        ((__global
+                          float *) group_res_arr_mem_13424)[group_tid_13431 *
+                                                            (segred_group_sizze_13144 *
+                                                             sizze_12935 *
+                                                             sizze_12934) +
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12935 * 0 +
+                                                            segred_group_sizze_13144 *
+                                                            0 +
+                                                            local_tid_13430 +
+                                                            (i_13719 *
+                                                             (segred_group_sizze_13144 *
+                                                              sizze_12935) +
+                                                             i_13720 *
+                                                             segred_group_sizze_13144)] =
+                            ((__global float *) wih_mem_13263)[i_13719 *
+                                                               sizze_12930 +
+                                                               i_13720];
+                    }
+                }
+                for (int32_t i_13721 = 0; i_13721 < sizze_12937; i_13721++) {
+                    for (int32_t i_13722 = 0; i_13722 < sizze_12938;
+                         i_13722++) {
+                        ((__global
+                          float *) group_res_arr_mem_13426)[group_tid_13431 *
+                                                            (segred_group_sizze_13144 *
+                                                             sizze_12938 *
+                                                             sizze_12937) +
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12938 * 0 +
+                                                            segred_group_sizze_13144 *
+                                                            0 +
+                                                            local_tid_13430 +
+                                                            (i_13721 *
+                                                             (segred_group_sizze_13144 *
+                                                              sizze_12938) +
+                                                             i_13722 *
+                                                             segred_group_sizze_13144)] =
+                            ((__global float *) who_mem_13264)[i_13721 *
+                                                               sizze_12932 +
+                                                               i_13722];
+                    }
+                }
+            }
+        }
+    }
+    for (int32_t i_13723 = 0; i_13723 < sizze_12934; i_13723++) {
+        for (int32_t i_13724 = 0; i_13724 < sizze_12935; i_13724++) {
+            ((__global float *) mem_13285)[phys_tid_13152 * (sizze_12935 *
+                                                             sizze_12934) +
+                                           (i_13723 * sizze_12935 + i_13724)] =
+                ((__global float *) group_res_arr_mem_13424)[group_tid_13431 *
+                                                             (segred_group_sizze_13144 *
+                                                              sizze_12935 *
+                                                              sizze_12934) +
+                                                             segred_group_sizze_13144 *
+                                                             sizze_12935 * 0 +
+                                                             segred_group_sizze_13144 *
+                                                             0 +
+                                                             local_tid_13430 +
+                                                             (i_13723 *
+                                                              (segred_group_sizze_13144 *
+                                                               sizze_12935) +
+                                                              i_13724 *
+                                                              segred_group_sizze_13144)];
+        }
+    }
+    for (int32_t i_13725 = 0; i_13725 < sizze_12937; i_13725++) {
+        for (int32_t i_13726 = 0; i_13726 < sizze_12938; i_13726++) {
+            ((__global float *) mem_13293)[phys_tid_13152 * (sizze_12938 *
+                                                             sizze_12937) +
+                                           (i_13725 * sizze_12938 + i_13726)] =
+                ((__global float *) group_res_arr_mem_13426)[group_tid_13431 *
+                                                             (segred_group_sizze_13144 *
+                                                              sizze_12938 *
+                                                              sizze_12937) +
+                                                             segred_group_sizze_13144 *
+                                                             sizze_12938 * 0 +
+                                                             segred_group_sizze_13144 *
+                                                             0 +
+                                                             local_tid_13430 +
+                                                             (i_13725 *
+                                                              (segred_group_sizze_13144 *
+                                                               sizze_12938) +
+                                                              i_13726 *
+                                                              segred_group_sizze_13144)];
+        }
     }
     
-    float mem_13524;
-    int32_t ltid_x_12331 = squot32(local_tid_13813, tile_sizze_12053);
-    int32_t ltid_y_12332;
+    int32_t old_counter_13727;
     
-    ltid_y_12332 = local_tid_13813 - squot32(local_tid_13813,
-                                             tile_sizze_12053) *
-        tile_sizze_12053;
-    
-    int32_t ltid_flat_12333;
-    
-    ltid_flat_12333 = local_tid_13813;
-    if (slt32(ltid_x_12331, tile_sizze_12053) && slt32(ltid_y_12332,
-                                                       tile_sizze_12053)) {
-        int32_t gtid_12342 = binop_x_12158 + ltid_x_12331;
-        int32_t gtid_12344 = binop_x_12160 + ltid_y_12332;
-        bool binop_x_12346 = slt32(gtid_12342, sizze_11063);
-        bool binop_y_12347 = slt32(gtid_12344, sizze_11066);
-        bool cond_12348 = binop_x_12346 && binop_y_12347;
-        float postlude_12349;
-        
-        if (cond_12348) {
-            float res_12345 = mem_13726;
-            float res_12353 = 0.0F - res_12345;
-            float res_12354 = fpow32(2.7182817F, res_12353);
-            float res_12355 = 1.0F + res_12354;
-            float res_12356 = 1.0F / res_12355;
-            
-            postlude_12349 = res_12356;
-        } else {
-            postlude_12349 = 0.0F;
+    // first thread in group saves group result to global memory
+    {
+        if (local_tid_13430 == 0) {
+            for (int32_t i_13728 = 0; i_13728 < sizze_12934; i_13728++) {
+                for (int32_t i_13729 = 0; i_13729 < sizze_12935; i_13729++) {
+                    ((__global
+                      float *) group_res_arr_mem_13424)[group_tid_13431 *
+                                                        (segred_group_sizze_13144 *
+                                                         sizze_12935 *
+                                                         sizze_12934) +
+                                                        segred_group_sizze_13144 *
+                                                        sizze_12935 * 0 +
+                                                        segred_group_sizze_13144 *
+                                                        0 + (i_13728 *
+                                                             (segred_group_sizze_13144 *
+                                                              sizze_12935) +
+                                                             i_13729 *
+                                                             segred_group_sizze_13144)] =
+                        ((__global
+                          float *) group_res_arr_mem_13424)[group_tid_13431 *
+                                                            (segred_group_sizze_13144 *
+                                                             sizze_12935 *
+                                                             sizze_12934) +
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12935 * 0 +
+                                                            segred_group_sizze_13144 *
+                                                            0 +
+                                                            local_tid_13430 +
+                                                            (i_13728 *
+                                                             (segred_group_sizze_13144 *
+                                                              sizze_12935) +
+                                                             i_13729 *
+                                                             segred_group_sizze_13144)];
+                }
+            }
+            for (int32_t i_13730 = 0; i_13730 < sizze_12937; i_13730++) {
+                for (int32_t i_13731 = 0; i_13731 < sizze_12938; i_13731++) {
+                    ((__global
+                      float *) group_res_arr_mem_13426)[group_tid_13431 *
+                                                        (segred_group_sizze_13144 *
+                                                         sizze_12938 *
+                                                         sizze_12937) +
+                                                        segred_group_sizze_13144 *
+                                                        sizze_12938 * 0 +
+                                                        segred_group_sizze_13144 *
+                                                        0 + (i_13730 *
+                                                             (segred_group_sizze_13144 *
+                                                              sizze_12938) +
+                                                             i_13731 *
+                                                             segred_group_sizze_13144)] =
+                        ((__global
+                          float *) group_res_arr_mem_13426)[group_tid_13431 *
+                                                            (segred_group_sizze_13144 *
+                                                             sizze_12938 *
+                                                             sizze_12937) +
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12938 * 0 +
+                                                            segred_group_sizze_13144 *
+                                                            0 +
+                                                            local_tid_13430 +
+                                                            (i_13730 *
+                                                             (segred_group_sizze_13144 *
+                                                              sizze_12938) +
+                                                             i_13731 *
+                                                             segred_group_sizze_13144)];
+                }
+            }
+            mem_fence_global();
+            old_counter_13727 = atomic_add(&((volatile __global
+                                              int *) counter_mem_13422)[0],
+                                           (int) 1);
+            ((__local bool *) sync_arr_mem_13434)[0] = old_counter_13727 ==
+                num_groups_13146 - 1;
         }
-        mem_13524 = postlude_12349;
     }
     barrier(CLK_LOCAL_MEM_FENCE);
+    barrier(CLK_GLOBAL_MEM_FENCE);
     
-    int32_t thread_out_index_13823 = gid_x_12050 * tile_sizze_12053 +
-            squot32(local_tid_13813, tile_sizze_12053);
-    int32_t thread_out_index_13824;
+    bool is_last_group_13732 = ((__local bool *) sync_arr_mem_13434)[0];
     
-    thread_out_index_13824 = gid_y_12051 * tile_sizze_12053 + (local_tid_13813 -
-                                                               squot32(local_tid_13813,
-                                                                       tile_sizze_12053) *
-                                                               tile_sizze_12053);
-    if (slt32(thread_out_index_13823, sizze_11063) &&
-        slt32(thread_out_index_13824, sizze_11066)) {
-        ((__global float *) mem_13529)[thread_out_index_13823 * sizze_11066 +
-                                       thread_out_index_13824] = mem_13524;
-    }
-}
-__kernel void segmap_intragroup_12371(__local volatile
-                                      int64_t *mem_13557_backing_aligned_0,
-                                      __local volatile
-                                      int64_t *mem_13562_backing_aligned_1,
-                                      __local volatile
-                                      int64_t *mem_13572_backing_aligned_2,
-                                      __local volatile
-                                      int64_t *mem_13577_backing_aligned_3,
-                                      int32_t sizze_11061, int32_t sizze_11067,
-                                      int32_t sizze_11068, float lr_11069,
-                                      int32_t num_groups_y_12369,
-                                      int32_t num_whole_tiles_12372,
-                                      int32_t residual_input_12505,
-                                      unsigned char cond_12506, __global
-                                      unsigned char *mem_13544, __global
-                                      unsigned char *mem_13548, __global
-                                      unsigned char *mem_13591)
-{
-    const int32_t tile_sizze_12362 = mainzitile_sizze_12361;
-    const int32_t group_sizze_12363 = mainzitile_sizze_12361 *
-                  mainzitile_sizze_12361;
-    const int block_dim0 = 0;
-    const int block_dim1 = 1;
-    const int block_dim2 = 2;
-    __local volatile char *restrict mem_13557_backing_0 = (__local volatile
-                                                           char *) mem_13557_backing_aligned_0;
-    __local volatile char *restrict mem_13562_backing_1 = (__local volatile
-                                                           char *) mem_13562_backing_aligned_1;
-    __local volatile char *restrict mem_13572_backing_2 = (__local volatile
-                                                           char *) mem_13572_backing_aligned_2;
-    __local volatile char *restrict mem_13577_backing_3 = (__local volatile
-                                                           char *) mem_13577_backing_aligned_3;
-    int32_t global_tid_13840;
-    int32_t local_tid_13841;
-    int32_t group_sizze_13844;
-    int32_t wave_sizze_13843;
-    int32_t group_tid_13842;
-    
-    global_tid_13840 = get_global_id(0);
-    local_tid_13841 = get_local_id(0);
-    group_sizze_13844 = get_local_size(0);
-    wave_sizze_13843 = LOCKSTEP_WIDTH;
-    group_tid_13842 = get_group_id(0);
-    
-    int32_t gid_flat_12371 = group_tid_13842;
-    int32_t gid_x_12359 = squot32(group_tid_13842, num_groups_y_12369);
-    int32_t gid_y_12360;
-    
-    gid_y_12360 = group_tid_13842 - squot32(group_tid_13842,
-                                            num_groups_y_12369) *
-        num_groups_y_12369;
-    
-    float mem_13552;
-    int32_t ltid_x_12388 = squot32(local_tid_13841, tile_sizze_12362);
-    int32_t ltid_y_12389;
-    
-    ltid_y_12389 = local_tid_13841 - squot32(local_tid_13841,
-                                             tile_sizze_12362) *
-        tile_sizze_12362;
-    
-    int32_t ltid_flat_12390;
-    
-    ltid_flat_12390 = local_tid_13841;
-    if (slt32(ltid_x_12388, tile_sizze_12362) && slt32(ltid_y_12389,
-                                                       tile_sizze_12362)) {
-        mem_13552 = 0.0F;
-    }
-    barrier(CLK_LOCAL_MEM_FENCE);
-    
-    int32_t binop_x_12467 = gid_x_12359 * tile_sizze_12362;
-    int32_t binop_x_12469 = gid_y_12360 * tile_sizze_12362;
-    __local char *mem_13557;
-    
-    mem_13557 = (__local char *) mem_13557_backing_0;
-    
-    __local char *mem_13562;
-    
-    mem_13562 = (__local char *) mem_13562_backing_1;
-    
-    float mem_13566;
-    
-    for (int32_t tile_id_12399 = 0; tile_id_12399 < num_whole_tiles_12372;
-         tile_id_12399++) {
-        int32_t binop_x_12463 = tile_sizze_12362 * tile_id_12399;
-        int32_t ltid_x_12400 = squot32(local_tid_13841, tile_sizze_12362);
-        int32_t ltid_y_12401;
-        
-        ltid_y_12401 = local_tid_13841 - squot32(local_tid_13841,
-                                                 tile_sizze_12362) *
-            tile_sizze_12362;
-        
-        int32_t ltid_flat_12402;
-        
-        ltid_flat_12402 = local_tid_13841;
-        if (slt32(ltid_x_12400, tile_sizze_12362) && slt32(ltid_y_12401,
-                                                           tile_sizze_12362)) {
-            int32_t i_12464 = ltid_x_12400 + binop_x_12463;
-            int32_t j_12466 = ltid_y_12401 + binop_x_12463;
-            int32_t gtid_12468 = ltid_x_12400 + binop_x_12467;
-            int32_t gtid_12470 = ltid_y_12401 + binop_x_12469;
-            float tile_elem_12474 = ((__global float *) mem_13544)[gtid_12468 *
-                                                                   sizze_11068 +
-                                                                   j_12466];
-            float tile_elem_12475 = ((__global float *) mem_13548)[i_12464 *
-                                                                   sizze_11061 +
-                                                                   gtid_12470];
-            
-            ((__local float *) mem_13557)[ltid_x_12400 * tile_sizze_12362 +
-                                          ltid_y_12401] = tile_elem_12474;
-            ((__local float *) mem_13562)[ltid_x_12400 * tile_sizze_12362 +
-                                          ltid_y_12401] = tile_elem_12475;
+    if (is_last_group_13732) {
+        if (local_tid_13430 == 0) {
+            old_counter_13727 = atomic_add(&((volatile __global
+                                              int *) counter_mem_13422)[0],
+                                           (int) (0 - num_groups_13146));
         }
-        barrier(CLK_LOCAL_MEM_FENCE);
-        
-        int32_t ltid_x_12426 = squot32(local_tid_13841, tile_sizze_12362);
-        int32_t ltid_y_12427;
-        
-        ltid_y_12427 = local_tid_13841 - squot32(local_tid_13841,
-                                                 tile_sizze_12362) *
-            tile_sizze_12362;
-        
-        int32_t ltid_flat_12428;
-        
-        ltid_flat_12428 = local_tid_13841;
-        if (slt32(ltid_x_12426, tile_sizze_12362) && slt32(ltid_y_12427,
-                                                           tile_sizze_12362)) {
-            int32_t gtid_12478 = ltid_x_12426 + binop_x_12467;
-            int32_t gtid_12480 = ltid_y_12427 + binop_x_12469;
-            float acc_12484 = mem_13552;
-            bool binop_x_12487 = slt32(gtid_12478, sizze_11067);
-            bool binop_y_12488 = slt32(gtid_12480, sizze_11061);
-            bool cond_12489 = binop_x_12487 && binop_y_12488;
-            float acc_12490;
-            
-            if (cond_12489) {
-                float x_12491;
-                float redout_13308 = acc_12484;
-                
-                for (int32_t i_13309 = 0; i_13309 < tile_sizze_12362;
-                     i_13309++) {
-                    float x_12495 = ((__local float *) mem_13557)[ltid_x_12426 *
-                                                                  tile_sizze_12362 +
-                                                                  i_13309];
-                    float x_12496 = ((__local float *) mem_13562)[i_13309 *
-                                                                  tile_sizze_12362 +
-                                                                  ltid_y_12427];
-                    float res_12497 = x_12495 * x_12496;
-                    float res_12494 = res_12497 + redout_13308;
-                    float redout_tmp_13846 = res_12494;
-                    
-                    redout_13308 = redout_tmp_13846;
+        // read in the per-group-results
+        {
+            if (slt32(local_tid_13430, num_groups_13146)) {
+                for (int32_t i_13733 = 0; i_13733 < sizze_12934; i_13733++) {
+                    for (int32_t i_13734 = 0; i_13734 < sizze_12935;
+                         i_13734++) {
+                        ((__global float *) mem_13285)[phys_tid_13152 *
+                                                       (sizze_12935 *
+                                                        sizze_12934) +
+                                                       (i_13733 * sizze_12935 +
+                                                        i_13734)] = ((__global
+                                                                      float *) group_res_arr_mem_13424)[local_tid_13430 *
+                                                                                                        (segred_group_sizze_13144 *
+                                                                                                         sizze_12935 *
+                                                                                                         sizze_12934) +
+                                                                                                        segred_group_sizze_13144 *
+                                                                                                        sizze_12935 *
+                                                                                                        0 +
+                                                                                                        segred_group_sizze_13144 *
+                                                                                                        0 +
+                                                                                                        (i_13733 *
+                                                                                                         (segred_group_sizze_13144 *
+                                                                                                          sizze_12935) +
+                                                                                                         i_13734 *
+                                                                                                         segred_group_sizze_13144)];
+                    }
                 }
-                x_12491 = redout_13308;
-                acc_12490 = x_12491;
             } else {
-                acc_12490 = acc_12484;
-            }
-            mem_13566 = acc_12490;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-        for (int32_t i_13847 = 0; i_13847 < squot32(tile_sizze_12362 *
-                                                    tile_sizze_12362 -
-                                                    local_tid_13841 +
-                                                    group_sizze_12363 - 1,
-                                                    group_sizze_12363);
-             i_13847++) {
-            mem_13552 = mem_13566;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-    }
-    
-    __local char *mem_13572;
-    
-    mem_13572 = (__local char *) mem_13572_backing_2;
-    
-    __local char *mem_13577;
-    
-    mem_13577 = (__local char *) mem_13577_backing_3;
-    
-    float mem_13581;
-    float mem_13740;
-    
-    if (cond_12506) {
-        for (int32_t i_13848 = 0; i_13848 < squot32(tile_sizze_12362 *
-                                                    tile_sizze_12362 -
-                                                    local_tid_13841 +
-                                                    group_sizze_12363 - 1,
-                                                    group_sizze_12363);
-             i_13848++) {
-            mem_13740 = mem_13552;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-    } else {
-        int32_t binop_x_12592 = tile_sizze_12362 * num_whole_tiles_12372;
-        int32_t ltid_x_12507 = squot32(local_tid_13841, tile_sizze_12362);
-        int32_t ltid_y_12508;
-        
-        ltid_y_12508 = local_tid_13841 - squot32(local_tid_13841,
-                                                 tile_sizze_12362) *
-            tile_sizze_12362;
-        
-        int32_t ltid_flat_12509;
-        
-        ltid_flat_12509 = local_tid_13841;
-        if (slt32(ltid_x_12507, tile_sizze_12362) && slt32(ltid_y_12508,
-                                                           tile_sizze_12362)) {
-            int32_t i_12593 = ltid_x_12507 + binop_x_12592;
-            int32_t j_12595 = ltid_y_12508 + binop_x_12592;
-            int32_t gtid_12597 = binop_x_12467 + ltid_x_12507;
-            int32_t gtid_12599 = binop_x_12469 + ltid_y_12508;
-            bool binop_x_12603 = slt32(j_12595, sizze_11068);
-            bool binop_y_12604 = slt32(gtid_12597, sizze_11067);
-            bool cond_12605 = binop_x_12603 && binop_y_12604;
-            float pre_12606;
-            
-            if (cond_12605) {
-                float x_12607 = ((__global float *) mem_13544)[gtid_12597 *
-                                                               sizze_11068 +
-                                                               j_12595];
-                
-                pre_12606 = x_12607;
-            } else {
-                pre_12606 = 0.0F;
-            }
-            
-            bool binop_x_12609 = slt32(i_12593, sizze_11068);
-            bool binop_y_12610 = slt32(gtid_12599, sizze_11061);
-            bool cond_12611 = binop_x_12609 && binop_y_12610;
-            float pre_12612;
-            
-            if (cond_12611) {
-                float x_12613 = ((__global float *) mem_13548)[i_12593 *
-                                                               sizze_11061 +
-                                                               gtid_12599];
-                
-                pre_12612 = x_12613;
-            } else {
-                pre_12612 = 0.0F;
-            }
-            ((__local float *) mem_13572)[ltid_x_12507 * tile_sizze_12362 +
-                                          ltid_y_12508] = pre_12606;
-            ((__local float *) mem_13577)[ltid_x_12507 * tile_sizze_12362 +
-                                          ltid_y_12508] = pre_12612;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-        
-        int32_t ltid_x_12555 = squot32(local_tid_13841, tile_sizze_12362);
-        int32_t ltid_y_12556;
-        
-        ltid_y_12556 = local_tid_13841 - squot32(local_tid_13841,
-                                                 tile_sizze_12362) *
-            tile_sizze_12362;
-        
-        int32_t ltid_flat_12557;
-        
-        ltid_flat_12557 = local_tid_13841;
-        if (slt32(ltid_x_12555, tile_sizze_12362) && slt32(ltid_y_12556,
-                                                           tile_sizze_12362)) {
-            int32_t gtid_12619 = binop_x_12467 + ltid_x_12555;
-            int32_t gtid_12621 = binop_x_12469 + ltid_y_12556;
-            float acc_12625 = mem_13552;
-            bool binop_x_12628 = slt32(gtid_12619, sizze_11067);
-            bool binop_y_12629 = slt32(gtid_12621, sizze_11061);
-            bool cond_12630 = binop_x_12628 && binop_y_12629;
-            float acc_12631;
-            
-            if (cond_12630) {
-                float x_12632;
-                float redout_13310 = acc_12625;
-                
-                for (int32_t i_13311 = 0; i_13311 < residual_input_12505;
-                     i_13311++) {
-                    float x_12636 = ((__local float *) mem_13572)[ltid_x_12555 *
-                                                                  tile_sizze_12362 +
-                                                                  i_13311];
-                    float x_12637 = ((__local float *) mem_13577)[i_13311 *
-                                                                  tile_sizze_12362 +
-                                                                  ltid_y_12556];
-                    float res_12638 = x_12636 * x_12637;
-                    float res_12635 = res_12638 + redout_13310;
-                    float redout_tmp_13849 = res_12635;
-                    
-                    redout_13310 = redout_tmp_13849;
+                for (int32_t i_13735 = 0; i_13735 < sizze_12934; i_13735++) {
+                    for (int32_t i_13736 = 0; i_13736 < sizze_12935;
+                         i_13736++) {
+                        ((__global float *) mem_13285)[phys_tid_13152 *
+                                                       (sizze_12935 *
+                                                        sizze_12934) +
+                                                       (i_13735 * sizze_12935 +
+                                                        i_13736)] = ((__global
+                                                                      float *) wih_mem_13263)[i_13735 *
+                                                                                              sizze_12930 +
+                                                                                              i_13736];
+                    }
                 }
-                x_12632 = redout_13310;
-                acc_12631 = x_12632;
-            } else {
-                acc_12631 = acc_12625;
             }
-            mem_13581 = acc_12631;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-        for (int32_t i_13850 = 0; i_13850 < squot32(tile_sizze_12362 *
-                                                    tile_sizze_12362 -
-                                                    local_tid_13841 +
-                                                    group_sizze_12363 - 1,
-                                                    group_sizze_12363);
-             i_13850++) {
-            mem_13740 = mem_13581;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-    }
-    
-    float mem_13586;
-    int32_t ltid_x_12640 = squot32(local_tid_13841, tile_sizze_12362);
-    int32_t ltid_y_12641;
-    
-    ltid_y_12641 = local_tid_13841 - squot32(local_tid_13841,
-                                             tile_sizze_12362) *
-        tile_sizze_12362;
-    
-    int32_t ltid_flat_12642;
-    
-    ltid_flat_12642 = local_tid_13841;
-    if (slt32(ltid_x_12640, tile_sizze_12362) && slt32(ltid_y_12641,
-                                                       tile_sizze_12362)) {
-        int32_t gtid_12651 = binop_x_12467 + ltid_x_12640;
-        int32_t gtid_12653 = binop_x_12469 + ltid_y_12641;
-        bool binop_x_12655 = slt32(gtid_12651, sizze_11067);
-        bool binop_y_12656 = slt32(gtid_12653, sizze_11061);
-        bool cond_12657 = binop_x_12655 && binop_y_12656;
-        float postlude_12658;
-        
-        if (cond_12657) {
-            float res_12654 = mem_13740;
-            float res_12662 = lr_11069 * res_12654;
-            
-            postlude_12658 = res_12662;
-        } else {
-            postlude_12658 = 0.0F;
-        }
-        mem_13586 = postlude_12658;
-    }
-    barrier(CLK_LOCAL_MEM_FENCE);
-    
-    int32_t thread_out_index_13851 = gid_x_12359 * tile_sizze_12362 +
-            squot32(local_tid_13841, tile_sizze_12362);
-    int32_t thread_out_index_13852;
-    
-    thread_out_index_13852 = gid_y_12360 * tile_sizze_12362 + (local_tid_13841 -
-                                                               squot32(local_tid_13841,
-                                                                       tile_sizze_12362) *
-                                                               tile_sizze_12362);
-    if (slt32(thread_out_index_13851, sizze_11067) &&
-        slt32(thread_out_index_13852, sizze_11061)) {
-        ((__global float *) mem_13591)[thread_out_index_13851 * sizze_11061 +
-                                       thread_out_index_13852] = mem_13586;
-    }
-}
-__kernel void segmap_intragroup_12677(__local volatile
-                                      int64_t *mem_13614_backing_aligned_0,
-                                      __local volatile
-                                      int64_t *mem_13619_backing_aligned_1,
-                                      __local volatile
-                                      int64_t *mem_13629_backing_aligned_2,
-                                      __local volatile
-                                      int64_t *mem_13634_backing_aligned_3,
-                                      int32_t sizze_11063, int32_t sizze_11064,
-                                      int32_t sizze_11066, int32_t sizze_11068,
-                                      int32_t num_groups_y_12675,
-                                      int32_t num_whole_tiles_12678,
-                                      int32_t residual_input_12811,
-                                      unsigned char cond_12812, __global
-                                      unsigned char *mem_13486, __global
-                                      unsigned char *mem_13534, __global
-                                      unsigned char *mem_13601, __global
-                                      unsigned char *mem_13605, __global
-                                      unsigned char *mem_13648)
-{
-    const int32_t tile_sizze_12668 = mainzitile_sizze_12667;
-    const int32_t group_sizze_12669 = mainzitile_sizze_12667 *
-                  mainzitile_sizze_12667;
-    const int block_dim0 = 0;
-    const int block_dim1 = 1;
-    const int block_dim2 = 2;
-    __local volatile char *restrict mem_13614_backing_0 = (__local volatile
-                                                           char *) mem_13614_backing_aligned_0;
-    __local volatile char *restrict mem_13619_backing_1 = (__local volatile
-                                                           char *) mem_13619_backing_aligned_1;
-    __local volatile char *restrict mem_13629_backing_2 = (__local volatile
-                                                           char *) mem_13629_backing_aligned_2;
-    __local volatile char *restrict mem_13634_backing_3 = (__local volatile
-                                                           char *) mem_13634_backing_aligned_3;
-    int32_t global_tid_13863;
-    int32_t local_tid_13864;
-    int32_t group_sizze_13867;
-    int32_t wave_sizze_13866;
-    int32_t group_tid_13865;
-    
-    global_tid_13863 = get_global_id(0);
-    local_tid_13864 = get_local_id(0);
-    group_sizze_13867 = get_local_size(0);
-    wave_sizze_13866 = LOCKSTEP_WIDTH;
-    group_tid_13865 = get_group_id(0);
-    
-    int32_t gid_flat_12677 = group_tid_13865;
-    int32_t gid_x_12665 = squot32(group_tid_13865, num_groups_y_12675);
-    int32_t gid_y_12666;
-    
-    gid_y_12666 = group_tid_13865 - squot32(group_tid_13865,
-                                            num_groups_y_12675) *
-        num_groups_y_12675;
-    
-    float mem_13609;
-    int32_t ltid_x_12694 = squot32(local_tid_13864, tile_sizze_12668);
-    int32_t ltid_y_12695;
-    
-    ltid_y_12695 = local_tid_13864 - squot32(local_tid_13864,
-                                             tile_sizze_12668) *
-        tile_sizze_12668;
-    
-    int32_t ltid_flat_12696;
-    
-    ltid_flat_12696 = local_tid_13864;
-    if (slt32(ltid_x_12694, tile_sizze_12668) && slt32(ltid_y_12695,
-                                                       tile_sizze_12668)) {
-        mem_13609 = 0.0F;
-    }
-    barrier(CLK_LOCAL_MEM_FENCE);
-    
-    int32_t binop_x_12773 = gid_x_12665 * tile_sizze_12668;
-    int32_t binop_x_12775 = gid_y_12666 * tile_sizze_12668;
-    __local char *mem_13614;
-    
-    mem_13614 = (__local char *) mem_13614_backing_0;
-    
-    __local char *mem_13619;
-    
-    mem_13619 = (__local char *) mem_13619_backing_1;
-    
-    float mem_13623;
-    
-    for (int32_t tile_id_12705 = 0; tile_id_12705 < num_whole_tiles_12678;
-         tile_id_12705++) {
-        int32_t binop_x_12769 = tile_sizze_12668 * tile_id_12705;
-        int32_t ltid_x_12706 = squot32(local_tid_13864, tile_sizze_12668);
-        int32_t ltid_y_12707;
-        
-        ltid_y_12707 = local_tid_13864 - squot32(local_tid_13864,
-                                                 tile_sizze_12668) *
-            tile_sizze_12668;
-        
-        int32_t ltid_flat_12708;
-        
-        ltid_flat_12708 = local_tid_13864;
-        if (slt32(ltid_x_12706, tile_sizze_12668) && slt32(ltid_y_12707,
-                                                           tile_sizze_12668)) {
-            int32_t i_12770 = ltid_x_12706 + binop_x_12769;
-            int32_t j_12772 = ltid_y_12707 + binop_x_12769;
-            int32_t gtid_12774 = ltid_x_12706 + binop_x_12773;
-            int32_t gtid_12776 = ltid_y_12707 + binop_x_12775;
-            float tile_elem_12780 = ((__global float *) mem_13605)[gtid_12774 *
-                                                                   sizze_11063 +
-                                                                   j_12772];
-            float tile_elem_12781 = ((__global float *) mem_13534)[i_12770 *
-                                                                   sizze_11068 +
-                                                                   gtid_12776];
-            
-            ((__local float *) mem_13614)[ltid_x_12706 * tile_sizze_12668 +
-                                          ltid_y_12707] = tile_elem_12780;
-            ((__local float *) mem_13619)[ltid_x_12706 * tile_sizze_12668 +
-                                          ltid_y_12707] = tile_elem_12781;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-        
-        int32_t ltid_x_12732 = squot32(local_tid_13864, tile_sizze_12668);
-        int32_t ltid_y_12733;
-        
-        ltid_y_12733 = local_tid_13864 - squot32(local_tid_13864,
-                                                 tile_sizze_12668) *
-            tile_sizze_12668;
-        
-        int32_t ltid_flat_12734;
-        
-        ltid_flat_12734 = local_tid_13864;
-        if (slt32(ltid_x_12732, tile_sizze_12668) && slt32(ltid_y_12733,
-                                                           tile_sizze_12668)) {
-            int32_t gtid_12784 = ltid_x_12732 + binop_x_12773;
-            int32_t gtid_12786 = ltid_y_12733 + binop_x_12775;
-            float acc_12790 = mem_13609;
-            bool binop_x_12793 = slt32(gtid_12784, sizze_11064);
-            bool binop_y_12794 = slt32(gtid_12786, sizze_11068);
-            bool cond_12795 = binop_x_12793 && binop_y_12794;
-            float acc_12796;
-            
-            if (cond_12795) {
-                float x_12797;
-                float redout_13312 = acc_12790;
-                
-                for (int32_t i_13313 = 0; i_13313 < tile_sizze_12668;
-                     i_13313++) {
-                    float x_12801 = ((__local float *) mem_13614)[ltid_x_12732 *
-                                                                  tile_sizze_12668 +
-                                                                  i_13313];
-                    float x_12802 = ((__local float *) mem_13619)[i_13313 *
-                                                                  tile_sizze_12668 +
-                                                                  ltid_y_12733];
-                    float res_12803 = x_12801 * x_12802;
-                    float res_12800 = res_12803 + redout_13312;
-                    float redout_tmp_13869 = res_12800;
-                    
-                    redout_13312 = redout_tmp_13869;
+            if (slt32(local_tid_13430, num_groups_13146)) {
+                for (int32_t i_13737 = 0; i_13737 < sizze_12937; i_13737++) {
+                    for (int32_t i_13738 = 0; i_13738 < sizze_12938;
+                         i_13738++) {
+                        ((__global float *) mem_13293)[phys_tid_13152 *
+                                                       (sizze_12938 *
+                                                        sizze_12937) +
+                                                       (i_13737 * sizze_12938 +
+                                                        i_13738)] = ((__global
+                                                                      float *) group_res_arr_mem_13426)[local_tid_13430 *
+                                                                                                        (segred_group_sizze_13144 *
+                                                                                                         sizze_12938 *
+                                                                                                         sizze_12937) +
+                                                                                                        segred_group_sizze_13144 *
+                                                                                                        sizze_12938 *
+                                                                                                        0 +
+                                                                                                        segred_group_sizze_13144 *
+                                                                                                        0 +
+                                                                                                        (i_13737 *
+                                                                                                         (segred_group_sizze_13144 *
+                                                                                                          sizze_12938) +
+                                                                                                         i_13738 *
+                                                                                                         segred_group_sizze_13144)];
+                    }
                 }
-                x_12797 = redout_13312;
-                acc_12796 = x_12797;
             } else {
-                acc_12796 = acc_12790;
-            }
-            mem_13623 = acc_12796;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-        for (int32_t i_13870 = 0; i_13870 < squot32(tile_sizze_12668 *
-                                                    tile_sizze_12668 -
-                                                    local_tid_13864 +
-                                                    group_sizze_12669 - 1,
-                                                    group_sizze_12669);
-             i_13870++) {
-            mem_13609 = mem_13623;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-    }
-    
-    __local char *mem_13629;
-    
-    mem_13629 = (__local char *) mem_13629_backing_2;
-    
-    __local char *mem_13634;
-    
-    mem_13634 = (__local char *) mem_13634_backing_3;
-    
-    float mem_13638;
-    float mem_13754;
-    
-    if (cond_12812) {
-        for (int32_t i_13871 = 0; i_13871 < squot32(tile_sizze_12668 *
-                                                    tile_sizze_12668 -
-                                                    local_tid_13864 +
-                                                    group_sizze_12669 - 1,
-                                                    group_sizze_12669);
-             i_13871++) {
-            mem_13754 = mem_13609;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-    } else {
-        int32_t binop_x_12898 = tile_sizze_12668 * num_whole_tiles_12678;
-        int32_t ltid_x_12813 = squot32(local_tid_13864, tile_sizze_12668);
-        int32_t ltid_y_12814;
-        
-        ltid_y_12814 = local_tid_13864 - squot32(local_tid_13864,
-                                                 tile_sizze_12668) *
-            tile_sizze_12668;
-        
-        int32_t ltid_flat_12815;
-        
-        ltid_flat_12815 = local_tid_13864;
-        if (slt32(ltid_x_12813, tile_sizze_12668) && slt32(ltid_y_12814,
-                                                           tile_sizze_12668)) {
-            int32_t i_12899 = ltid_x_12813 + binop_x_12898;
-            int32_t j_12901 = ltid_y_12814 + binop_x_12898;
-            int32_t gtid_12903 = binop_x_12773 + ltid_x_12813;
-            int32_t gtid_12905 = binop_x_12775 + ltid_y_12814;
-            bool binop_x_12909 = slt32(j_12901, sizze_11063);
-            bool binop_y_12910 = slt32(gtid_12903, sizze_11064);
-            bool cond_12911 = binop_x_12909 && binop_y_12910;
-            float pre_12912;
-            
-            if (cond_12911) {
-                float x_12913 = ((__global float *) mem_13605)[gtid_12903 *
-                                                               sizze_11063 +
-                                                               j_12901];
-                
-                pre_12912 = x_12913;
-            } else {
-                pre_12912 = 0.0F;
-            }
-            
-            bool binop_x_12915 = slt32(i_12899, sizze_11063);
-            bool binop_y_12916 = slt32(gtid_12905, sizze_11068);
-            bool cond_12917 = binop_x_12915 && binop_y_12916;
-            float pre_12918;
-            
-            if (cond_12917) {
-                float x_12919 = ((__global float *) mem_13534)[i_12899 *
-                                                               sizze_11068 +
-                                                               gtid_12905];
-                
-                pre_12918 = x_12919;
-            } else {
-                pre_12918 = 0.0F;
-            }
-            ((__local float *) mem_13629)[ltid_x_12813 * tile_sizze_12668 +
-                                          ltid_y_12814] = pre_12912;
-            ((__local float *) mem_13634)[ltid_x_12813 * tile_sizze_12668 +
-                                          ltid_y_12814] = pre_12918;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-        
-        int32_t ltid_x_12861 = squot32(local_tid_13864, tile_sizze_12668);
-        int32_t ltid_y_12862;
-        
-        ltid_y_12862 = local_tid_13864 - squot32(local_tid_13864,
-                                                 tile_sizze_12668) *
-            tile_sizze_12668;
-        
-        int32_t ltid_flat_12863;
-        
-        ltid_flat_12863 = local_tid_13864;
-        if (slt32(ltid_x_12861, tile_sizze_12668) && slt32(ltid_y_12862,
-                                                           tile_sizze_12668)) {
-            int32_t gtid_12925 = binop_x_12773 + ltid_x_12861;
-            int32_t gtid_12927 = binop_x_12775 + ltid_y_12862;
-            float acc_12931 = mem_13609;
-            bool binop_x_12934 = slt32(gtid_12925, sizze_11064);
-            bool binop_y_12935 = slt32(gtid_12927, sizze_11068);
-            bool cond_12936 = binop_x_12934 && binop_y_12935;
-            float acc_12937;
-            
-            if (cond_12936) {
-                float x_12938;
-                float redout_13314 = acc_12931;
-                
-                for (int32_t i_13315 = 0; i_13315 < residual_input_12811;
-                     i_13315++) {
-                    float x_12942 = ((__local float *) mem_13629)[ltid_x_12861 *
-                                                                  tile_sizze_12668 +
-                                                                  i_13315];
-                    float x_12943 = ((__local float *) mem_13634)[i_13315 *
-                                                                  tile_sizze_12668 +
-                                                                  ltid_y_12862];
-                    float res_12944 = x_12942 * x_12943;
-                    float res_12941 = res_12944 + redout_13314;
-                    float redout_tmp_13872 = res_12941;
-                    
-                    redout_13314 = redout_tmp_13872;
+                for (int32_t i_13739 = 0; i_13739 < sizze_12937; i_13739++) {
+                    for (int32_t i_13740 = 0; i_13740 < sizze_12938;
+                         i_13740++) {
+                        ((__global float *) mem_13293)[phys_tid_13152 *
+                                                       (sizze_12938 *
+                                                        sizze_12937) +
+                                                       (i_13739 * sizze_12938 +
+                                                        i_13740)] = ((__global
+                                                                      float *) who_mem_13264)[i_13739 *
+                                                                                              sizze_12932 +
+                                                                                              i_13740];
+                    }
                 }
-                x_12938 = redout_13314;
-                acc_12937 = x_12938;
-            } else {
-                acc_12937 = acc_12931;
             }
-            mem_13638 = acc_12937;
         }
         barrier(CLK_LOCAL_MEM_FENCE);
-        for (int32_t i_13873 = 0; i_13873 < squot32(tile_sizze_12668 *
-                                                    tile_sizze_12668 -
-                                                    local_tid_13864 +
-                                                    group_sizze_12669 - 1,
-                                                    group_sizze_12669);
-             i_13873++) {
-            mem_13754 = mem_13638;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-    }
-    
-    float mem_13643;
-    int32_t ltid_x_12946 = squot32(local_tid_13864, tile_sizze_12668);
-    int32_t ltid_y_12947;
-    
-    ltid_y_12947 = local_tid_13864 - squot32(local_tid_13864,
-                                             tile_sizze_12668) *
-        tile_sizze_12668;
-    
-    int32_t ltid_flat_12948;
-    
-    ltid_flat_12948 = local_tid_13864;
-    if (slt32(ltid_x_12946, tile_sizze_12668) && slt32(ltid_y_12947,
-                                                       tile_sizze_12668)) {
-        int32_t gtid_12957 = binop_x_12773 + ltid_x_12946;
-        int32_t gtid_12959 = binop_x_12775 + ltid_y_12947;
-        bool binop_x_12961 = slt32(gtid_12957, sizze_11064);
-        bool binop_y_12962 = slt32(gtid_12959, sizze_11068);
-        bool cond_12963 = binop_x_12961 && binop_y_12962;
-        float postlude_12964;
-        
-        if (cond_12963) {
-            float res_12960 = mem_13754;
-            int32_t binop_x_12968 = sizze_11068 * gtid_12957;
-            int32_t binop_x_12969 = gtid_12959 + binop_x_12968;
-            int32_t new_index_12970 = squot32(binop_x_12969, sizze_11066);
-            int32_t binop_y_12976 = sizze_11066 * new_index_12970;
-            int32_t new_index_12977 = binop_x_12969 - binop_y_12976;
-            float x_12978 = ((__global float *) mem_13486)[new_index_12970 *
-                                                           sizze_11066 +
-                                                           new_index_12977];
-            float x_12989 = ((__global float *) mem_13601)[new_index_12970 *
-                                                           sizze_11066 +
-                                                           new_index_12977];
-            float res_12990 = res_12960 * x_12978;
-            float res_12991 = x_12989 * res_12990;
+        // reduce the per-group results
+        {
+            int32_t offset_13741;
+            int32_t skip_waves_13742;
             
-            postlude_12964 = res_12991;
-        } else {
-            postlude_12964 = 0.0F;
-        }
-        mem_13643 = postlude_12964;
-    }
-    barrier(CLK_LOCAL_MEM_FENCE);
-    
-    int32_t thread_out_index_13874 = gid_x_12665 * tile_sizze_12668 +
-            squot32(local_tid_13864, tile_sizze_12668);
-    int32_t thread_out_index_13875;
-    
-    thread_out_index_13875 = gid_y_12666 * tile_sizze_12668 + (local_tid_13864 -
-                                                               squot32(local_tid_13864,
-                                                                       tile_sizze_12668) *
-                                                               tile_sizze_12668);
-    if (slt32(thread_out_index_13874, sizze_11064) &&
-        slt32(thread_out_index_13875, sizze_11068)) {
-        ((__global float *) mem_13648)[thread_out_index_13874 * sizze_11068 +
-                                       thread_out_index_13875] = mem_13643;
-    }
-}
-__kernel void segmap_intragroup_13006(__local volatile
-                                      int64_t *mem_13661_backing_aligned_0,
-                                      __local volatile
-                                      int64_t *mem_13666_backing_aligned_1,
-                                      __local volatile
-                                      int64_t *mem_13676_backing_aligned_2,
-                                      __local volatile
-                                      int64_t *mem_13681_backing_aligned_3,
-                                      int32_t sizze_11064, int32_t sizze_11065,
-                                      int32_t sizze_11068, float lr_11069,
-                                      int32_t num_groups_y_13004,
-                                      int32_t num_whole_tiles_13007,
-                                      int32_t residual_input_13140,
-                                      unsigned char cond_13141, __global
-                                      unsigned char *mem_13648, __global
-                                      unsigned char *mem_13652, __global
-                                      unsigned char *mem_13695)
-{
-    const int32_t tile_sizze_12997 = mainzitile_sizze_12996;
-    const int32_t group_sizze_12998 = mainzitile_sizze_12996 *
-                  mainzitile_sizze_12996;
-    const int block_dim0 = 0;
-    const int block_dim1 = 1;
-    const int block_dim2 = 2;
-    __local volatile char *restrict mem_13661_backing_0 = (__local volatile
-                                                           char *) mem_13661_backing_aligned_0;
-    __local volatile char *restrict mem_13666_backing_1 = (__local volatile
-                                                           char *) mem_13666_backing_aligned_1;
-    __local volatile char *restrict mem_13676_backing_2 = (__local volatile
-                                                           char *) mem_13676_backing_aligned_2;
-    __local volatile char *restrict mem_13681_backing_3 = (__local volatile
-                                                           char *) mem_13681_backing_aligned_3;
-    int32_t global_tid_13876;
-    int32_t local_tid_13877;
-    int32_t group_sizze_13880;
-    int32_t wave_sizze_13879;
-    int32_t group_tid_13878;
-    
-    global_tid_13876 = get_global_id(0);
-    local_tid_13877 = get_local_id(0);
-    group_sizze_13880 = get_local_size(0);
-    wave_sizze_13879 = LOCKSTEP_WIDTH;
-    group_tid_13878 = get_group_id(0);
-    
-    int32_t gid_flat_13006 = group_tid_13878;
-    int32_t gid_x_12994 = squot32(group_tid_13878, num_groups_y_13004);
-    int32_t gid_y_12995;
-    
-    gid_y_12995 = group_tid_13878 - squot32(group_tid_13878,
-                                            num_groups_y_13004) *
-        num_groups_y_13004;
-    
-    float mem_13656;
-    int32_t ltid_x_13023 = squot32(local_tid_13877, tile_sizze_12997);
-    int32_t ltid_y_13024;
-    
-    ltid_y_13024 = local_tid_13877 - squot32(local_tid_13877,
-                                             tile_sizze_12997) *
-        tile_sizze_12997;
-    
-    int32_t ltid_flat_13025;
-    
-    ltid_flat_13025 = local_tid_13877;
-    if (slt32(ltid_x_13023, tile_sizze_12997) && slt32(ltid_y_13024,
-                                                       tile_sizze_12997)) {
-        mem_13656 = 0.0F;
-    }
-    barrier(CLK_LOCAL_MEM_FENCE);
-    
-    int32_t binop_x_13102 = gid_x_12994 * tile_sizze_12997;
-    int32_t binop_x_13104 = gid_y_12995 * tile_sizze_12997;
-    __local char *mem_13661;
-    
-    mem_13661 = (__local char *) mem_13661_backing_0;
-    
-    __local char *mem_13666;
-    
-    mem_13666 = (__local char *) mem_13666_backing_1;
-    
-    float mem_13670;
-    
-    for (int32_t tile_id_13034 = 0; tile_id_13034 < num_whole_tiles_13007;
-         tile_id_13034++) {
-        int32_t binop_x_13098 = tile_sizze_12997 * tile_id_13034;
-        int32_t ltid_x_13035 = squot32(local_tid_13877, tile_sizze_12997);
-        int32_t ltid_y_13036;
-        
-        ltid_y_13036 = local_tid_13877 - squot32(local_tid_13877,
-                                                 tile_sizze_12997) *
-            tile_sizze_12997;
-        
-        int32_t ltid_flat_13037;
-        
-        ltid_flat_13037 = local_tid_13877;
-        if (slt32(ltid_x_13035, tile_sizze_12997) && slt32(ltid_y_13036,
-                                                           tile_sizze_12997)) {
-            int32_t i_13099 = ltid_x_13035 + binop_x_13098;
-            int32_t j_13101 = ltid_y_13036 + binop_x_13098;
-            int32_t gtid_13103 = ltid_x_13035 + binop_x_13102;
-            int32_t gtid_13105 = ltid_y_13036 + binop_x_13104;
-            float tile_elem_13109 = ((__global float *) mem_13648)[gtid_13103 *
-                                                                   sizze_11068 +
-                                                                   j_13101];
-            float tile_elem_13110 = ((__global float *) mem_13652)[i_13099 *
-                                                                   sizze_11065 +
-                                                                   gtid_13105];
-            
-            ((__local float *) mem_13661)[ltid_x_13035 * tile_sizze_12997 +
-                                          ltid_y_13036] = tile_elem_13109;
-            ((__local float *) mem_13666)[ltid_x_13035 * tile_sizze_12997 +
-                                          ltid_y_13036] = tile_elem_13110;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-        
-        int32_t ltid_x_13061 = squot32(local_tid_13877, tile_sizze_12997);
-        int32_t ltid_y_13062;
-        
-        ltid_y_13062 = local_tid_13877 - squot32(local_tid_13877,
-                                                 tile_sizze_12997) *
-            tile_sizze_12997;
-        
-        int32_t ltid_flat_13063;
-        
-        ltid_flat_13063 = local_tid_13877;
-        if (slt32(ltid_x_13061, tile_sizze_12997) && slt32(ltid_y_13062,
-                                                           tile_sizze_12997)) {
-            int32_t gtid_13113 = ltid_x_13061 + binop_x_13102;
-            int32_t gtid_13115 = ltid_y_13062 + binop_x_13104;
-            float acc_13119 = mem_13656;
-            bool binop_x_13122 = slt32(gtid_13113, sizze_11064);
-            bool binop_y_13123 = slt32(gtid_13115, sizze_11065);
-            bool cond_13124 = binop_x_13122 && binop_y_13123;
-            float acc_13125;
-            
-            if (cond_13124) {
-                float x_13126;
-                float redout_13316 = acc_13119;
-                
-                for (int32_t i_13317 = 0; i_13317 < tile_sizze_12997;
-                     i_13317++) {
-                    float x_13130 = ((__local float *) mem_13661)[ltid_x_13061 *
-                                                                  tile_sizze_12997 +
-                                                                  i_13317];
-                    float x_13131 = ((__local float *) mem_13666)[i_13317 *
-                                                                  tile_sizze_12997 +
-                                                                  ltid_y_13062];
-                    float res_13132 = x_13130 * x_13131;
-                    float res_13129 = res_13132 + redout_13316;
-                    float redout_tmp_13882 = res_13129;
-                    
-                    redout_13316 = redout_tmp_13882;
+            offset_13741 = 0;
+            // participating threads read initial accumulator
+            {
+                if (slt32(local_tid_13430, segred_group_sizze_13144)) {
+                    for (int32_t i_13743 = 0; i_13743 < sizze_12934;
+                         i_13743++) {
+                        for (int32_t i_13744 = 0; i_13744 < sizze_12935;
+                             i_13744++) {
+                            ((__global float *) mem_13285)[phys_tid_13152 *
+                                                           (sizze_12935 *
+                                                            sizze_12934) +
+                                                           (i_13743 *
+                                                            sizze_12935 +
+                                                            i_13744)] =
+                                ((__global
+                                  float *) mem_13285)[(global_tid_13429 +
+                                                       offset_13741) *
+                                                      (sizze_12935 *
+                                                       sizze_12934) + (i_13743 *
+                                                                       sizze_12935 +
+                                                                       i_13744)];
+                        }
+                    }
+                    for (int32_t i_13745 = 0; i_13745 < sizze_12937;
+                         i_13745++) {
+                        for (int32_t i_13746 = 0; i_13746 < sizze_12938;
+                             i_13746++) {
+                            ((__global float *) mem_13293)[phys_tid_13152 *
+                                                           (sizze_12938 *
+                                                            sizze_12937) +
+                                                           (i_13745 *
+                                                            sizze_12938 +
+                                                            i_13746)] =
+                                ((__global
+                                  float *) mem_13293)[(global_tid_13429 +
+                                                       offset_13741) *
+                                                      (sizze_12938 *
+                                                       sizze_12937) + (i_13745 *
+                                                                       sizze_12938 +
+                                                                       i_13746)];
+                        }
+                    }
                 }
-                x_13126 = redout_13316;
-                acc_13125 = x_13126;
-            } else {
-                acc_13125 = acc_13119;
             }
-            mem_13670 = acc_13125;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-        for (int32_t i_13883 = 0; i_13883 < squot32(tile_sizze_12997 *
-                                                    tile_sizze_12997 -
-                                                    local_tid_13877 +
-                                                    group_sizze_12998 - 1,
-                                                    group_sizze_12998);
-             i_13883++) {
-            mem_13656 = mem_13670;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-    }
-    
-    __local char *mem_13676;
-    
-    mem_13676 = (__local char *) mem_13676_backing_2;
-    
-    __local char *mem_13681;
-    
-    mem_13681 = (__local char *) mem_13681_backing_3;
-    
-    float mem_13685;
-    float mem_13768;
-    
-    if (cond_13141) {
-        for (int32_t i_13884 = 0; i_13884 < squot32(tile_sizze_12997 *
-                                                    tile_sizze_12997 -
-                                                    local_tid_13877 +
-                                                    group_sizze_12998 - 1,
-                                                    group_sizze_12998);
-             i_13884++) {
-            mem_13768 = mem_13656;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-    } else {
-        int32_t binop_x_13227 = tile_sizze_12997 * num_whole_tiles_13007;
-        int32_t ltid_x_13142 = squot32(local_tid_13877, tile_sizze_12997);
-        int32_t ltid_y_13143;
-        
-        ltid_y_13143 = local_tid_13877 - squot32(local_tid_13877,
-                                                 tile_sizze_12997) *
-            tile_sizze_12997;
-        
-        int32_t ltid_flat_13144;
-        
-        ltid_flat_13144 = local_tid_13877;
-        if (slt32(ltid_x_13142, tile_sizze_12997) && slt32(ltid_y_13143,
-                                                           tile_sizze_12997)) {
-            int32_t i_13228 = ltid_x_13142 + binop_x_13227;
-            int32_t j_13230 = ltid_y_13143 + binop_x_13227;
-            int32_t gtid_13232 = binop_x_13102 + ltid_x_13142;
-            int32_t gtid_13234 = binop_x_13104 + ltid_y_13143;
-            bool binop_x_13238 = slt32(j_13230, sizze_11068);
-            bool binop_y_13239 = slt32(gtid_13232, sizze_11064);
-            bool cond_13240 = binop_x_13238 && binop_y_13239;
-            float pre_13241;
-            
-            if (cond_13240) {
-                float x_13242 = ((__global float *) mem_13648)[gtid_13232 *
-                                                               sizze_11068 +
-                                                               j_13230];
-                
-                pre_13241 = x_13242;
-            } else {
-                pre_13241 = 0.0F;
-            }
-            
-            bool binop_x_13244 = slt32(i_13228, sizze_11068);
-            bool binop_y_13245 = slt32(gtid_13234, sizze_11065);
-            bool cond_13246 = binop_x_13244 && binop_y_13245;
-            float pre_13247;
-            
-            if (cond_13246) {
-                float x_13248 = ((__global float *) mem_13652)[i_13228 *
-                                                               sizze_11065 +
-                                                               gtid_13234];
-                
-                pre_13247 = x_13248;
-            } else {
-                pre_13247 = 0.0F;
-            }
-            ((__local float *) mem_13676)[ltid_x_13142 * tile_sizze_12997 +
-                                          ltid_y_13143] = pre_13241;
-            ((__local float *) mem_13681)[ltid_x_13142 * tile_sizze_12997 +
-                                          ltid_y_13143] = pre_13247;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-        
-        int32_t ltid_x_13190 = squot32(local_tid_13877, tile_sizze_12997);
-        int32_t ltid_y_13191;
-        
-        ltid_y_13191 = local_tid_13877 - squot32(local_tid_13877,
-                                                 tile_sizze_12997) *
-            tile_sizze_12997;
-        
-        int32_t ltid_flat_13192;
-        
-        ltid_flat_13192 = local_tid_13877;
-        if (slt32(ltid_x_13190, tile_sizze_12997) && slt32(ltid_y_13191,
-                                                           tile_sizze_12997)) {
-            int32_t gtid_13254 = binop_x_13102 + ltid_x_13190;
-            int32_t gtid_13256 = binop_x_13104 + ltid_y_13191;
-            float acc_13260 = mem_13656;
-            bool binop_x_13263 = slt32(gtid_13254, sizze_11064);
-            bool binop_y_13264 = slt32(gtid_13256, sizze_11065);
-            bool cond_13265 = binop_x_13263 && binop_y_13264;
-            float acc_13266;
-            
-            if (cond_13265) {
-                float x_13267;
-                float redout_13318 = acc_13260;
-                
-                for (int32_t i_13319 = 0; i_13319 < residual_input_13140;
-                     i_13319++) {
-                    float x_13271 = ((__local float *) mem_13676)[ltid_x_13190 *
-                                                                  tile_sizze_12997 +
-                                                                  i_13319];
-                    float x_13272 = ((__local float *) mem_13681)[i_13319 *
-                                                                  tile_sizze_12997 +
-                                                                  ltid_y_13191];
-                    float res_13273 = x_13271 * x_13272;
-                    float res_13270 = res_13273 + redout_13318;
-                    float redout_tmp_13885 = res_13270;
-                    
-                    redout_13318 = redout_tmp_13885;
+            offset_13741 = 1;
+            while (slt32(offset_13741, wave_sizze_13432)) {
+                if (slt32(local_tid_13430 + offset_13741,
+                          segred_group_sizze_13144) && ((local_tid_13430 -
+                                                         squot32(local_tid_13430,
+                                                                 wave_sizze_13432) *
+                                                         wave_sizze_13432) &
+                                                        (2 * offset_13741 -
+                                                         1)) == 0) {
+                    // read array element
+                    {
+                        for (int32_t i_13747 = 0; i_13747 < sizze_12934;
+                             i_13747++) {
+                            for (int32_t i_13748 = 0; i_13748 < sizze_12935;
+                                 i_13748++) {
+                                ((volatile __global
+                                  float *) mem_13285)[(phys_tid_13152 +
+                                                       num_threads_13277) *
+                                                      (sizze_12935 *
+                                                       sizze_12934) + (i_13747 *
+                                                                       sizze_12935 +
+                                                                       i_13748)] =
+                                    ((volatile __global
+                                      float *) mem_13285)[(global_tid_13429 +
+                                                           offset_13741) *
+                                                          (sizze_12935 *
+                                                           sizze_12934) +
+                                                          (i_13747 *
+                                                           sizze_12935 +
+                                                           i_13748)];
+                            }
+                        }
+                        for (int32_t i_13749 = 0; i_13749 < sizze_12937;
+                             i_13749++) {
+                            for (int32_t i_13750 = 0; i_13750 < sizze_12938;
+                                 i_13750++) {
+                                ((volatile __global
+                                  float *) mem_13293)[(phys_tid_13152 +
+                                                       num_threads_13277) *
+                                                      (sizze_12938 *
+                                                       sizze_12937) + (i_13749 *
+                                                                       sizze_12938 +
+                                                                       i_13750)] =
+                                    ((volatile __global
+                                      float *) mem_13293)[(global_tid_13429 +
+                                                           offset_13741) *
+                                                          (sizze_12938 *
+                                                           sizze_12937) +
+                                                          (i_13749 *
+                                                           sizze_12938 +
+                                                           i_13750)];
+                            }
+                        }
+                    }
+                    // apply reduction operation
+                    {
+                        for (int32_t i_13452 = 0; i_13452 < sizze_12934;
+                             i_13452++) {
+                            for (int32_t i_13456 = 0; i_13456 < sizze_12935;
+                                 i_13456++) {
+                                float res_13457;
+                                float redout_13458 = 0.0F;
+                                
+                                for (int32_t i_13459 = 0; i_13459 < sizze_12935;
+                                     i_13459++) {
+                                    float x_13460 = ((volatile __global
+                                                      float *) mem_13285)[phys_tid_13152 *
+                                                                          (sizze_12935 *
+                                                                           sizze_12934) +
+                                                                          (i_13452 *
+                                                                           sizze_12935 +
+                                                                           i_13459)];
+                                    float x_13461 = ((volatile __global
+                                                      float *) mem_13285)[(phys_tid_13152 +
+                                                                           num_threads_13277) *
+                                                                          (sizze_12935 *
+                                                                           sizze_12934) +
+                                                                          (i_13459 *
+                                                                           sizze_12935 +
+                                                                           i_13456)];
+                                    float res_13462 = x_13460 * x_13461;
+                                    float res_13463 = res_13462 + redout_13458;
+                                    float redout_tmp_13753 = res_13463;
+                                    
+                                    redout_13458 = redout_tmp_13753;
+                                }
+                                res_13457 = redout_13458;
+                                
+                                float res_13464 = 0.0F - res_13457;
+                                float res_13465 = fpow32(2.7182817F, res_13464);
+                                float res_13466 = 1.0F + res_13465;
+                                float res_13467 = 1.0F / res_13466;
+                                
+                                ((volatile __global
+                                  float *) mem_13301)[phys_tid_13152 + i_13456 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)] =
+                                    res_13467;
+                            }
+                            for (int32_t i_13754 = 0; i_13754 < sizze_12935;
+                                 i_13754++) {
+                                ((volatile __global
+                                  float *) mem_13298)[phys_tid_13152 + i_13452 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144 *
+                                                       sizze_12935) + i_13754 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)] =
+                                    ((volatile __global
+                                      float *) mem_13301)[phys_tid_13152 +
+                                                          i_13754 *
+                                                          (num_groups_13146 *
+                                                           segred_group_sizze_13144)];
+                            }
+                        }
+                        for (int32_t i_13476 = 0; i_13476 < sizze_12937;
+                             i_13476++) {
+                            for (int32_t i_13480 = 0; i_13480 < sizze_12935;
+                                 i_13480++) {
+                                float res_13481;
+                                float redout_13482 = 0.0F;
+                                
+                                for (int32_t i_13483 = 0; i_13483 < sizze_12938;
+                                     i_13483++) {
+                                    float x_13484 = ((volatile __global
+                                                      float *) mem_13293)[phys_tid_13152 *
+                                                                          (sizze_12938 *
+                                                                           sizze_12937) +
+                                                                          (i_13476 *
+                                                                           sizze_12938 +
+                                                                           i_13483)];
+                                    float x_13485 = ((volatile __global
+                                                      float *) mem_13298)[phys_tid_13152 +
+                                                                          (i_13483 *
+                                                                           (num_groups_13146 *
+                                                                            segred_group_sizze_13144 *
+                                                                            sizze_12935) +
+                                                                           i_13480 *
+                                                                           (num_groups_13146 *
+                                                                            segred_group_sizze_13144))];
+                                    float res_13486 = x_13484 * x_13485;
+                                    float res_13487 = res_13486 + redout_13482;
+                                    float redout_tmp_13758 = res_13487;
+                                    
+                                    redout_13482 = redout_tmp_13758;
+                                }
+                                res_13481 = redout_13482;
+                                
+                                float res_13488 = 0.0F - res_13481;
+                                float res_13489 = fpow32(2.7182817F, res_13488);
+                                float res_13490 = 1.0F + res_13489;
+                                float res_13491 = 1.0F / res_13490;
+                                
+                                ((volatile __global
+                                  float *) mem_13314)[phys_tid_13152 + i_13480 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)] =
+                                    res_13491;
+                            }
+                            for (int32_t i_13496 = 0; i_13496 < sizze_12938;
+                                 i_13496++) {
+                                float x_13497 = ((volatile __global
+                                                  float *) mem_13293)[(phys_tid_13152 +
+                                                                       num_threads_13277) *
+                                                                      (sizze_12938 *
+                                                                       sizze_12937) +
+                                                                      (i_13476 *
+                                                                       sizze_12938 +
+                                                                       i_13496)];
+                                float x_13498 = ((volatile __global
+                                                  float *) mem_13314)[phys_tid_13152 +
+                                                                      i_13496 *
+                                                                      (num_groups_13146 *
+                                                                       segred_group_sizze_13144)];
+                                float res_13499 = x_13497 - x_13498;
+                                
+                                ((volatile __global
+                                  float *) mem_13317)[phys_tid_13152 + i_13496 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)] =
+                                    res_13499;
+                            }
+                            for (int32_t i_13760 = 0; i_13760 < sizze_12938;
+                                 i_13760++) {
+                                ((volatile __global
+                                  float *) mem_13306)[phys_tid_13152 + i_13476 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144 *
+                                                       sizze_12938) + i_13760 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)] =
+                                    ((volatile __global
+                                      float *) mem_13317)[phys_tid_13152 +
+                                                          i_13760 *
+                                                          (num_groups_13146 *
+                                                           segred_group_sizze_13144)];
+                            }
+                            for (int32_t i_13761 = 0; i_13761 < sizze_12935;
+                                 i_13761++) {
+                                ((volatile __global
+                                  float *) mem_13311)[phys_tid_13152 + i_13476 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144 *
+                                                       sizze_12935) + i_13761 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)] =
+                                    ((volatile __global
+                                      float *) mem_13314)[phys_tid_13152 +
+                                                          i_13761 *
+                                                          (num_groups_13146 *
+                                                           segred_group_sizze_13144)];
+                            }
+                        }
+                        for (int32_t i_13506 = 0; i_13506 < sizze_12937;
+                             i_13506++) {
+                            for (int32_t i_13510 = 0; i_13510 < sizze_12938;
+                                 i_13510++) {
+                                float x_13511 = ((volatile __global
+                                                  float *) mem_13306)[phys_tid_13152 +
+                                                                      (i_13506 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12938) +
+                                                                       i_13510 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float x_13512 = ((volatile __global
+                                                  float *) mem_13311)[phys_tid_13152 +
+                                                                      (i_13506 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12935) +
+                                                                       i_13510 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float res_13513 = x_13511 * x_13512;
+                                float res_13514 = 1.0F - x_13512;
+                                float res_13515 = res_13513 * res_13514;
+                                
+                                ((volatile __global
+                                  float *) mem_13325)[phys_tid_13152 + i_13510 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)] =
+                                    res_13515;
+                            }
+                            for (int32_t i_13520 = 0; i_13520 < sizze_12938;
+                                 i_13520++) {
+                                float x_13521 = ((volatile __global
+                                                  float *) mem_13293)[phys_tid_13152 *
+                                                                      (sizze_12938 *
+                                                                       sizze_12937) +
+                                                                      (i_13506 *
+                                                                       sizze_12938 +
+                                                                       i_13520)];
+                                float res_13522;
+                                float redout_13523 = 0.0F;
+                                
+                                for (int32_t i_13524 = 0; i_13524 < sizze_12938;
+                                     i_13524++) {
+                                    float x_13525 = ((volatile __global
+                                                      float *) mem_13325)[phys_tid_13152 +
+                                                                          i_13524 *
+                                                                          (num_groups_13146 *
+                                                                           segred_group_sizze_13144)];
+                                    float x_13526 = ((volatile __global
+                                                      float *) mem_13298)[phys_tid_13152 +
+                                                                          (i_13520 *
+                                                                           (num_groups_13146 *
+                                                                            segred_group_sizze_13144 *
+                                                                            sizze_12935) +
+                                                                           i_13524 *
+                                                                           (num_groups_13146 *
+                                                                            segred_group_sizze_13144))];
+                                    float res_13527 = x_13525 * x_13526;
+                                    float res_13528 = res_13527 + redout_13523;
+                                    float redout_tmp_13765 = res_13528;
+                                    
+                                    redout_13523 = redout_tmp_13765;
+                                }
+                                res_13522 = redout_13523;
+                                
+                                float res_13529 = lr_12939 * res_13522;
+                                float res_13530 = x_13521 + res_13529;
+                                
+                                ((volatile __global
+                                  float *) mem_13328)[phys_tid_13152 + i_13520 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)] =
+                                    res_13530;
+                            }
+                            for (int32_t i_13766 = 0; i_13766 < sizze_12938;
+                                 i_13766++) {
+                                ((volatile __global
+                                  float *) mem_13322)[phys_tid_13152 + i_13506 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144 *
+                                                       sizze_12938) + i_13766 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)] =
+                                    ((volatile __global
+                                      float *) mem_13328)[phys_tid_13152 +
+                                                          i_13766 *
+                                                          (num_groups_13146 *
+                                                           segred_group_sizze_13144)];
+                            }
+                        }
+                        for (int32_t i_13536 = 0; i_13536 < sizze_12934;
+                             i_13536++) {
+                            for (int32_t i_13540 = 0; i_13540 < sizze_12935;
+                                 i_13540++) {
+                                float x_13541 = ((volatile __global
+                                                  float *) mem_13298)[phys_tid_13152 +
+                                                                      (i_13536 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12935) +
+                                                                       i_13540 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float res_13542 = 1.0F - x_13541;
+                                
+                                ((volatile __global
+                                  float *) mem_13336)[phys_tid_13152 + i_13540 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)] =
+                                    res_13542;
+                            }
+                            for (int32_t i_13769 = 0; i_13769 < sizze_12935;
+                                 i_13769++) {
+                                ((volatile __global
+                                  float *) mem_13333)[phys_tid_13152 + i_13536 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144 *
+                                                       sizze_12935) + i_13769 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)] =
+                                    ((volatile __global
+                                      float *) mem_13336)[phys_tid_13152 +
+                                                          i_13769 *
+                                                          (num_groups_13146 *
+                                                           segred_group_sizze_13144)];
+                            }
+                        }
+                        for (int32_t i_13548 = 0; i_13548 < sizze_12938;
+                             i_13548++) {
+                            for (int32_t i_13552 = 0; i_13552 < sizze_12938;
+                                 i_13552++) {
+                                float x_13553 = ((volatile __global
+                                                  float *) mem_13298)[phys_tid_13152 +
+                                                                      (i_13548 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12935) +
+                                                                       i_13552 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float x_13554 = ((volatile __global
+                                                  float *) mem_13333)[phys_tid_13152 +
+                                                                      (i_13548 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12935) +
+                                                                       i_13552 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float res_13555;
+                                float redout_13556 = 0.0F;
+                                
+                                for (int32_t i_13557 = 0; i_13557 < sizze_12937;
+                                     i_13557++) {
+                                    float x_13558 = ((volatile __global
+                                                      float *) mem_13293)[phys_tid_13152 *
+                                                                          (sizze_12938 *
+                                                                           sizze_12937) +
+                                                                          (i_13557 *
+                                                                           sizze_12938 +
+                                                                           i_13548)];
+                                    float x_13559 = ((volatile __global
+                                                      float *) mem_13306)[phys_tid_13152 +
+                                                                          (i_13557 *
+                                                                           (num_groups_13146 *
+                                                                            segred_group_sizze_13144 *
+                                                                            sizze_12938) +
+                                                                           i_13552 *
+                                                                           (num_groups_13146 *
+                                                                            segred_group_sizze_13144))];
+                                    float res_13560 = x_13558 * x_13559;
+                                    float res_13561 = res_13560 + redout_13556;
+                                    float redout_tmp_13772 = res_13561;
+                                    
+                                    redout_13556 = redout_tmp_13772;
+                                }
+                                res_13555 = redout_13556;
+                                
+                                float res_13562 = x_13553 * res_13555;
+                                float res_13563 = x_13554 * res_13562;
+                                
+                                ((volatile __global
+                                  float *) mem_13344)[phys_tid_13152 + i_13552 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)] =
+                                    res_13563;
+                            }
+                            for (int32_t i_13568 = 0; i_13568 < sizze_12934;
+                                 i_13568++) {
+                                float res_13569;
+                                float redout_13570 = 0.0F;
+                                
+                                for (int32_t i_13571 = 0; i_13571 < sizze_12938;
+                                     i_13571++) {
+                                    float x_13572 = ((volatile __global
+                                                      float *) mem_13344)[phys_tid_13152 +
+                                                                          i_13571 *
+                                                                          (num_groups_13146 *
+                                                                           segred_group_sizze_13144)];
+                                    float x_13573 = ((volatile __global
+                                                      float *) mem_13285)[(phys_tid_13152 +
+                                                                           num_threads_13277) *
+                                                                          (sizze_12935 *
+                                                                           sizze_12934) +
+                                                                          (i_13568 *
+                                                                           sizze_12935 +
+                                                                           i_13571)];
+                                    float res_13574 = x_13572 * x_13573;
+                                    float res_13575 = res_13574 + redout_13570;
+                                    float redout_tmp_13774 = res_13575;
+                                    
+                                    redout_13570 = redout_tmp_13774;
+                                }
+                                res_13569 = redout_13570;
+                                
+                                float res_13576 = lr_12939 * res_13569;
+                                
+                                ((volatile __global
+                                  float *) mem_13347)[phys_tid_13152 + i_13568 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)] =
+                                    res_13576;
+                            }
+                            for (int32_t i_13775 = 0; i_13775 < sizze_12934;
+                                 i_13775++) {
+                                ((volatile __global
+                                  float *) mem_13341)[phys_tid_13152 + i_13548 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144 *
+                                                       sizze_12934) + i_13775 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)] =
+                                    ((volatile __global
+                                      float *) mem_13347)[phys_tid_13152 +
+                                                          i_13775 *
+                                                          (num_groups_13146 *
+                                                           segred_group_sizze_13144)];
+                            }
+                        }
+                        for (int32_t i_13582 = 0; i_13582 < sizze_12934;
+                             i_13582++) {
+                            for (int32_t i_13586 = 0; i_13586 < sizze_12935;
+                                 i_13586++) {
+                                float x_13587 = ((volatile __global
+                                                  float *) mem_13285)[phys_tid_13152 *
+                                                                      (sizze_12935 *
+                                                                       sizze_12934) +
+                                                                      (i_13582 *
+                                                                       sizze_12935 +
+                                                                       i_13586)];
+                                float x_13588 = ((volatile __global
+                                                  float *) mem_13341)[phys_tid_13152 +
+                                                                      (i_13582 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12934) +
+                                                                       i_13586 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float res_13589 = x_13587 + x_13588;
+                                
+                                ((volatile __global
+                                  float *) mem_13355)[phys_tid_13152 + i_13586 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)] =
+                                    res_13589;
+                            }
+                            for (int32_t i_13778 = 0; i_13778 < sizze_12935;
+                                 i_13778++) {
+                                ((volatile __global
+                                  float *) mem_13352)[phys_tid_13152 + i_13582 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144 *
+                                                       sizze_12935) + i_13778 *
+                                                      (num_groups_13146 *
+                                                       segred_group_sizze_13144)] =
+                                    ((volatile __global
+                                      float *) mem_13355)[phys_tid_13152 +
+                                                          i_13778 *
+                                                          (num_groups_13146 *
+                                                           segred_group_sizze_13144)];
+                            }
+                        }
+                        for (int32_t i_13779 = 0; i_13779 < sizze_12934;
+                             i_13779++) {
+                            for (int32_t i_13780 = 0; i_13780 < sizze_12935;
+                                 i_13780++) {
+                                ((volatile __global
+                                  float *) mem_13285)[phys_tid_13152 *
+                                                      (sizze_12935 *
+                                                       sizze_12934) + (i_13779 *
+                                                                       sizze_12935 +
+                                                                       i_13780)] =
+                                    ((volatile __global
+                                      float *) mem_13352)[phys_tid_13152 +
+                                                          (i_13779 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12935) +
+                                                           i_13780 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144))];
+                            }
+                        }
+                        for (int32_t i_13781 = 0; i_13781 < sizze_12937;
+                             i_13781++) {
+                            for (int32_t i_13782 = 0; i_13782 < sizze_12938;
+                                 i_13782++) {
+                                ((volatile __global
+                                  float *) mem_13293)[phys_tid_13152 *
+                                                      (sizze_12938 *
+                                                       sizze_12937) + (i_13781 *
+                                                                       sizze_12938 +
+                                                                       i_13782)] =
+                                    ((volatile __global
+                                      float *) mem_13322)[phys_tid_13152 +
+                                                          (i_13781 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12938) +
+                                                           i_13782 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144))];
+                            }
+                        }
+                    }
+                    // write result of operation
+                    { }
                 }
-                x_13267 = redout_13318;
-                acc_13266 = x_13267;
-            } else {
-                acc_13266 = acc_13260;
+                offset_13741 *= 2;
             }
-            mem_13685 = acc_13266;
+            skip_waves_13742 = 1;
+            while (slt32(skip_waves_13742, squot32(segred_group_sizze_13144 +
+                                                   wave_sizze_13432 - 1,
+                                                   wave_sizze_13432))) {
+                barrier(CLK_GLOBAL_MEM_FENCE);
+                offset_13741 = skip_waves_13742 * wave_sizze_13432;
+                if (slt32(local_tid_13430 + offset_13741,
+                          segred_group_sizze_13144) && ((local_tid_13430 -
+                                                         squot32(local_tid_13430,
+                                                                 wave_sizze_13432) *
+                                                         wave_sizze_13432) ==
+                                                        0 &&
+                                                        (squot32(local_tid_13430,
+                                                                 wave_sizze_13432) &
+                                                         (2 * skip_waves_13742 -
+                                                          1)) == 0)) {
+                    // read array element
+                    {
+                        for (int32_t i_13783 = 0; i_13783 < sizze_12934;
+                             i_13783++) {
+                            for (int32_t i_13784 = 0; i_13784 < sizze_12935;
+                                 i_13784++) {
+                                ((__global float *) mem_13285)[(phys_tid_13152 +
+                                                                num_threads_13277) *
+                                                               (sizze_12935 *
+                                                                sizze_12934) +
+                                                               (i_13783 *
+                                                                sizze_12935 +
+                                                                i_13784)] =
+                                    ((__global
+                                      float *) mem_13285)[(global_tid_13429 +
+                                                           offset_13741) *
+                                                          (sizze_12935 *
+                                                           sizze_12934) +
+                                                          (i_13783 *
+                                                           sizze_12935 +
+                                                           i_13784)];
+                            }
+                        }
+                        for (int32_t i_13785 = 0; i_13785 < sizze_12937;
+                             i_13785++) {
+                            for (int32_t i_13786 = 0; i_13786 < sizze_12938;
+                                 i_13786++) {
+                                ((__global float *) mem_13293)[(phys_tid_13152 +
+                                                                num_threads_13277) *
+                                                               (sizze_12938 *
+                                                                sizze_12937) +
+                                                               (i_13785 *
+                                                                sizze_12938 +
+                                                                i_13786)] =
+                                    ((__global
+                                      float *) mem_13293)[(global_tid_13429 +
+                                                           offset_13741) *
+                                                          (sizze_12938 *
+                                                           sizze_12937) +
+                                                          (i_13785 *
+                                                           sizze_12938 +
+                                                           i_13786)];
+                            }
+                        }
+                    }
+                    // apply reduction operation
+                    {
+                        for (int32_t i_13452 = 0; i_13452 < sizze_12934;
+                             i_13452++) {
+                            for (int32_t i_13456 = 0; i_13456 < sizze_12935;
+                                 i_13456++) {
+                                float res_13457;
+                                float redout_13458 = 0.0F;
+                                
+                                for (int32_t i_13459 = 0; i_13459 < sizze_12935;
+                                     i_13459++) {
+                                    float x_13460 = ((__global
+                                                      float *) mem_13285)[phys_tid_13152 *
+                                                                          (sizze_12935 *
+                                                                           sizze_12934) +
+                                                                          (i_13452 *
+                                                                           sizze_12935 +
+                                                                           i_13459)];
+                                    float x_13461 = ((__global
+                                                      float *) mem_13285)[(phys_tid_13152 +
+                                                                           num_threads_13277) *
+                                                                          (sizze_12935 *
+                                                                           sizze_12934) +
+                                                                          (i_13459 *
+                                                                           sizze_12935 +
+                                                                           i_13456)];
+                                    float res_13462 = x_13460 * x_13461;
+                                    float res_13463 = res_13462 + redout_13458;
+                                    float redout_tmp_13789 = res_13463;
+                                    
+                                    redout_13458 = redout_tmp_13789;
+                                }
+                                res_13457 = redout_13458;
+                                
+                                float res_13464 = 0.0F - res_13457;
+                                float res_13465 = fpow32(2.7182817F, res_13464);
+                                float res_13466 = 1.0F + res_13465;
+                                float res_13467 = 1.0F / res_13466;
+                                
+                                ((__global float *) mem_13301)[phys_tid_13152 +
+                                                               i_13456 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)] =
+                                    res_13467;
+                            }
+                            for (int32_t i_13790 = 0; i_13790 < sizze_12935;
+                                 i_13790++) {
+                                ((__global float *) mem_13298)[phys_tid_13152 +
+                                                               i_13452 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144 *
+                                                                sizze_12935) +
+                                                               i_13790 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)] =
+                                    ((__global
+                                      float *) mem_13301)[phys_tid_13152 +
+                                                          i_13790 *
+                                                          (num_groups_13146 *
+                                                           segred_group_sizze_13144)];
+                            }
+                        }
+                        for (int32_t i_13476 = 0; i_13476 < sizze_12937;
+                             i_13476++) {
+                            for (int32_t i_13480 = 0; i_13480 < sizze_12935;
+                                 i_13480++) {
+                                float res_13481;
+                                float redout_13482 = 0.0F;
+                                
+                                for (int32_t i_13483 = 0; i_13483 < sizze_12938;
+                                     i_13483++) {
+                                    float x_13484 = ((__global
+                                                      float *) mem_13293)[phys_tid_13152 *
+                                                                          (sizze_12938 *
+                                                                           sizze_12937) +
+                                                                          (i_13476 *
+                                                                           sizze_12938 +
+                                                                           i_13483)];
+                                    float x_13485 = ((__global
+                                                      float *) mem_13298)[phys_tid_13152 +
+                                                                          (i_13483 *
+                                                                           (num_groups_13146 *
+                                                                            segred_group_sizze_13144 *
+                                                                            sizze_12935) +
+                                                                           i_13480 *
+                                                                           (num_groups_13146 *
+                                                                            segred_group_sizze_13144))];
+                                    float res_13486 = x_13484 * x_13485;
+                                    float res_13487 = res_13486 + redout_13482;
+                                    float redout_tmp_13794 = res_13487;
+                                    
+                                    redout_13482 = redout_tmp_13794;
+                                }
+                                res_13481 = redout_13482;
+                                
+                                float res_13488 = 0.0F - res_13481;
+                                float res_13489 = fpow32(2.7182817F, res_13488);
+                                float res_13490 = 1.0F + res_13489;
+                                float res_13491 = 1.0F / res_13490;
+                                
+                                ((__global float *) mem_13314)[phys_tid_13152 +
+                                                               i_13480 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)] =
+                                    res_13491;
+                            }
+                            for (int32_t i_13496 = 0; i_13496 < sizze_12938;
+                                 i_13496++) {
+                                float x_13497 = ((__global
+                                                  float *) mem_13293)[(phys_tid_13152 +
+                                                                       num_threads_13277) *
+                                                                      (sizze_12938 *
+                                                                       sizze_12937) +
+                                                                      (i_13476 *
+                                                                       sizze_12938 +
+                                                                       i_13496)];
+                                float x_13498 = ((__global
+                                                  float *) mem_13314)[phys_tid_13152 +
+                                                                      i_13496 *
+                                                                      (num_groups_13146 *
+                                                                       segred_group_sizze_13144)];
+                                float res_13499 = x_13497 - x_13498;
+                                
+                                ((__global float *) mem_13317)[phys_tid_13152 +
+                                                               i_13496 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)] =
+                                    res_13499;
+                            }
+                            for (int32_t i_13796 = 0; i_13796 < sizze_12938;
+                                 i_13796++) {
+                                ((__global float *) mem_13306)[phys_tid_13152 +
+                                                               i_13476 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144 *
+                                                                sizze_12938) +
+                                                               i_13796 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)] =
+                                    ((__global
+                                      float *) mem_13317)[phys_tid_13152 +
+                                                          i_13796 *
+                                                          (num_groups_13146 *
+                                                           segred_group_sizze_13144)];
+                            }
+                            for (int32_t i_13797 = 0; i_13797 < sizze_12935;
+                                 i_13797++) {
+                                ((__global float *) mem_13311)[phys_tid_13152 +
+                                                               i_13476 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144 *
+                                                                sizze_12935) +
+                                                               i_13797 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)] =
+                                    ((__global
+                                      float *) mem_13314)[phys_tid_13152 +
+                                                          i_13797 *
+                                                          (num_groups_13146 *
+                                                           segred_group_sizze_13144)];
+                            }
+                        }
+                        for (int32_t i_13506 = 0; i_13506 < sizze_12937;
+                             i_13506++) {
+                            for (int32_t i_13510 = 0; i_13510 < sizze_12938;
+                                 i_13510++) {
+                                float x_13511 = ((__global
+                                                  float *) mem_13306)[phys_tid_13152 +
+                                                                      (i_13506 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12938) +
+                                                                       i_13510 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float x_13512 = ((__global
+                                                  float *) mem_13311)[phys_tid_13152 +
+                                                                      (i_13506 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12935) +
+                                                                       i_13510 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float res_13513 = x_13511 * x_13512;
+                                float res_13514 = 1.0F - x_13512;
+                                float res_13515 = res_13513 * res_13514;
+                                
+                                ((__global float *) mem_13325)[phys_tid_13152 +
+                                                               i_13510 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)] =
+                                    res_13515;
+                            }
+                            for (int32_t i_13520 = 0; i_13520 < sizze_12938;
+                                 i_13520++) {
+                                float x_13521 = ((__global
+                                                  float *) mem_13293)[phys_tid_13152 *
+                                                                      (sizze_12938 *
+                                                                       sizze_12937) +
+                                                                      (i_13506 *
+                                                                       sizze_12938 +
+                                                                       i_13520)];
+                                float res_13522;
+                                float redout_13523 = 0.0F;
+                                
+                                for (int32_t i_13524 = 0; i_13524 < sizze_12938;
+                                     i_13524++) {
+                                    float x_13525 = ((__global
+                                                      float *) mem_13325)[phys_tid_13152 +
+                                                                          i_13524 *
+                                                                          (num_groups_13146 *
+                                                                           segred_group_sizze_13144)];
+                                    float x_13526 = ((__global
+                                                      float *) mem_13298)[phys_tid_13152 +
+                                                                          (i_13520 *
+                                                                           (num_groups_13146 *
+                                                                            segred_group_sizze_13144 *
+                                                                            sizze_12935) +
+                                                                           i_13524 *
+                                                                           (num_groups_13146 *
+                                                                            segred_group_sizze_13144))];
+                                    float res_13527 = x_13525 * x_13526;
+                                    float res_13528 = res_13527 + redout_13523;
+                                    float redout_tmp_13801 = res_13528;
+                                    
+                                    redout_13523 = redout_tmp_13801;
+                                }
+                                res_13522 = redout_13523;
+                                
+                                float res_13529 = lr_12939 * res_13522;
+                                float res_13530 = x_13521 + res_13529;
+                                
+                                ((__global float *) mem_13328)[phys_tid_13152 +
+                                                               i_13520 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)] =
+                                    res_13530;
+                            }
+                            for (int32_t i_13802 = 0; i_13802 < sizze_12938;
+                                 i_13802++) {
+                                ((__global float *) mem_13322)[phys_tid_13152 +
+                                                               i_13506 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144 *
+                                                                sizze_12938) +
+                                                               i_13802 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)] =
+                                    ((__global
+                                      float *) mem_13328)[phys_tid_13152 +
+                                                          i_13802 *
+                                                          (num_groups_13146 *
+                                                           segred_group_sizze_13144)];
+                            }
+                        }
+                        for (int32_t i_13536 = 0; i_13536 < sizze_12934;
+                             i_13536++) {
+                            for (int32_t i_13540 = 0; i_13540 < sizze_12935;
+                                 i_13540++) {
+                                float x_13541 = ((__global
+                                                  float *) mem_13298)[phys_tid_13152 +
+                                                                      (i_13536 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12935) +
+                                                                       i_13540 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float res_13542 = 1.0F - x_13541;
+                                
+                                ((__global float *) mem_13336)[phys_tid_13152 +
+                                                               i_13540 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)] =
+                                    res_13542;
+                            }
+                            for (int32_t i_13805 = 0; i_13805 < sizze_12935;
+                                 i_13805++) {
+                                ((__global float *) mem_13333)[phys_tid_13152 +
+                                                               i_13536 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144 *
+                                                                sizze_12935) +
+                                                               i_13805 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)] =
+                                    ((__global
+                                      float *) mem_13336)[phys_tid_13152 +
+                                                          i_13805 *
+                                                          (num_groups_13146 *
+                                                           segred_group_sizze_13144)];
+                            }
+                        }
+                        for (int32_t i_13548 = 0; i_13548 < sizze_12938;
+                             i_13548++) {
+                            for (int32_t i_13552 = 0; i_13552 < sizze_12938;
+                                 i_13552++) {
+                                float x_13553 = ((__global
+                                                  float *) mem_13298)[phys_tid_13152 +
+                                                                      (i_13548 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12935) +
+                                                                       i_13552 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float x_13554 = ((__global
+                                                  float *) mem_13333)[phys_tid_13152 +
+                                                                      (i_13548 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12935) +
+                                                                       i_13552 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float res_13555;
+                                float redout_13556 = 0.0F;
+                                
+                                for (int32_t i_13557 = 0; i_13557 < sizze_12937;
+                                     i_13557++) {
+                                    float x_13558 = ((__global
+                                                      float *) mem_13293)[phys_tid_13152 *
+                                                                          (sizze_12938 *
+                                                                           sizze_12937) +
+                                                                          (i_13557 *
+                                                                           sizze_12938 +
+                                                                           i_13548)];
+                                    float x_13559 = ((__global
+                                                      float *) mem_13306)[phys_tid_13152 +
+                                                                          (i_13557 *
+                                                                           (num_groups_13146 *
+                                                                            segred_group_sizze_13144 *
+                                                                            sizze_12938) +
+                                                                           i_13552 *
+                                                                           (num_groups_13146 *
+                                                                            segred_group_sizze_13144))];
+                                    float res_13560 = x_13558 * x_13559;
+                                    float res_13561 = res_13560 + redout_13556;
+                                    float redout_tmp_13808 = res_13561;
+                                    
+                                    redout_13556 = redout_tmp_13808;
+                                }
+                                res_13555 = redout_13556;
+                                
+                                float res_13562 = x_13553 * res_13555;
+                                float res_13563 = x_13554 * res_13562;
+                                
+                                ((__global float *) mem_13344)[phys_tid_13152 +
+                                                               i_13552 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)] =
+                                    res_13563;
+                            }
+                            for (int32_t i_13568 = 0; i_13568 < sizze_12934;
+                                 i_13568++) {
+                                float res_13569;
+                                float redout_13570 = 0.0F;
+                                
+                                for (int32_t i_13571 = 0; i_13571 < sizze_12938;
+                                     i_13571++) {
+                                    float x_13572 = ((__global
+                                                      float *) mem_13344)[phys_tid_13152 +
+                                                                          i_13571 *
+                                                                          (num_groups_13146 *
+                                                                           segred_group_sizze_13144)];
+                                    float x_13573 = ((__global
+                                                      float *) mem_13285)[(phys_tid_13152 +
+                                                                           num_threads_13277) *
+                                                                          (sizze_12935 *
+                                                                           sizze_12934) +
+                                                                          (i_13568 *
+                                                                           sizze_12935 +
+                                                                           i_13571)];
+                                    float res_13574 = x_13572 * x_13573;
+                                    float res_13575 = res_13574 + redout_13570;
+                                    float redout_tmp_13810 = res_13575;
+                                    
+                                    redout_13570 = redout_tmp_13810;
+                                }
+                                res_13569 = redout_13570;
+                                
+                                float res_13576 = lr_12939 * res_13569;
+                                
+                                ((__global float *) mem_13347)[phys_tid_13152 +
+                                                               i_13568 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)] =
+                                    res_13576;
+                            }
+                            for (int32_t i_13811 = 0; i_13811 < sizze_12934;
+                                 i_13811++) {
+                                ((__global float *) mem_13341)[phys_tid_13152 +
+                                                               i_13548 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144 *
+                                                                sizze_12934) +
+                                                               i_13811 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)] =
+                                    ((__global
+                                      float *) mem_13347)[phys_tid_13152 +
+                                                          i_13811 *
+                                                          (num_groups_13146 *
+                                                           segred_group_sizze_13144)];
+                            }
+                        }
+                        for (int32_t i_13582 = 0; i_13582 < sizze_12934;
+                             i_13582++) {
+                            for (int32_t i_13586 = 0; i_13586 < sizze_12935;
+                                 i_13586++) {
+                                float x_13587 = ((__global
+                                                  float *) mem_13285)[phys_tid_13152 *
+                                                                      (sizze_12935 *
+                                                                       sizze_12934) +
+                                                                      (i_13582 *
+                                                                       sizze_12935 +
+                                                                       i_13586)];
+                                float x_13588 = ((__global
+                                                  float *) mem_13341)[phys_tid_13152 +
+                                                                      (i_13582 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144 *
+                                                                        sizze_12934) +
+                                                                       i_13586 *
+                                                                       (num_groups_13146 *
+                                                                        segred_group_sizze_13144))];
+                                float res_13589 = x_13587 + x_13588;
+                                
+                                ((__global float *) mem_13355)[phys_tid_13152 +
+                                                               i_13586 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)] =
+                                    res_13589;
+                            }
+                            for (int32_t i_13814 = 0; i_13814 < sizze_12935;
+                                 i_13814++) {
+                                ((__global float *) mem_13352)[phys_tid_13152 +
+                                                               i_13582 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144 *
+                                                                sizze_12935) +
+                                                               i_13814 *
+                                                               (num_groups_13146 *
+                                                                segred_group_sizze_13144)] =
+                                    ((__global
+                                      float *) mem_13355)[phys_tid_13152 +
+                                                          i_13814 *
+                                                          (num_groups_13146 *
+                                                           segred_group_sizze_13144)];
+                            }
+                        }
+                        for (int32_t i_13815 = 0; i_13815 < sizze_12934;
+                             i_13815++) {
+                            for (int32_t i_13816 = 0; i_13816 < sizze_12935;
+                                 i_13816++) {
+                                ((__global float *) mem_13285)[phys_tid_13152 *
+                                                               (sizze_12935 *
+                                                                sizze_12934) +
+                                                               (i_13815 *
+                                                                sizze_12935 +
+                                                                i_13816)] =
+                                    ((__global
+                                      float *) mem_13352)[phys_tid_13152 +
+                                                          (i_13815 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12935) +
+                                                           i_13816 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144))];
+                            }
+                        }
+                        for (int32_t i_13817 = 0; i_13817 < sizze_12937;
+                             i_13817++) {
+                            for (int32_t i_13818 = 0; i_13818 < sizze_12938;
+                                 i_13818++) {
+                                ((__global float *) mem_13293)[phys_tid_13152 *
+                                                               (sizze_12938 *
+                                                                sizze_12937) +
+                                                               (i_13817 *
+                                                                sizze_12938 +
+                                                                i_13818)] =
+                                    ((__global
+                                      float *) mem_13322)[phys_tid_13152 +
+                                                          (i_13817 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144 *
+                                                            sizze_12938) +
+                                                           i_13818 *
+                                                           (num_groups_13146 *
+                                                            segred_group_sizze_13144))];
+                            }
+                        }
+                    }
+                    // write result of operation
+                    { }
+                }
+                skip_waves_13742 *= 2;
+            }
+            // and back to memory with the final result
+            {
+                if (local_tid_13430 == 0) {
+                    for (int32_t i_13819 = 0; i_13819 < sizze_12934;
+                         i_13819++) {
+                        for (int32_t i_13820 = 0; i_13820 < sizze_12935;
+                             i_13820++) {
+                            ((__global float *) mem_13362)[0 * (sizze_12935 *
+                                                                sizze_12934) +
+                                                           (i_13819 *
+                                                            sizze_12935 +
+                                                            i_13820)] =
+                                ((__global float *) mem_13285)[phys_tid_13152 *
+                                                               (sizze_12935 *
+                                                                sizze_12934) +
+                                                               (i_13819 *
+                                                                sizze_12935 +
+                                                                i_13820)];
+                        }
+                    }
+                    for (int32_t i_13821 = 0; i_13821 < sizze_12937;
+                         i_13821++) {
+                        for (int32_t i_13822 = 0; i_13822 < sizze_12938;
+                             i_13822++) {
+                            ((__global float *) mem_13369)[0 * (sizze_12938 *
+                                                                sizze_12937) +
+                                                           (i_13821 *
+                                                            sizze_12938 +
+                                                            i_13822)] =
+                                ((__global float *) mem_13293)[phys_tid_13152 *
+                                                               (sizze_12938 *
+                                                                sizze_12937) +
+                                                               (i_13821 *
+                                                                sizze_12938 +
+                                                                i_13822)];
+                        }
+                    }
+                }
+            }
         }
-        barrier(CLK_LOCAL_MEM_FENCE);
-        for (int32_t i_13886 = 0; i_13886 < squot32(tile_sizze_12997 *
-                                                    tile_sizze_12997 -
-                                                    local_tid_13877 +
-                                                    group_sizze_12998 - 1,
-                                                    group_sizze_12998);
-             i_13886++) {
-            mem_13768 = mem_13685;
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-    }
-    
-    float mem_13690;
-    int32_t ltid_x_13275 = squot32(local_tid_13877, tile_sizze_12997);
-    int32_t ltid_y_13276;
-    
-    ltid_y_13276 = local_tid_13877 - squot32(local_tid_13877,
-                                             tile_sizze_12997) *
-        tile_sizze_12997;
-    
-    int32_t ltid_flat_13277;
-    
-    ltid_flat_13277 = local_tid_13877;
-    if (slt32(ltid_x_13275, tile_sizze_12997) && slt32(ltid_y_13276,
-                                                       tile_sizze_12997)) {
-        int32_t gtid_13286 = binop_x_13102 + ltid_x_13275;
-        int32_t gtid_13288 = binop_x_13104 + ltid_y_13276;
-        bool binop_x_13290 = slt32(gtid_13286, sizze_11064);
-        bool binop_y_13291 = slt32(gtid_13288, sizze_11065);
-        bool cond_13292 = binop_x_13290 && binop_y_13291;
-        float postlude_13293;
-        
-        if (cond_13292) {
-            float res_13289 = mem_13768;
-            float res_13297 = lr_11069 * res_13289;
-            
-            postlude_13293 = res_13297;
-        } else {
-            postlude_13293 = 0.0F;
-        }
-        mem_13690 = postlude_13293;
-    }
-    barrier(CLK_LOCAL_MEM_FENCE);
-    
-    int32_t thread_out_index_13887 = gid_x_12994 * tile_sizze_12997 +
-            squot32(local_tid_13877, tile_sizze_12997);
-    int32_t thread_out_index_13888;
-    
-    thread_out_index_13888 = gid_y_12995 * tile_sizze_12997 + (local_tid_13877 -
-                                                               squot32(local_tid_13877,
-                                                                       tile_sizze_12997) *
-                                                               tile_sizze_12997);
-    if (slt32(thread_out_index_13887, sizze_11064) &&
-        slt32(thread_out_index_13888, sizze_11065)) {
-        ((__global float *) mem_13695)[thread_out_index_13887 * sizze_11065 +
-                                       thread_out_index_13888] = mem_13690;
     }
 }
 """
@@ -4623,8 +6052,8 @@ def futhark_lerp64(v0, v1, t):
 
 # End of scalar.py.
 class GPUTraining:
-  entry_points = {"main": (["f32", "[][]f32", "[][]f32", "[][]f32", "[][]f32"],
-                           ["[][]f32", "[][]f32"])}
+  entry_points = {"main": (["f32", "[][]f32", "[][]f32", "[][][]f32",
+                            "[][][]f32"], ["[][]f32", "[][]f32"])}
   def __init__(self, command_queue=None, interactive=False,
                platform_pref=preferred_platform, device_pref=preferred_device,
                default_group_size=default_group_size,
@@ -4664,446 +6093,268 @@ class GPUTraining:
                                        size_heuristics=size_heuristics,
                                        required_types=["i32", "f32", "bool"],
                                        user_sizes=sizes,
-                                       all_sizes={"main.segmap_group_size_11379": {"class": "group_size", "value": None},
-                                        "main.segmap_group_size_11397": {"class": "group_size", "value": None},
-                                        "main.segmap_group_size_11471": {"class": "group_size", "value": None},
-                                        "main.segmap_group_size_11492": {"class": "group_size", "value": None},
-                                        "main.segmap_group_size_11510": {"class": "group_size", "value": None},
-                                        "main.segmap_group_size_11646": {"class": "group_size", "value": None},
-                                        "main.tile_size_11743": {"class": "tile_size", "value": None},
-                                        "main.tile_size_12052": {"class": "tile_size", "value": None},
-                                        "main.tile_size_12361": {"class": "tile_size", "value": None},
-                                        "main.tile_size_12667": {"class": "tile_size", "value": None},
-                                        "main.tile_size_12996": {"class": "tile_size", "value": None}})
+                                       all_sizes={"main.segred_group_size_13143": {"class": "group_size", "value": None},
+                                        "main.segred_num_groups_13145": {"class": "num_groups", "value": None}})
     self.map_transpose_f32_var = program.map_transpose_f32
     self.map_transpose_f32_low_height_var = program.map_transpose_f32_low_height
     self.map_transpose_f32_low_width_var = program.map_transpose_f32_low_width
     self.map_transpose_f32_small_var = program.map_transpose_f32_small
-    self.segmap_11374_var = program.segmap_11374
-    self.segmap_11392_var = program.segmap_11392
-    self.segmap_11466_var = program.segmap_11466
-    self.segmap_11487_var = program.segmap_11487
-    self.segmap_11505_var = program.segmap_11505
-    self.segmap_11641_var = program.segmap_11641
-    self.segmap_intragroup_11753_var = program.segmap_intragroup_11753
-    self.segmap_intragroup_12062_var = program.segmap_intragroup_12062
-    self.segmap_intragroup_12371_var = program.segmap_intragroup_12371
-    self.segmap_intragroup_12677_var = program.segmap_intragroup_12677
-    self.segmap_intragroup_13006_var = program.segmap_intragroup_13006
-  def futhark_main(self, wih_mem_13440, who_mem_13441, inputs_mem_13442,
-                   targets_mem_13443, sizze_11061, sizze_11062, sizze_11063,
-                   sizze_11064, sizze_11065, sizze_11066, sizze_11067,
-                   sizze_11068, lr_11069):
-    dim_zzero_11075 = (np.int32(0) == sizze_11065)
-    dim_zzero_11076 = (np.int32(0) == sizze_11062)
-    both_empty_11077 = (dim_zzero_11075 and dim_zzero_11076)
-    dim_match_11078 = (sizze_11062 == sizze_11065)
-    empty_or_match_11079 = (both_empty_11077 or dim_match_11078)
-    empty_or_match_cert_11080 = True
-    assert empty_or_match_11079, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:3:19-30\n   #1  GPUTraining.fut:8:21-38\n   #2  GPUTraining.fut:8:3-9:17\n   #3  GPUTraining.fut:17:19-34\n   #4  GPUTraining.fut:17:3-37\n   #5  GPUTraining.fut:159:25-38\n   #6  GPUTraining.fut:157:1-178:33\n" % ("function arguments of wrong shape",))
-    sizze_11286 = sext_i32_i64(sizze_11061)
-    sizze_11287 = sext_i32_i64(sizze_11066)
-    nest_sizze_11289 = (sizze_11286 * sizze_11287)
-    tile_sizze_11744 = self.sizes["main.tile_size_11743"]
-    group_sizze_11745 = (tile_sizze_11744 * tile_sizze_11744)
-    y_11746 = (tile_sizze_11744 - np.int32(1))
-    x_11747 = (sizze_11061 + y_11746)
-    num_groups_x_11748 = squot32(x_11747, tile_sizze_11744)
-    x_11750 = (sizze_11066 + y_11746)
-    num_groups_y_11751 = squot32(x_11750, tile_sizze_11744)
-    num_groups_top_11752 = (num_groups_x_11748 * num_groups_y_11751)
-    num_whole_tiles_11754 = squot32(sizze_11062, tile_sizze_11744)
-    residual_input_11887 = srem32(sizze_11062, tile_sizze_11744)
-    cond_11888 = (residual_input_11887 == np.int32(0))
-    bytes_13482 = (np.int64(4) * nest_sizze_11289)
-    mem_13486 = opencl_alloc(self, bytes_13482, "mem_13486")
-    binop_x_13446 = sext_i32_i64(group_sizze_11745)
-    bytes_13444 = (np.int64(4) * binop_x_13446)
-    binop_x_13449 = sext_i32_i64(tile_sizze_11744)
-    binop_x_13451 = (binop_x_13449 * binop_x_13449)
-    bytes_13448 = (np.int64(4) * binop_x_13451)
-    if ((1 * (np.long(num_groups_top_11752) * np.long(group_sizze_11745))) != 0):
-      self.segmap_intragroup_11753_var.set_args(cl.LocalMemory(np.long(bytes_13448)),
-                                                cl.LocalMemory(np.long(bytes_13448)),
-                                                cl.LocalMemory(np.long(bytes_13448)),
-                                                cl.LocalMemory(np.long(bytes_13448)),
-                                                np.int32(sizze_11061),
-                                                np.int32(sizze_11062),
-                                                np.int32(sizze_11066),
-                                                np.int32(num_groups_y_11751),
-                                                np.int32(num_whole_tiles_11754),
-                                                np.int32(residual_input_11887),
-                                                np.byte(cond_11888),
-                                                wih_mem_13440, inputs_mem_13442,
-                                                mem_13486)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_intragroup_11753_var,
-                                 ((np.long(num_groups_top_11752) * np.long(group_sizze_11745)),),
-                                 (np.long(group_sizze_11745),))
+    self.segred_nonseg_13152_var = program.segred_nonseg_13152
+    counter_mem_13422 = np.array([np.int32(0), np.int32(0), np.int32(0),
+                                  np.int32(0), np.int32(0), np.int32(0),
+                                  np.int32(0), np.int32(0), np.int32(0),
+                                  np.int32(0)], dtype=np.int32)
+    static_mem_13823 = opencl_alloc(self, 40, "static_mem_13823")
+    if (40 != 0):
+      cl.enqueue_copy(self.queue, static_mem_13823,
+                      normaliseArray(counter_mem_13422),
+                      is_blocking=synchronous)
+    self.counter_mem_13422 = static_mem_13823
+  def futhark_main(self, wih_mem_13263, who_mem_13264, inputs_mem_13265,
+                   targets_mem_13266, sizze_12929, sizze_12930, sizze_12931,
+                   sizze_12932, sizze_12933, sizze_12934, sizze_12935,
+                   sizze_12936, sizze_12937, sizze_12938, lr_12939):
+    dim_zzero_12944 = (np.int32(0) == sizze_12936)
+    dim_zzero_12945 = (np.int32(0) == sizze_12937)
+    dim_zzero_12946 = (np.int32(0) == sizze_12938)
+    y_12947 = (dim_zzero_12945 or dim_zzero_12946)
+    old_empty_12948 = (dim_zzero_12944 or y_12947)
+    dim_zzero_12949 = (np.int32(0) == sizze_12933)
+    new_empty_12950 = (y_12947 or dim_zzero_12949)
+    both_empty_12951 = (old_empty_12948 and new_empty_12950)
+    dim_match_12952 = (sizze_12933 == sizze_12936)
+    empty_or_match_12953 = (both_empty_12951 or dim_match_12952)
+    empty_or_match_cert_12954 = True
+    assert empty_or_match_12953, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:181:98-115\n   #1  GPUTraining.fut:180:1-181:116\n" % ("function arguments of wrong shape",))
+    dim_zzero_12956 = (np.int32(0) == sizze_12929)
+    dim_zzero_12957 = (np.int32(0) == sizze_12930)
+    old_empty_12958 = (dim_zzero_12956 or dim_zzero_12957)
+    dim_zzero_12959 = (np.int32(0) == sizze_12934)
+    dim_zzero_12960 = (np.int32(0) == sizze_12935)
+    new_empty_12961 = (dim_zzero_12959 or dim_zzero_12960)
+    both_empty_12962 = (old_empty_12958 and new_empty_12961)
+    dim_match_12963 = (sizze_12934 == sizze_12929)
+    dim_match_12964 = (sizze_12935 == sizze_12930)
+    match_12965 = (dim_match_12963 and dim_match_12964)
+    empty_or_match_12966 = (both_empty_12962 or match_12965)
+    empty_or_match_cert_12967 = True
+    assert empty_or_match_12966, ("Error: %s\n\nBacktrace:\n-> #0  /futlib/soacs.fut:88:3-32\n   #1  GPUTraining.fut:181:3-116\n   #2  GPUTraining.fut:180:1-181:116\n" % ("Row shape of input array does not match shape of neutral element",))
+    dim_zzero_12969 = (np.int32(0) == sizze_12931)
+    dim_zzero_12970 = (np.int32(0) == sizze_12932)
+    old_empty_12971 = (dim_zzero_12969 or dim_zzero_12970)
+    both_empty_12972 = (y_12947 and old_empty_12971)
+    dim_match_12973 = (sizze_12937 == sizze_12931)
+    dim_match_12974 = (sizze_12938 == sizze_12932)
+    match_12975 = (dim_match_12973 and dim_match_12974)
+    empty_or_match_12976 = (both_empty_12972 or match_12975)
+    empty_or_match_cert_12977 = True
+    assert empty_or_match_12976, ("Error: %s\n\nBacktrace:\n-> #0  /futlib/soacs.fut:88:3-32\n   #1  GPUTraining.fut:181:3-116\n   #2  GPUTraining.fut:180:1-181:116\n" % ("Row shape of input array does not match shape of neutral element",))
+    both_empty_12979 = (dim_zzero_12959 and dim_zzero_12960)
+    dim_match_12980 = (sizze_12935 == sizze_12934)
+    empty_or_match_12981 = (both_empty_12979 or dim_match_12980)
+    empty_or_match_cert_12982 = True
+    assert empty_or_match_12981, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:3:19-30\n   #1  GPUTraining.fut:8:21-38\n   #2  GPUTraining.fut:8:3-9:17\n   #3  GPUTraining.fut:17:19-34\n   #4  GPUTraining.fut:17:3-37\n   #5  GPUTraining.fut:159:23-36\n   #6  GPUTraining.fut:181:48-82\n   #7  GPUTraining.fut:181:3-116\n   #8  GPUTraining.fut:180:1-181:116\n" % ("function arguments of wrong shape",))
+    both_empty_12983 = (dim_zzero_12946 and dim_zzero_12959)
+    dim_match_12984 = (sizze_12938 == sizze_12934)
+    empty_or_match_12985 = (both_empty_12983 or dim_match_12984)
+    empty_or_match_cert_12986 = True
+    assert empty_or_match_12985, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:3:19-30\n   #1  GPUTraining.fut:8:21-38\n   #2  GPUTraining.fut:8:3-9:17\n   #3  GPUTraining.fut:17:19-34\n   #4  GPUTraining.fut:17:3-37\n   #5  GPUTraining.fut:163:22-43\n   #6  GPUTraining.fut:181:48-82\n   #7  GPUTraining.fut:181:3-116\n   #8  GPUTraining.fut:180:1-181:116\n" % ("function arguments of wrong shape",))
+    both_empty_12987 = (dim_zzero_12946 and dim_zzero_12960)
+    dim_match_12988 = (sizze_12938 == sizze_12935)
+    empty_or_match_12989 = (both_empty_12987 or dim_match_12988)
+    empty_or_match_cert_12990 = True
+    assert empty_or_match_12989, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:122:3-14\n   #1  /futlib/soacs.fut:51:19-23\n   #2  /futlib/soacs.fut:51:3-37\n   #3  GPUTraining.fut:130:3-21\n   #4  GPUTraining.fut:167:23-56\n   #5  GPUTraining.fut:181:48-82\n   #6  GPUTraining.fut:181:3-116\n   #7  GPUTraining.fut:180:1-181:116\n" % ("function arguments of wrong shape",))
+    empty_or_match_cert_12991 = True
+    assert empty_or_match_12989, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:3:19-30\n   #1  GPUTraining.fut:8:21-38\n   #2  GPUTraining.fut:8:3-9:17\n   #3  GPUTraining.fut:17:19-34\n   #4  GPUTraining.fut:17:3-37\n   #5  GPUTraining.fut:173:50-85\n   #6  GPUTraining.fut:181:48-82\n   #7  GPUTraining.fut:181:3-116\n   #8  GPUTraining.fut:180:1-181:116\n" % ("function arguments of wrong shape",))
+    empty_or_match_cert_12992 = True
+    assert empty_or_match_12985, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:90:3-14\n   #1  /futlib/soacs.fut:51:19-23\n   #2  /futlib/soacs.fut:51:3-37\n   #3  GPUTraining.fut:98:3-15\n   #4  GPUTraining.fut:173:21-87\n   #5  GPUTraining.fut:181:48-82\n   #6  GPUTraining.fut:181:3-116\n   #7  GPUTraining.fut:180:1-181:116\n" % ("function arguments of wrong shape",))
+    new_empty_12993 = (dim_zzero_12946 or dim_zzero_12960)
+    both_empty_12994 = (new_empty_12961 and new_empty_12993)
+    empty_or_match_12995 = (dim_match_12984 or both_empty_12994)
+    empty_or_match_cert_12996 = True
+    assert empty_or_match_12995, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:66:3-20\n   #1  GPUTraining.fut:175:28-67\n   #2  GPUTraining.fut:181:48-82\n   #3  GPUTraining.fut:181:3-116\n   #4  GPUTraining.fut:180:1-181:116\n" % ("function arguments of wrong shape",))
+    old_empty_12997 = (dim_zzero_12946 or dim_zzero_12959)
+    new_empty_12998 = (dim_zzero_12959 or dim_zzero_12959)
+    both_empty_12999 = (old_empty_12997 and new_empty_12998)
+    dim_match_13000 = (sizze_12934 == sizze_12938)
+    empty_or_match_13001 = (both_empty_12999 or dim_match_13000)
+    empty_or_match_cert_13002 = True
+    assert empty_or_match_13001, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:98:3-15\n   #1  GPUTraining.fut:177:21-79\n   #2  GPUTraining.fut:181:48-82\n   #3  GPUTraining.fut:181:3-116\n   #4  GPUTraining.fut:180:1-181:116\n" % ("function arguments of wrong shape",))
+    empty_or_match_cert_13003 = True
+    assert empty_or_match_12981, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:90:3-14\n   #1  /futlib/soacs.fut:51:19-23\n   #2  /futlib/soacs.fut:51:3-37\n   #3  GPUTraining.fut:98:3-15\n   #4  GPUTraining.fut:177:21-79\n   #5  GPUTraining.fut:181:48-82\n   #6  GPUTraining.fut:181:3-116\n   #7  GPUTraining.fut:180:1-181:116\n" % ("function arguments of wrong shape",))
+    sizze_13141 = sext_i32_i64(sizze_12933)
+    segred_group_sizze_13144 = self.sizes["main.segred_group_size_13143"]
+    max_num_groups_13421 = self.sizes["main.segred_num_groups_13145"]
+    num_groups_13146 = sext_i64_i32(smax64(np.int32(1),
+                                           smin64(squot64(((sizze_13141 + sext_i32_i64(segred_group_sizze_13144)) - np.int64(1)),
+                                                          sext_i32_i64(segred_group_sizze_13144)),
+                                                  sext_i32_i64(max_num_groups_13421))))
+    binop_x_13268 = (sizze_12934 * sizze_12935)
+    convop_x_13269 = (sizze_12933 * binop_x_13268)
+    binop_x_13270 = sext_i32_i64(convop_x_13269)
+    bytes_13267 = (np.int64(4) * binop_x_13270)
+    mem_13271 = opencl_alloc(self, bytes_13267, "mem_13271")
+    self.futhark__map_transpose_f32(mem_13271, np.int32(0), inputs_mem_13265,
+                                    np.int32(0), np.int32(1),
+                                    (sizze_12934 * sizze_12935), sizze_12933,
+                                    ((sizze_12933 * sizze_12934) * sizze_12935),
+                                    ((sizze_12933 * sizze_12934) * sizze_12935))
+    binop_x_13273 = (sizze_12937 * sizze_12938)
+    convop_x_13274 = (sizze_12936 * binop_x_13273)
+    binop_x_13275 = sext_i32_i64(convop_x_13274)
+    bytes_13272 = (np.int64(4) * binop_x_13275)
+    mem_13276 = opencl_alloc(self, bytes_13272, "mem_13276")
+    self.futhark__map_transpose_f32(mem_13276, np.int32(0), targets_mem_13266,
+                                    np.int32(0), np.int32(1),
+                                    (sizze_12937 * sizze_12938), sizze_12936,
+                                    ((sizze_12936 * sizze_12937) * sizze_12938),
+                                    ((sizze_12936 * sizze_12937) * sizze_12938))
+    num_threads_13277 = (segred_group_sizze_13144 * num_groups_13146)
+    twice_num_threads_13278 = (np.int32(2) * num_threads_13277)
+    binop_x_13280 = sext_i32_i64(twice_num_threads_13278)
+    binop_y_13281 = sext_i32_i64(sizze_12934)
+    binop_x_13282 = (binop_x_13280 * binop_y_13281)
+    binop_y_13283 = sext_i32_i64(sizze_12935)
+    binop_x_13284 = (binop_x_13282 * binop_y_13283)
+    bytes_13279 = (np.int64(4) * binop_x_13284)
+    mem_13285 = opencl_alloc(self, bytes_13279, "mem_13285")
+    binop_y_13289 = sext_i32_i64(sizze_12937)
+    binop_x_13290 = (binop_x_13280 * binop_y_13289)
+    binop_y_13291 = sext_i32_i64(sizze_12938)
+    binop_x_13292 = (binop_x_13290 * binop_y_13291)
+    bytes_13287 = (np.int64(4) * binop_x_13292)
+    mem_13293 = opencl_alloc(self, bytes_13287, "mem_13293")
+    binop_x_13361 = (binop_y_13281 * binop_y_13283)
+    bytes_13356 = (np.int64(4) * binop_x_13361)
+    mem_13362 = opencl_alloc(self, bytes_13356, "mem_13362")
+    binop_x_13368 = (binop_y_13289 * binop_y_13291)
+    bytes_13363 = (np.int64(4) * binop_x_13368)
+    mem_13369 = opencl_alloc(self, bytes_13363, "mem_13369")
+    bytes_13299 = (np.int64(4) * binop_y_13283)
+    binop_x_13310 = (binop_y_13283 * binop_y_13289)
+    bytes_13307 = (np.int64(4) * binop_x_13310)
+    bytes_13315 = (np.int64(4) * binop_y_13291)
+    binop_x_13340 = (binop_y_13281 * binop_y_13291)
+    bytes_13337 = (np.int64(4) * binop_x_13340)
+    bytes_13345 = (np.int64(4) * binop_y_13281)
+    num_threads_13397 = (segred_group_sizze_13144 * num_groups_13146)
+    num_threads64_13398 = sext_i32_i64(num_threads_13397)
+    total_sizze_13399 = (bytes_13356 * num_threads64_13398)
+    mem_13298 = opencl_alloc(self, total_sizze_13399, "mem_13298")
+    total_sizze_13400 = (bytes_13299 * num_threads64_13398)
+    mem_13301 = opencl_alloc(self, total_sizze_13400, "mem_13301")
+    total_sizze_13401 = (bytes_13363 * num_threads64_13398)
+    mem_13306 = opencl_alloc(self, total_sizze_13401, "mem_13306")
+    total_sizze_13402 = (bytes_13307 * num_threads64_13398)
+    mem_13311 = opencl_alloc(self, total_sizze_13402, "mem_13311")
+    total_sizze_13403 = (bytes_13299 * num_threads64_13398)
+    mem_13314 = opencl_alloc(self, total_sizze_13403, "mem_13314")
+    total_sizze_13404 = (bytes_13315 * num_threads64_13398)
+    mem_13317 = opencl_alloc(self, total_sizze_13404, "mem_13317")
+    total_sizze_13405 = (bytes_13363 * num_threads64_13398)
+    mem_13322 = opencl_alloc(self, total_sizze_13405, "mem_13322")
+    total_sizze_13406 = (bytes_13315 * num_threads64_13398)
+    mem_13325 = opencl_alloc(self, total_sizze_13406, "mem_13325")
+    total_sizze_13407 = (bytes_13315 * num_threads64_13398)
+    mem_13328 = opencl_alloc(self, total_sizze_13407, "mem_13328")
+    total_sizze_13408 = (bytes_13356 * num_threads64_13398)
+    mem_13333 = opencl_alloc(self, total_sizze_13408, "mem_13333")
+    total_sizze_13409 = (bytes_13299 * num_threads64_13398)
+    mem_13336 = opencl_alloc(self, total_sizze_13409, "mem_13336")
+    total_sizze_13410 = (bytes_13337 * num_threads64_13398)
+    mem_13341 = opencl_alloc(self, total_sizze_13410, "mem_13341")
+    total_sizze_13411 = (bytes_13315 * num_threads64_13398)
+    mem_13344 = opencl_alloc(self, total_sizze_13411, "mem_13344")
+    total_sizze_13412 = (bytes_13345 * num_threads64_13398)
+    mem_13347 = opencl_alloc(self, total_sizze_13412, "mem_13347")
+    total_sizze_13413 = (bytes_13356 * num_threads64_13398)
+    mem_13352 = opencl_alloc(self, total_sizze_13413, "mem_13352")
+    total_sizze_13414 = (bytes_13299 * num_threads64_13398)
+    mem_13355 = opencl_alloc(self, total_sizze_13414, "mem_13355")
+    counter_mem_13422 = self.counter_mem_13422
+    group_res_arr_mem_13424 = opencl_alloc(self,
+                                           (np.int32(4) * (((segred_group_sizze_13144 * num_groups_13146) * sizze_12934) * sizze_12935)),
+                                           "group_res_arr_mem_13424")
+    group_res_arr_mem_13426 = opencl_alloc(self,
+                                           (np.int32(4) * (((segred_group_sizze_13144 * num_groups_13146) * sizze_12937) * sizze_12938)),
+                                           "group_res_arr_mem_13426")
+    num_threads_13428 = (num_groups_13146 * segred_group_sizze_13144)
+    if ((1 * (np.long(num_groups_13146) * np.long(segred_group_sizze_13144))) != 0):
+      self.segred_nonseg_13152_var.set_args(cl.LocalMemory(np.long(np.int32(1))),
+                                            np.int32(sizze_12930),
+                                            np.int32(sizze_12932),
+                                            np.int32(sizze_12933),
+                                            np.int32(sizze_12934),
+                                            np.int32(sizze_12935),
+                                            np.int32(sizze_12936),
+                                            np.int32(sizze_12937),
+                                            np.int32(sizze_12938),
+                                            np.float32(lr_12939),
+                                            np.int32(num_groups_13146),
+                                            wih_mem_13263, who_mem_13264,
+                                            mem_13271, mem_13276,
+                                            np.int32(num_threads_13277),
+                                            mem_13285, mem_13293, mem_13298,
+                                            mem_13301, mem_13306, mem_13311,
+                                            mem_13314, mem_13317, mem_13322,
+                                            mem_13325, mem_13328, mem_13333,
+                                            mem_13336, mem_13341, mem_13344,
+                                            mem_13347, mem_13352, mem_13355,
+                                            mem_13362, mem_13369,
+                                            counter_mem_13422,
+                                            group_res_arr_mem_13424,
+                                            group_res_arr_mem_13426)
+      cl.enqueue_nd_range_kernel(self.queue, self.segred_nonseg_13152_var,
+                                 ((np.long(num_groups_13146) * np.long(segred_group_sizze_13144)),),
+                                 (np.long(segred_group_sizze_13144),))
       if synchronous:
         self.queue.finish()
-    dim_zzero_11098 = (np.int32(0) == sizze_11061)
-    dim_zzero_11099 = (np.int32(0) == sizze_11064)
-    both_empty_11100 = (dim_zzero_11098 and dim_zzero_11099)
-    dim_match_11101 = (sizze_11064 == sizze_11061)
-    empty_or_match_11102 = (both_empty_11100 or dim_match_11101)
-    empty_or_match_cert_11103 = True
-    assert empty_or_match_11102, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:3:19-30\n   #1  GPUTraining.fut:8:21-38\n   #2  GPUTraining.fut:8:3-9:17\n   #3  GPUTraining.fut:17:19-34\n   #4  GPUTraining.fut:17:3-37\n   #5  GPUTraining.fut:163:24-45\n   #6  GPUTraining.fut:157:1-178:33\n" % ("function arguments of wrong shape",))
-    sizze_11345 = sext_i32_i64(sizze_11063)
-    nest_sizze_11348 = (sizze_11287 * sizze_11345)
-    tile_sizze_12053 = self.sizes["main.tile_size_12052"]
-    group_sizze_12054 = (tile_sizze_12053 * tile_sizze_12053)
-    y_12055 = (tile_sizze_12053 - np.int32(1))
-    x_12056 = (sizze_11063 + y_12055)
-    num_groups_x_12057 = squot32(x_12056, tile_sizze_12053)
-    x_12059 = (sizze_11066 + y_12055)
-    num_groups_y_12060 = squot32(x_12059, tile_sizze_12053)
-    num_groups_top_12061 = (num_groups_x_12057 * num_groups_y_12060)
-    num_whole_tiles_12063 = squot32(sizze_11064, tile_sizze_12053)
-    residual_input_12196 = srem32(sizze_11064, tile_sizze_12053)
-    cond_12197 = (residual_input_12196 == np.int32(0))
-    binop_x_13528 = (sizze_11287 * sizze_11345)
-    bytes_13525 = (np.int64(4) * binop_x_13528)
-    mem_13529 = opencl_alloc(self, bytes_13525, "mem_13529")
-    binop_x_13489 = sext_i32_i64(group_sizze_12054)
-    bytes_13487 = (np.int64(4) * binop_x_13489)
-    binop_x_13492 = sext_i32_i64(tile_sizze_12053)
-    binop_x_13494 = (binop_x_13492 * binop_x_13492)
-    bytes_13491 = (np.int64(4) * binop_x_13494)
-    if ((1 * (np.long(num_groups_top_12061) * np.long(group_sizze_12054))) != 0):
-      self.segmap_intragroup_12062_var.set_args(cl.LocalMemory(np.long(bytes_13491)),
-                                                cl.LocalMemory(np.long(bytes_13491)),
-                                                cl.LocalMemory(np.long(bytes_13491)),
-                                                cl.LocalMemory(np.long(bytes_13491)),
-                                                np.int32(sizze_11063),
-                                                np.int32(sizze_11064),
-                                                np.int32(sizze_11066),
-                                                np.int32(num_groups_y_12060),
-                                                np.int32(num_whole_tiles_12063),
-                                                np.int32(residual_input_12196),
-                                                np.byte(cond_12197),
-                                                who_mem_13441, mem_13486,
-                                                mem_13529)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_intragroup_12062_var,
-                                 ((np.long(num_groups_top_12061) * np.long(group_sizze_12054)),),
-                                 (np.long(group_sizze_12054),))
-      if synchronous:
-        self.queue.finish()
-    dim_zzero_11120 = (np.int32(0) == sizze_11063)
-    dim_zzero_11121 = (np.int32(0) == sizze_11066)
-    old_empty_11122 = (dim_zzero_11120 or dim_zzero_11121)
-    dim_zzero_11123 = (np.int32(0) == sizze_11067)
-    new_empty_11124 = (dim_zzero_11121 or dim_zzero_11123)
-    both_empty_11125 = (old_empty_11122 and new_empty_11124)
-    dim_match_11126 = (sizze_11067 == sizze_11063)
-    empty_or_match_11127 = (both_empty_11125 or dim_match_11126)
-    empty_or_match_cert_11128 = True
-    assert empty_or_match_11127, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:130:3-21\n   #1  GPUTraining.fut:167:25-58\n   #2  GPUTraining.fut:157:1-178:33\n" % ("function arguments of wrong shape",))
-    dim_zzero_11130 = (np.int32(0) == sizze_11068)
-    both_empty_11131 = (dim_zzero_11121 and dim_zzero_11130)
-    dim_match_11132 = (sizze_11068 == sizze_11066)
-    empty_or_match_11133 = (both_empty_11131 or dim_match_11132)
-    empty_or_match_cert_11134 = True
-    assert empty_or_match_11133, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:122:3-14\n   #1  /futlib/soacs.fut:51:19-23\n   #2  /futlib/soacs.fut:51:3-37\n   #3  GPUTraining.fut:130:3-21\n   #4  GPUTraining.fut:167:25-58\n   #5  GPUTraining.fut:157:1-178:33\n" % ("function arguments of wrong shape",))
-    sizze_11375 = sext_i32_i64(sizze_11067)
-    sizze_11376 = sext_i32_i64(sizze_11068)
-    nest_sizze_11378 = (sizze_11375 * sizze_11376)
-    segmap_group_sizze_11380 = self.sizes["main.segmap_group_size_11379"]
-    segmap_group_sizze_11381 = sext_i32_i64(segmap_group_sizze_11380)
-    y_11382 = (segmap_group_sizze_11381 - np.int64(1))
-    x_11383 = (nest_sizze_11378 + y_11382)
-    segmap_usable_groups_64_11385 = squot64(x_11383, segmap_group_sizze_11381)
-    segmap_usable_groups_11386 = sext_i64_i32(segmap_usable_groups_64_11385)
-    bytes_13530 = (np.int64(4) * nest_sizze_11378)
-    mem_13534 = opencl_alloc(self, bytes_13530, "mem_13534")
-    if ((1 * (np.long(segmap_usable_groups_11386) * np.long(segmap_group_sizze_11380))) != 0):
-      self.segmap_11374_var.set_args(np.int32(sizze_11066),
-                                     np.int32(sizze_11067),
-                                     np.int32(sizze_11068), targets_mem_13443,
-                                     mem_13529, mem_13534)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_11374_var,
-                                 ((np.long(segmap_usable_groups_11386) * np.long(segmap_group_sizze_11380)),),
-                                 (np.long(segmap_group_sizze_11380),))
-      if synchronous:
-        self.queue.finish()
-    both_empty_11144 = (dim_zzero_11120 and dim_zzero_11123)
-    dim_match_11145 = (sizze_11063 == sizze_11067)
-    empty_or_match_11146 = (both_empty_11144 or dim_match_11145)
-    empty_or_match_cert_11147 = True
-    assert empty_or_match_11146, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:3:19-30\n   #1  GPUTraining.fut:8:21-38\n   #2  GPUTraining.fut:8:3-9:17\n   #3  GPUTraining.fut:17:19-34\n   #4  GPUTraining.fut:17:3-37\n   #5  GPUTraining.fut:169:25-57\n   #6  GPUTraining.fut:157:1-178:33\n" % ("function arguments of wrong shape",))
-    segmap_group_sizze_11398 = self.sizes["main.segmap_group_size_11397"]
-    segmap_group_sizze_11399 = sext_i32_i64(segmap_group_sizze_11398)
-    y_11400 = (segmap_group_sizze_11399 - np.int64(1))
-    x_11401 = (nest_sizze_11348 + y_11400)
-    segmap_usable_groups_64_11403 = squot64(x_11401, segmap_group_sizze_11399)
-    segmap_usable_groups_11404 = sext_i64_i32(segmap_usable_groups_64_11403)
-    mem_13539 = opencl_alloc(self, bytes_13525, "mem_13539")
-    if ((1 * (np.long(segmap_usable_groups_11404) * np.long(segmap_group_sizze_11398))) != 0):
-      self.segmap_11392_var.set_args(np.int32(sizze_11063),
-                                     np.int32(sizze_11066), mem_13529,
-                                     mem_13539)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_11392_var,
-                                 ((np.long(segmap_usable_groups_11404) * np.long(segmap_group_sizze_11398)),),
-                                 (np.long(segmap_group_sizze_11398),))
-      if synchronous:
-        self.queue.finish()
-    empty_or_match_cert_11153 = True
-    assert empty_or_match_11133, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:3:19-30\n   #1  GPUTraining.fut:8:21-38\n   #2  GPUTraining.fut:8:3-9:17\n   #3  GPUTraining.fut:17:19-34\n   #4  GPUTraining.fut:17:3-37\n   #5  GPUTraining.fut:173:52-87\n   #6  GPUTraining.fut:157:1-178:33\n" % ("function arguments of wrong shape",))
-    segmap_group_sizze_11472 = self.sizes["main.segmap_group_size_11471"]
-    segmap_group_sizze_11473 = sext_i32_i64(segmap_group_sizze_11472)
-    y_11474 = (segmap_group_sizze_11473 - np.int64(1))
-    x_11475 = (nest_sizze_11378 + y_11474)
-    segmap_usable_groups_64_11477 = squot64(x_11475, segmap_group_sizze_11473)
-    segmap_usable_groups_11478 = sext_i64_i32(segmap_usable_groups_64_11477)
-    mem_13544 = opencl_alloc(self, bytes_13530, "mem_13544")
-    if ((1 * (np.long(segmap_usable_groups_11478) * np.long(segmap_group_sizze_11472))) != 0):
-      self.segmap_11466_var.set_args(np.int32(sizze_11066),
-                                     np.int32(sizze_11067),
-                                     np.int32(sizze_11068), mem_13529,
-                                     mem_13534, mem_13539, mem_13544)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_11466_var,
-                                 ((np.long(segmap_usable_groups_11478) * np.long(segmap_group_sizze_11472)),),
-                                 (np.long(segmap_group_sizze_11472),))
-      if synchronous:
-        self.queue.finish()
-    mem_13529 = None
-    mem_13539 = None
-    convop_x_13546 = (sizze_11061 * sizze_11066)
-    binop_x_13547 = sext_i32_i64(convop_x_13546)
-    bytes_13545 = (np.int64(4) * binop_x_13547)
-    mem_13548 = opencl_alloc(self, bytes_13545, "mem_13548")
-    self.futhark__map_transpose_f32(mem_13548, np.int32(0), mem_13486,
-                                    np.int32(0), np.int32(1), sizze_11066,
-                                    sizze_11061, (sizze_11061 * sizze_11066),
-                                    (sizze_11061 * sizze_11066))
-    tile_sizze_12362 = self.sizes["main.tile_size_12361"]
-    group_sizze_12363 = (tile_sizze_12362 * tile_sizze_12362)
-    y_12364 = (tile_sizze_12362 - np.int32(1))
-    x_12365 = (sizze_11067 + y_12364)
-    num_groups_x_12366 = squot32(x_12365, tile_sizze_12362)
-    x_12368 = (sizze_11061 + y_12364)
-    num_groups_y_12369 = squot32(x_12368, tile_sizze_12362)
-    num_groups_top_12370 = (num_groups_x_12366 * num_groups_y_12369)
-    num_whole_tiles_12372 = squot32(sizze_11068, tile_sizze_12362)
-    residual_input_12505 = srem32(sizze_11068, tile_sizze_12362)
-    cond_12506 = (residual_input_12505 == np.int32(0))
-    binop_x_13590 = (sizze_11286 * sizze_11375)
-    bytes_13587 = (np.int64(4) * binop_x_13590)
-    mem_13591 = opencl_alloc(self, bytes_13587, "mem_13591")
-    binop_x_13551 = sext_i32_i64(group_sizze_12363)
-    bytes_13549 = (np.int64(4) * binop_x_13551)
-    binop_x_13554 = sext_i32_i64(tile_sizze_12362)
-    binop_x_13556 = (binop_x_13554 * binop_x_13554)
-    bytes_13553 = (np.int64(4) * binop_x_13556)
-    if ((1 * (np.long(num_groups_top_12370) * np.long(group_sizze_12363))) != 0):
-      self.segmap_intragroup_12371_var.set_args(cl.LocalMemory(np.long(bytes_13553)),
-                                                cl.LocalMemory(np.long(bytes_13553)),
-                                                cl.LocalMemory(np.long(bytes_13553)),
-                                                cl.LocalMemory(np.long(bytes_13553)),
-                                                np.int32(sizze_11061),
-                                                np.int32(sizze_11067),
-                                                np.int32(sizze_11068),
-                                                np.float32(lr_11069),
-                                                np.int32(num_groups_y_12369),
-                                                np.int32(num_whole_tiles_12372),
-                                                np.int32(residual_input_12505),
-                                                np.byte(cond_12506), mem_13544,
-                                                mem_13548, mem_13591)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_intragroup_12371_var,
-                                 ((np.long(num_groups_top_12370) * np.long(group_sizze_12363)),),
-                                 (np.long(group_sizze_12363),))
-      if synchronous:
-        self.queue.finish()
-    mem_13544 = None
-    mem_13548 = None
-    old_empty_11178 = (dim_zzero_11098 or dim_zzero_11123)
-    new_empty_11179 = (dim_zzero_11098 or dim_zzero_11120)
-    both_empty_11180 = (old_empty_11178 and new_empty_11179)
-    empty_or_match_11181 = (dim_match_11145 or both_empty_11180)
-    empty_or_match_cert_11182 = True
-    assert empty_or_match_11181, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:98:3-15\n   #1  GPUTraining.fut:173:23-89\n   #2  GPUTraining.fut:157:1-178:33\n" % ("function arguments of wrong shape",))
-    empty_or_match_cert_11184 = True
-    assert empty_or_match_11102, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:90:3-14\n   #1  /futlib/soacs.fut:51:19-23\n   #2  /futlib/soacs.fut:51:3-37\n   #3  GPUTraining.fut:98:3-15\n   #4  GPUTraining.fut:173:23-89\n   #5  GPUTraining.fut:157:1-178:33\n" % ("function arguments of wrong shape",))
-    sizze_11489 = sext_i32_i64(sizze_11064)
-    nest_sizze_11491 = (sizze_11345 * sizze_11489)
-    segmap_group_sizze_11493 = self.sizes["main.segmap_group_size_11492"]
-    segmap_group_sizze_11494 = sext_i32_i64(segmap_group_sizze_11493)
-    y_11495 = (segmap_group_sizze_11494 - np.int64(1))
-    x_11496 = (nest_sizze_11491 + y_11495)
-    segmap_usable_groups_64_11498 = squot64(x_11496, segmap_group_sizze_11494)
-    segmap_usable_groups_11499 = sext_i64_i32(segmap_usable_groups_64_11498)
-    bytes_13592 = (np.int64(4) * nest_sizze_11491)
-    mem_13596 = opencl_alloc(self, bytes_13592, "mem_13596")
-    if ((1 * (np.long(segmap_usable_groups_11499) * np.long(segmap_group_sizze_11493))) != 0):
-      self.segmap_11487_var.set_args(np.int32(sizze_11061),
-                                     np.int32(sizze_11063),
-                                     np.int32(sizze_11064), who_mem_13441,
-                                     mem_13591, mem_13596)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_11487_var,
-                                 ((np.long(segmap_usable_groups_11499) * np.long(segmap_group_sizze_11493)),),
-                                 (np.long(segmap_group_sizze_11493),))
-      if synchronous:
-        self.queue.finish()
-    mem_13591 = None
-    old_empty_11193 = (dim_zzero_11098 or dim_zzero_11121)
-    new_empty_11194 = (dim_zzero_11099 or dim_zzero_11121)
-    both_empty_11195 = (old_empty_11193 and new_empty_11194)
-    empty_or_match_11196 = (dim_match_11101 or both_empty_11195)
-    empty_or_match_cert_11197 = True
-    assert empty_or_match_11196, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:66:3-20\n   #1  GPUTraining.fut:175:30-69\n   #2  GPUTraining.fut:157:1-178:33\n" % ("function arguments of wrong shape",))
-    segmap_group_sizze_11511 = self.sizes["main.segmap_group_size_11510"]
-    segmap_group_sizze_11512 = sext_i32_i64(segmap_group_sizze_11511)
-    y_11513 = (segmap_group_sizze_11512 - np.int64(1))
-    x_11514 = (nest_sizze_11289 + y_11513)
-    segmap_usable_groups_64_11516 = squot64(x_11514, segmap_group_sizze_11512)
-    segmap_usable_groups_11517 = sext_i64_i32(segmap_usable_groups_64_11516)
-    mem_13601 = opencl_alloc(self, bytes_13482, "mem_13601")
-    if ((1 * (np.long(segmap_usable_groups_11517) * np.long(segmap_group_sizze_11511))) != 0):
-      self.segmap_11505_var.set_args(np.int32(sizze_11061),
-                                     np.int32(sizze_11066), mem_13486,
-                                     mem_13601)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_11505_var,
-                                 ((np.long(segmap_usable_groups_11517) * np.long(segmap_group_sizze_11511)),),
-                                 (np.long(segmap_group_sizze_11511),))
-      if synchronous:
-        self.queue.finish()
-    convop_x_13603 = (sizze_11063 * sizze_11064)
-    binop_x_13604 = sext_i32_i64(convop_x_13603)
-    bytes_13602 = (np.int64(4) * binop_x_13604)
-    mem_13605 = opencl_alloc(self, bytes_13602, "mem_13605")
-    self.futhark__map_transpose_f32(mem_13605, np.int32(0), who_mem_13441,
-                                    np.int32(0), np.int32(1), sizze_11064,
-                                    sizze_11063, (sizze_11064 * sizze_11063),
-                                    (sizze_11064 * sizze_11063))
-    tile_sizze_12668 = self.sizes["main.tile_size_12667"]
-    group_sizze_12669 = (tile_sizze_12668 * tile_sizze_12668)
-    y_12670 = (tile_sizze_12668 - np.int32(1))
-    x_12671 = (sizze_11064 + y_12670)
-    num_groups_x_12672 = squot32(x_12671, tile_sizze_12668)
-    x_12674 = (sizze_11068 + y_12670)
-    num_groups_y_12675 = squot32(x_12674, tile_sizze_12668)
-    num_groups_top_12676 = (num_groups_x_12672 * num_groups_y_12675)
-    num_whole_tiles_12678 = squot32(sizze_11063, tile_sizze_12668)
-    residual_input_12811 = srem32(sizze_11063, tile_sizze_12668)
-    cond_12812 = (residual_input_12811 == np.int32(0))
-    binop_x_13647 = (sizze_11376 * sizze_11489)
-    bytes_13644 = (np.int64(4) * binop_x_13647)
-    mem_13648 = opencl_alloc(self, bytes_13644, "mem_13648")
-    binop_x_13608 = sext_i32_i64(group_sizze_12669)
-    bytes_13606 = (np.int64(4) * binop_x_13608)
-    binop_x_13611 = sext_i32_i64(tile_sizze_12668)
-    binop_x_13613 = (binop_x_13611 * binop_x_13611)
-    bytes_13610 = (np.int64(4) * binop_x_13613)
-    if ((1 * (np.long(num_groups_top_12676) * np.long(group_sizze_12669))) != 0):
-      self.segmap_intragroup_12677_var.set_args(cl.LocalMemory(np.long(bytes_13610)),
-                                                cl.LocalMemory(np.long(bytes_13610)),
-                                                cl.LocalMemory(np.long(bytes_13610)),
-                                                cl.LocalMemory(np.long(bytes_13610)),
-                                                np.int32(sizze_11063),
-                                                np.int32(sizze_11064),
-                                                np.int32(sizze_11066),
-                                                np.int32(sizze_11068),
-                                                np.int32(num_groups_y_12675),
-                                                np.int32(num_whole_tiles_12678),
-                                                np.int32(residual_input_12811),
-                                                np.byte(cond_12812), mem_13486,
-                                                mem_13534, mem_13601, mem_13605,
-                                                mem_13648)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_intragroup_12677_var,
-                                 ((np.long(num_groups_top_12676) * np.long(group_sizze_12669)),),
-                                 (np.long(group_sizze_12669),))
-      if synchronous:
-        self.queue.finish()
-    mem_13486 = None
-    mem_13534 = None
-    mem_13601 = None
-    mem_13605 = None
-    convop_x_13650 = (sizze_11065 * sizze_11066)
-    binop_x_13651 = sext_i32_i64(convop_x_13650)
-    bytes_13649 = (np.int64(4) * binop_x_13651)
-    mem_13652 = opencl_alloc(self, bytes_13649, "mem_13652")
-    self.futhark__map_transpose_f32(mem_13652, np.int32(0), inputs_mem_13442,
-                                    np.int32(0), np.int32(1), sizze_11066,
-                                    sizze_11065, (sizze_11065 * sizze_11066),
-                                    (sizze_11065 * sizze_11066))
-    tile_sizze_12997 = self.sizes["main.tile_size_12996"]
-    group_sizze_12998 = (tile_sizze_12997 * tile_sizze_12997)
-    y_12999 = (tile_sizze_12997 - np.int32(1))
-    x_13000 = (sizze_11064 + y_12999)
-    num_groups_x_13001 = squot32(x_13000, tile_sizze_12997)
-    x_13003 = (sizze_11065 + y_12999)
-    num_groups_y_13004 = squot32(x_13003, tile_sizze_12997)
-    num_groups_top_13005 = (num_groups_x_13001 * num_groups_y_13004)
-    num_whole_tiles_13007 = squot32(sizze_11068, tile_sizze_12997)
-    residual_input_13140 = srem32(sizze_11068, tile_sizze_12997)
-    cond_13141 = (residual_input_13140 == np.int32(0))
-    binop_y_13693 = sext_i32_i64(sizze_11065)
-    binop_x_13694 = (sizze_11489 * binop_y_13693)
-    bytes_13691 = (np.int64(4) * binop_x_13694)
-    mem_13695 = opencl_alloc(self, bytes_13691, "mem_13695")
-    binop_x_13655 = sext_i32_i64(group_sizze_12998)
-    bytes_13653 = (np.int64(4) * binop_x_13655)
-    binop_x_13658 = sext_i32_i64(tile_sizze_12997)
-    binop_x_13660 = (binop_x_13658 * binop_x_13658)
-    bytes_13657 = (np.int64(4) * binop_x_13660)
-    if ((1 * (np.long(num_groups_top_13005) * np.long(group_sizze_12998))) != 0):
-      self.segmap_intragroup_13006_var.set_args(cl.LocalMemory(np.long(bytes_13657)),
-                                                cl.LocalMemory(np.long(bytes_13657)),
-                                                cl.LocalMemory(np.long(bytes_13657)),
-                                                cl.LocalMemory(np.long(bytes_13657)),
-                                                np.int32(sizze_11064),
-                                                np.int32(sizze_11065),
-                                                np.int32(sizze_11068),
-                                                np.float32(lr_11069),
-                                                np.int32(num_groups_y_13004),
-                                                np.int32(num_whole_tiles_13007),
-                                                np.int32(residual_input_13140),
-                                                np.byte(cond_13141), mem_13648,
-                                                mem_13652, mem_13695)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_intragroup_13006_var,
-                                 ((np.long(num_groups_top_13005) * np.long(group_sizze_12998)),),
-                                 (np.long(group_sizze_12998),))
-      if synchronous:
-        self.queue.finish()
-    mem_13648 = None
-    mem_13652 = None
-    old_empty_11237 = (dim_zzero_11075 or dim_zzero_11099)
-    new_empty_11238 = (dim_zzero_11075 or dim_zzero_11098)
-    both_empty_11239 = (old_empty_11237 and new_empty_11238)
-    dim_match_11240 = (sizze_11061 == sizze_11064)
-    empty_or_match_11241 = (both_empty_11239 or dim_match_11240)
-    empty_or_match_cert_11242 = True
-    assert empty_or_match_11241, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:98:3-15\n   #1  GPUTraining.fut:177:23-81\n   #2  GPUTraining.fut:157:1-178:33\n" % ("function arguments of wrong shape",))
-    empty_or_match_cert_11244 = True
-    assert empty_or_match_11079, ("Error: %s\n\nBacktrace:\n-> #0  GPUTraining.fut:90:3-14\n   #1  /futlib/soacs.fut:51:19-23\n   #2  /futlib/soacs.fut:51:3-37\n   #3  GPUTraining.fut:98:3-15\n   #4  GPUTraining.fut:177:23-81\n   #5  GPUTraining.fut:157:1-178:33\n" % ("function arguments of wrong shape",))
-    sizze_11643 = sext_i32_i64(sizze_11062)
-    nest_sizze_11645 = (sizze_11286 * sizze_11643)
-    segmap_group_sizze_11647 = self.sizes["main.segmap_group_size_11646"]
-    segmap_group_sizze_11648 = sext_i32_i64(segmap_group_sizze_11647)
-    y_11649 = (segmap_group_sizze_11648 - np.int64(1))
-    x_11650 = (nest_sizze_11645 + y_11649)
-    segmap_usable_groups_64_11652 = squot64(x_11650, segmap_group_sizze_11648)
-    segmap_usable_groups_11653 = sext_i64_i32(segmap_usable_groups_64_11652)
-    bytes_13696 = (np.int64(4) * nest_sizze_11645)
-    mem_13700 = opencl_alloc(self, bytes_13696, "mem_13700")
-    if ((1 * (np.long(segmap_usable_groups_11653) * np.long(segmap_group_sizze_11647))) != 0):
-      self.segmap_11641_var.set_args(np.int32(sizze_11061),
-                                     np.int32(sizze_11062),
-                                     np.int32(sizze_11065), wih_mem_13440,
-                                     mem_13695, mem_13700)
-      cl.enqueue_nd_range_kernel(self.queue, self.segmap_11641_var,
-                                 ((np.long(segmap_usable_groups_11653) * np.long(segmap_group_sizze_11647)),),
-                                 (np.long(segmap_group_sizze_11647),))
-      if synchronous:
-        self.queue.finish()
-    mem_13695 = None
-    out_arrsizze_13794 = sizze_11063
-    out_arrsizze_13795 = sizze_11064
-    out_arrsizze_13797 = sizze_11061
-    out_arrsizze_13798 = sizze_11062
-    out_mem_13793 = mem_13596
-    out_mem_13796 = mem_13700
-    return (out_mem_13793, out_arrsizze_13794, out_arrsizze_13795,
-            out_mem_13796, out_arrsizze_13797, out_arrsizze_13798)
+    mem_13271 = None
+    mem_13276 = None
+    mem_13285 = None
+    mem_13293 = None
+    mem_13298 = None
+    mem_13301 = None
+    mem_13306 = None
+    mem_13311 = None
+    mem_13314 = None
+    mem_13317 = None
+    mem_13322 = None
+    mem_13325 = None
+    mem_13328 = None
+    mem_13333 = None
+    mem_13336 = None
+    mem_13341 = None
+    mem_13344 = None
+    mem_13347 = None
+    mem_13352 = None
+    mem_13355 = None
+    mem_13374 = opencl_alloc(self, bytes_13356, "mem_13374")
+    if ((sext_i32_i64((sizze_12934 * sizze_12935)) * np.int32(4)) != 0):
+      cl.enqueue_copy(self.queue, mem_13374, mem_13362,
+                      dest_offset=np.long(np.int32(0)),
+                      src_offset=np.long(((np.int32(0) * (sizze_12935 * sizze_12934)) * np.int32(4))),
+                      byte_count=np.long((sext_i32_i64((sizze_12934 * sizze_12935)) * np.int32(4))))
+    if synchronous:
+      self.queue.finish()
+    mem_13362 = None
+    mem_13380 = opencl_alloc(self, bytes_13363, "mem_13380")
+    if ((sext_i32_i64((sizze_12937 * sizze_12938)) * np.int32(4)) != 0):
+      cl.enqueue_copy(self.queue, mem_13380, mem_13369,
+                      dest_offset=np.long(np.int32(0)),
+                      src_offset=np.long(((np.int32(0) * (sizze_12938 * sizze_12937)) * np.int32(4))),
+                      byte_count=np.long((sext_i32_i64((sizze_12937 * sizze_12938)) * np.int32(4))))
+    if synchronous:
+      self.queue.finish()
+    mem_13369 = None
+    out_arrsizze_13416 = sizze_12934
+    out_arrsizze_13417 = sizze_12935
+    out_arrsizze_13419 = sizze_12937
+    out_arrsizze_13420 = sizze_12938
+    out_mem_13415 = mem_13374
+    out_mem_13418 = mem_13380
+    return (out_mem_13415, out_arrsizze_13416, out_arrsizze_13417,
+            out_mem_13418, out_arrsizze_13419, out_arrsizze_13420)
   def futhark__map_transpose_f32(self, destmem_0, destoffset_1, srcmem_2,
                                  srcoffset_3, num_arrays_4, x_elems_5,
                                  y_elems_6, in_elems_7, out_elems_8):
@@ -5232,103 +6483,107 @@ class GPUTraining:
                 if synchronous:
                   self.queue.finish()
     return ()
-  def main(self, lr_11069_ext, wih_mem_13440_ext, who_mem_13441_ext,
-           inputs_mem_13442_ext, targets_mem_13443_ext):
+  def main(self, lr_12939_ext, wih_mem_13263_ext, who_mem_13264_ext,
+           inputs_mem_13265_ext, targets_mem_13266_ext):
     try:
-      lr_11069 = np.float32(ct.c_float(lr_11069_ext))
+      lr_12939 = np.float32(ct.c_float(lr_12939_ext))
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #0 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("f32",
-                                                                                                                            type(lr_11069_ext),
-                                                                                                                            lr_11069_ext))
+                                                                                                                            type(lr_12939_ext),
+                                                                                                                            lr_12939_ext))
     try:
-      assert ((type(wih_mem_13440_ext) in [np.ndarray,
-                                           cl.array.Array]) and (wih_mem_13440_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_11061 = np.int32(wih_mem_13440_ext.shape[0])
-      sizze_11062 = np.int32(wih_mem_13440_ext.shape[1])
-      if (type(wih_mem_13440_ext) == cl.array.Array):
-        wih_mem_13440 = wih_mem_13440_ext.data
+      assert ((type(wih_mem_13263_ext) in [np.ndarray,
+                                           cl.array.Array]) and (wih_mem_13263_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_12929 = np.int32(wih_mem_13263_ext.shape[0])
+      sizze_12930 = np.int32(wih_mem_13263_ext.shape[1])
+      if (type(wih_mem_13263_ext) == cl.array.Array):
+        wih_mem_13263 = wih_mem_13263_ext.data
       else:
-        wih_mem_13440 = opencl_alloc(self, np.int64(wih_mem_13440_ext.nbytes),
-                                     "wih_mem_13440")
-        if (np.int64(wih_mem_13440_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, wih_mem_13440,
-                          normaliseArray(wih_mem_13440_ext),
+        wih_mem_13263 = opencl_alloc(self, np.int64(wih_mem_13263_ext.nbytes),
+                                     "wih_mem_13263")
+        if (np.int64(wih_mem_13263_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, wih_mem_13263,
+                          normaliseArray(wih_mem_13263_ext),
                           is_blocking=synchronous)
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #1 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][]f32",
-                                                                                                                            type(wih_mem_13440_ext),
-                                                                                                                            wih_mem_13440_ext))
+                                                                                                                            type(wih_mem_13263_ext),
+                                                                                                                            wih_mem_13263_ext))
     try:
-      assert ((type(who_mem_13441_ext) in [np.ndarray,
-                                           cl.array.Array]) and (who_mem_13441_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_11063 = np.int32(who_mem_13441_ext.shape[0])
-      sizze_11064 = np.int32(who_mem_13441_ext.shape[1])
-      if (type(who_mem_13441_ext) == cl.array.Array):
-        who_mem_13441 = who_mem_13441_ext.data
+      assert ((type(who_mem_13264_ext) in [np.ndarray,
+                                           cl.array.Array]) and (who_mem_13264_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_12931 = np.int32(who_mem_13264_ext.shape[0])
+      sizze_12932 = np.int32(who_mem_13264_ext.shape[1])
+      if (type(who_mem_13264_ext) == cl.array.Array):
+        who_mem_13264 = who_mem_13264_ext.data
       else:
-        who_mem_13441 = opencl_alloc(self, np.int64(who_mem_13441_ext.nbytes),
-                                     "who_mem_13441")
-        if (np.int64(who_mem_13441_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, who_mem_13441,
-                          normaliseArray(who_mem_13441_ext),
+        who_mem_13264 = opencl_alloc(self, np.int64(who_mem_13264_ext.nbytes),
+                                     "who_mem_13264")
+        if (np.int64(who_mem_13264_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, who_mem_13264,
+                          normaliseArray(who_mem_13264_ext),
                           is_blocking=synchronous)
     except (TypeError, AssertionError) as e:
       raise TypeError("Argument #2 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][]f32",
-                                                                                                                            type(who_mem_13441_ext),
-                                                                                                                            who_mem_13441_ext))
+                                                                                                                            type(who_mem_13264_ext),
+                                                                                                                            who_mem_13264_ext))
     try:
-      assert ((type(inputs_mem_13442_ext) in [np.ndarray,
-                                              cl.array.Array]) and (inputs_mem_13442_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_11065 = np.int32(inputs_mem_13442_ext.shape[0])
-      sizze_11066 = np.int32(inputs_mem_13442_ext.shape[1])
-      if (type(inputs_mem_13442_ext) == cl.array.Array):
-        inputs_mem_13442 = inputs_mem_13442_ext.data
+      assert ((type(inputs_mem_13265_ext) in [np.ndarray,
+                                              cl.array.Array]) and (inputs_mem_13265_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_12933 = np.int32(inputs_mem_13265_ext.shape[0])
+      sizze_12934 = np.int32(inputs_mem_13265_ext.shape[1])
+      sizze_12935 = np.int32(inputs_mem_13265_ext.shape[2])
+      if (type(inputs_mem_13265_ext) == cl.array.Array):
+        inputs_mem_13265 = inputs_mem_13265_ext.data
       else:
-        inputs_mem_13442 = opencl_alloc(self,
-                                        np.int64(inputs_mem_13442_ext.nbytes),
-                                        "inputs_mem_13442")
-        if (np.int64(inputs_mem_13442_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, inputs_mem_13442,
-                          normaliseArray(inputs_mem_13442_ext),
+        inputs_mem_13265 = opencl_alloc(self,
+                                        np.int64(inputs_mem_13265_ext.nbytes),
+                                        "inputs_mem_13265")
+        if (np.int64(inputs_mem_13265_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, inputs_mem_13265,
+                          normaliseArray(inputs_mem_13265_ext),
                           is_blocking=synchronous)
     except (TypeError, AssertionError) as e:
-      raise TypeError("Argument #3 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][]f32",
-                                                                                                                            type(inputs_mem_13442_ext),
-                                                                                                                            inputs_mem_13442_ext))
+      raise TypeError("Argument #3 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][][]f32",
+                                                                                                                            type(inputs_mem_13265_ext),
+                                                                                                                            inputs_mem_13265_ext))
     try:
-      assert ((type(targets_mem_13443_ext) in [np.ndarray,
-                                               cl.array.Array]) and (targets_mem_13443_ext.dtype == np.float32)), "Parameter has unexpected type"
-      sizze_11067 = np.int32(targets_mem_13443_ext.shape[0])
-      sizze_11068 = np.int32(targets_mem_13443_ext.shape[1])
-      if (type(targets_mem_13443_ext) == cl.array.Array):
-        targets_mem_13443 = targets_mem_13443_ext.data
+      assert ((type(targets_mem_13266_ext) in [np.ndarray,
+                                               cl.array.Array]) and (targets_mem_13266_ext.dtype == np.float32)), "Parameter has unexpected type"
+      sizze_12936 = np.int32(targets_mem_13266_ext.shape[0])
+      sizze_12937 = np.int32(targets_mem_13266_ext.shape[1])
+      sizze_12938 = np.int32(targets_mem_13266_ext.shape[2])
+      if (type(targets_mem_13266_ext) == cl.array.Array):
+        targets_mem_13266 = targets_mem_13266_ext.data
       else:
-        targets_mem_13443 = opencl_alloc(self,
-                                         np.int64(targets_mem_13443_ext.nbytes),
-                                         "targets_mem_13443")
-        if (np.int64(targets_mem_13443_ext.nbytes) != 0):
-          cl.enqueue_copy(self.queue, targets_mem_13443,
-                          normaliseArray(targets_mem_13443_ext),
+        targets_mem_13266 = opencl_alloc(self,
+                                         np.int64(targets_mem_13266_ext.nbytes),
+                                         "targets_mem_13266")
+        if (np.int64(targets_mem_13266_ext.nbytes) != 0):
+          cl.enqueue_copy(self.queue, targets_mem_13266,
+                          normaliseArray(targets_mem_13266_ext),
                           is_blocking=synchronous)
     except (TypeError, AssertionError) as e:
-      raise TypeError("Argument #4 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][]f32",
-                                                                                                                            type(targets_mem_13443_ext),
-                                                                                                                            targets_mem_13443_ext))
-    (out_mem_13793, out_arrsizze_13794, out_arrsizze_13795, out_mem_13796,
-     out_arrsizze_13797, out_arrsizze_13798) = self.futhark_main(wih_mem_13440,
-                                                                 who_mem_13441,
-                                                                 inputs_mem_13442,
-                                                                 targets_mem_13443,
-                                                                 sizze_11061,
-                                                                 sizze_11062,
-                                                                 sizze_11063,
-                                                                 sizze_11064,
-                                                                 sizze_11065,
-                                                                 sizze_11066,
-                                                                 sizze_11067,
-                                                                 sizze_11068,
-                                                                 lr_11069)
-    return (cl.array.Array(self.queue, (out_arrsizze_13794, out_arrsizze_13795),
-                           ct.c_float, data=out_mem_13793),
-            cl.array.Array(self.queue, (out_arrsizze_13797, out_arrsizze_13798),
-                           ct.c_float, data=out_mem_13796))
+      raise TypeError("Argument #4 has invalid value\nFuthark type: {}\nArgument has Python type {} and value: {}\n".format("[][][]f32",
+                                                                                                                            type(targets_mem_13266_ext),
+                                                                                                                            targets_mem_13266_ext))
+    (out_mem_13415, out_arrsizze_13416, out_arrsizze_13417, out_mem_13418,
+     out_arrsizze_13419, out_arrsizze_13420) = self.futhark_main(wih_mem_13263,
+                                                                 who_mem_13264,
+                                                                 inputs_mem_13265,
+                                                                 targets_mem_13266,
+                                                                 sizze_12929,
+                                                                 sizze_12930,
+                                                                 sizze_12931,
+                                                                 sizze_12932,
+                                                                 sizze_12933,
+                                                                 sizze_12934,
+                                                                 sizze_12935,
+                                                                 sizze_12936,
+                                                                 sizze_12937,
+                                                                 sizze_12938,
+                                                                 lr_12939)
+    return (cl.array.Array(self.queue, (out_arrsizze_13416, out_arrsizze_13417),
+                           ct.c_float, data=out_mem_13415),
+            cl.array.Array(self.queue, (out_arrsizze_13419, out_arrsizze_13420),
+                           ct.c_float, data=out_mem_13418))

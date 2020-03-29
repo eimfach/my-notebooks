@@ -154,25 +154,30 @@ let sigmoid (x: [][]f32) =
 let transp (x: [][]f32) =
   transpose x
 
-let main (lr: f32) (wih: [][]f32) (who: [][]f32) (inputs: [][]f32) (targets: [][]f32) =
-    -- hidden_inputs = dot-prod wih inputs
-    let hidden_inputs = dot wih inputs
-    -- hidden_outputs = sigmoid hidden_inputs
-    let hidden_outputs = sigmoid hidden_inputs
-    -- final_inputs = dot-prod who hidden_outputs
-    let final_inputs = dot who hidden_outputs
-    -- final_outputs = sigmoid final_inputs
-    let final_outputs = sigmoid final_inputs
-    -- output_errors = substract targets final_outputs
-    let output_errors = matsubstract targets final_outputs
-    -- hidden_errors = dot-prod (transpose who) output_errors
-    let hidden_errors = dot (transpose who) output_errors
-    -- prod1 = multiply (multiply output_errors final_outputs) (left-substract 1.0 final_outputs)
-    let prod1 = matmultiply (matmultiply output_errors final_outputs) (lmatsubstract 1.0 final_outputs)
-    -- updated_who = add who (left-multiply lr (dot-prod prod1 (transpose hidden_outputs)) )
-    let updated_who = matadd who (lmatmultiply lr (dot prod1 (transpose hidden_outputs)))
-    -- prod2 = multiply (multiply hidden_errors hidden_outputs) (left-substract 1.0 hidden_outputs )
-    let prod2 = matmultiply (matmultiply hidden_errors hidden_outputs) (lmatsubstract 1.0 hidden_outputs)
-    -- updated_wih = add wih (left-multiply lr (dot-prod prod2 (transpose inputs)) )
-    let updated_wih = matadd wih (lmatmultiply lr (dot prod2 (transpose inputs)))
-    in (updated_who, updated_wih)
+let train (lr: f32) (wih: [][]f32) (who: [][]f32) (inputs: [][]f32) (targets: [][]f32) : ([][]f32, [][]f32) =
+  -- hidden_inputs = dot-prod wih inputs
+  let hidden_inputs = dot wih inputs
+  -- hidden_outputs = sigmoid hidden_inputs
+  let hidden_outputs = sigmoid hidden_inputs
+  -- final_inputs = dot-prod who hidden_outputs
+  let final_inputs = dot who hidden_outputs
+  -- final_outputs = sigmoid final_inputs
+  let final_outputs = sigmoid final_inputs
+  -- output_errors = substract targets final_outputs
+  let output_errors = matsubstract targets final_outputs
+  -- hidden_errors = dot-prod (transpose who) output_errors
+  let hidden_errors = dot (transpose who) output_errors
+  -- prod1 = multiply (multiply output_errors final_outputs) (left-substract 1.0 final_outputs)
+  let prod1 = matmultiply (matmultiply output_errors final_outputs) (lmatsubstract 1.0 final_outputs)
+  -- updated_who = add who (left-multiply lr (dot-prod prod1 (transpose hidden_outputs)) )
+  let updated_who = matadd who (lmatmultiply lr (dot prod1 (transpose hidden_outputs)))
+  -- prod2 = multiply (multiply hidden_errors hidden_outputs) (left-substract 1.0 hidden_outputs )
+  let prod2 = matmultiply (matmultiply hidden_errors hidden_outputs) (lmatsubstract 1.0 hidden_outputs)
+  -- updated_wih = add wih (left-multiply lr (dot-prod prod2 (transpose inputs)) )
+  let updated_wih = matadd wih (lmatmultiply lr (dot prod2 (transpose inputs)))
+  in (updated_wih, updated_who)
+
+let main (lr: f32) (wih: [][]f32) (who: [][]f32) (inputs: [][][]f32) (targets: [][][]f32) : ([][]f32, [][]f32) =
+  reduce (\(cinputs, ctargets) (uwih, uwho) -> train lr uwih uwho cinputs ctargets ) (wih, who) (zip inputs targets)
+
+

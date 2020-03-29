@@ -40,11 +40,9 @@ class NeuralNetwork:
     # train the neural network
     def train(self, inputs, targets):
         # gpu based
+        
+        updated_wih,updated_who = gpu_training.main(self.lr, self.wih, self.who, inputs, targets)
 
-        inputs = numpy.array(inputs, ndmin=2, dtype=numpy.float32).T
-        targets = numpy.array(targets, ndmin=2, dtype=numpy.float32).T
-
-        updated_who, updated_wih = gpu_training.main(self.lr, self.wih, self.who, inputs, targets)
         self.who = updated_who
         self.wih = updated_wih
         pass

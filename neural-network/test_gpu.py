@@ -1,4 +1,4 @@
-import neuralnetwork
+import neuralnetworkopencl
 import time
 import zipfile
 import numpy
@@ -35,9 +35,11 @@ def trainAndTest(n):
     startTime = time.time()
     # train the neural network
 
+    dataInputs = []
+    dataTargets = []
     for e in range(epochs):
         # go through all records in the training data set
-        for record in training_data_list:
+        for record in training_data_list[:2]:
 
             # split the record by the ',' commas
             one_letter = record.split(',')
@@ -54,8 +56,13 @@ def trainAndTest(n):
             # all_values[0] is the target label for this record
             targets[mark] = 0.99
 
-            n.train(inputs, targets)
-            
+            inputs = numpy.array(inputs, ndmin=2, dtype=numpy.float32).T
+            targets = numpy.array(targets, ndmin=2, dtype=numpy.float32).T
+
+            dataInputs.append(inputs)
+            dataTargets.append(targets)
+    print(numpy.array(dataInputs, dtype=numpy.float32))
+    n.train(numpy.array(dataInputs, dtype=numpy.float32), numpy.array(dataTargets,dtype=numpy.float32))
 
     endTime = time.time()
     print("-------------------------------------------------------------------")
@@ -97,6 +104,6 @@ def trainAndTest(n):
 
 
 for i in range(5):
-    n = neuralnetwork.NeuralNetwork(
+    n = neuralnetworkopencl.NeuralNetwork(
         learningRate=learning_rate, iNodes=input_nodes, hNodes=hidden_nodes, oNodes=output_nodes)
     trainAndTest(n)
